@@ -1,1 +1,1 @@
-runtime testing.vim
+runtime basicsettings.vim, testing.vim
