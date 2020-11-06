@@ -31,7 +31,7 @@ function GetTestCommand()
   endif
 endfunction
 
-nnoremap <Leader>c :call CloseTerminalTest()<CR>
+nnoremap <Leader>cl :call CloseTerminalTest()<CR>
 
 function CloseTerminalTest() 
   let buffernumber = bufnr("%")

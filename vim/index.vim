@@ -1,0 +1,1 @@
+runtime testing.vim
