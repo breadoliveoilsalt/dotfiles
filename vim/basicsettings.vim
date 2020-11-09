@@ -80,7 +80,9 @@ set clipboard=unnamed
 " set textwidth=80
 
 " Insert line below
-nnoremap <CR> o<Esc>k 
+" nnoremap <CR> o<Esc>k 
+" 201109: Disabled the above so I could hit <CR> to implement past
+" commands from the command line window after hitting q:
 
 " Set rel num
 set rnu
