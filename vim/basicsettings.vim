@@ -29,7 +29,8 @@ set wildignore+=*.zip                                       " ignore .zip files
 set wildignore+=*.pdf                                       " ignore .pdf files
 set wildignore+=*/node_modules/*                            " ignore node_modules
 set wildignore+=*/deps/*                                    " ignore deps in elixir 
-set wildignore+=*/_build/*                                    " ignore build in elixir 
+set wildignore+=*/_build/*                                  " ignore build in elixir 
+set wildignore+=Session.vim                                 " ignore any saved Session file
 
 " Store all swp/swap files in a different directory
 set directory^=$HOME/.vim/swap//
