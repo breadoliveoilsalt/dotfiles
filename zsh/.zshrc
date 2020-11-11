@@ -77,8 +77,6 @@ alias blog="cd ~/Desktop/projects/breadoliveoilsalt.github.io"
 
 alias ls="ls -lah"
 
-cd ~/desktop/projects
-
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
@@ -116,3 +114,4 @@ setopt  autocd autopushd
 # allows asdf to work and read .tool-versions
 . /usr/local/opt/asdf/asdf.sh
 
+clear
