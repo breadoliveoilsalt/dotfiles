@@ -3,22 +3,33 @@ nnoremap <Leader>tf :call TestFile()<cr>
 nnoremap <Leader>tt :call TestThis()<cr>
 
 function TestAll()
-  let l:testcommand=GetTestCommand()
-  execute "vert term" l:testcommand
+  try
+    let l:testcommand=GetTestCommand()
+    execute "vert term" l:testcommand
+  catch
+    call FireWarning(v:exception)
+  endtry
 endfunction
 
 function TestFile()
-  let l:testcommand=GetTestCommand()
-  execute "vert term" l:testcommand "%"
+  try
+    let l:testcommand=GetTestCommand()
+    execute "vert term" l:testcommand "%"
+  catch
+    call FireWarning(v:exception)
+  endtry
 endfunction
 
 function TestThis()
-  let l:testcommand=GetTestCommand()
-  if IsJestTest(l:testcommand)
-    call FireWarning("Jest doesn't support testing a single test this way")
-    return
-  endif
-  execute "vert term" l:testcommand "%:" . line(".")
+  try
+    let l:testcommand=GetTestCommand()
+    if IsJestTest(l:testcommand)
+      throw "Jest doesn't support testing a single test this way"
+    endif
+    execute "vert term" l:testcommand "%:" . line(".")
+  catch
+    call FireWarning(v:exception)
+  endtry
 endfunction
 
 function IsJestTest(testcmd)
@@ -35,8 +46,7 @@ function GetTestCommand()
   elseif l:extension == "exs"
     return "mix test"
   else 
-    call FireWarning("Test file extension not recognized")
-    return
+    throw "Test file extension not recognized"
   endif
 endfunction
 
