@@ -37,6 +37,9 @@ set directory^=$HOME/.vim/swap//
 
 " No highlight search terms to start
 set nohls
+" Adjust highlighting colors
+highlight Search ctermbg=Black ctermfg=White
+highlight Visual ctermbg=Black ctermfg=White
 
 " Search with case-insensitivity unless there's a capital letter 
 set ignorecase smartcase 
@@ -131,3 +134,4 @@ augroup BgHighlight
   autocmd WinEnter * set cursorline
   autocmd WinLeave * set nocursorline 
 augroup END
+

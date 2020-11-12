@@ -14,20 +14,36 @@ endfunction
 
 function TestThis()
   let l:testcommand=GetTestCommand()
+  if IsJestTest(l:testcommand)
+    call FireWarning("Jest doesn't support testing a single test this way")
+    return
+  endif
   execute "vert term" l:testcommand "%:" . line(".")
+endfunction
+
+function IsJestTest(testcmd)
+  let l:parsedjestcommand = matchstr(a:testcmd, "--watch-all=false")
+  return l:parsedjestcommand != ""
 endfunction
 
 function GetTestCommand() 
   let l:extension = expand("%:e")
-  if extension == "rb"
+  if l:extension == "rb"
     return "rspec"
-  elseif extension == "js" || extension == "ts" || extension == "tsx"
+  elseif l:extension == "js" || l:extension == "ts" || l:extension == "tsx"
     return "npm test -- --watch-all=false"
-  elseif extension == "exs"
+  elseif l:extension == "exs"
     return "mix test"
   else 
-    throw "Test file extension not recognized"
+    call FireWarning("Test file extension not recognized")
+    return
   endif
+endfunction
+
+function FireWarning(warning)
+  echohl WarningMsg
+  echo a:warning
+  echohl None
 endfunction
 
 nnoremap <Leader>cl :call CloseTerminalTest()<CR>
@@ -39,5 +55,4 @@ function CloseTerminalTest()
     q
   endif
 endfunction
-
 
