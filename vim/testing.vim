@@ -4,8 +4,8 @@ nnoremap <Leader>tt :call TestThis()<cr>
 
 function TestAll()
   try
-    let l:testcommand=GetTestCommand()
-    execute "vert term" l:testcommand
+    let l:testcmd = GetTestCommand()
+    execute "vert term" l:testcmd
   catch
     call FireWarning(v:exception)
   endtry
@@ -13,8 +13,8 @@ endfunction
 
 function TestFile()
   try
-    let l:testcommand=GetTestCommand()
-    execute "vert term" l:testcommand "%"
+    let l:testcmd = GetTestCommand()
+    execute "vert term" l:testcmd "%"
   catch
     call FireWarning(v:exception)
   endtry
@@ -22,11 +22,11 @@ endfunction
 
 function TestThis()
   try
-    let l:testcommand=GetTestCommand()
-    if IsJestTest(l:testcommand)
-      throw "Jest doesn't support testing a single test this way"
+    let l:testcmd = GetTestCommand()
+    if IsJestTest(l:testcmd)
+      throw "Jest doesn't support testing a single test this way."
     endif
-    execute "vert term" l:testcommand "%:" . line(".")
+    execute "vert term" l:testcmd "%:" . line(".")
   catch
     call FireWarning(v:exception)
   endtry
@@ -37,7 +37,18 @@ function IsJestTest(testcmd)
   return l:parsedjestcommand != ""
 endfunction
 
+let g:testcmd = ""
+
 function GetTestCommand() 
+  if g:testcmd != ""
+    echo 'Running test with g:testcmd. Use :let g:testcmd = "" to reset'
+    return g:testcmd
+  else
+    return GetTestCommandByExt()
+  endif
+endfunction
+
+function GetTestCommandByExt()
   let l:extension = expand("%:e")
   if l:extension == "rb"
     return "rspec"
@@ -46,7 +57,7 @@ function GetTestCommand()
   elseif l:extension == "exs"
     return "mix test"
   else 
-    throw "Test file extension not recognized"
+    throw 'Test file extension not recognized. Use :let g:testcmd="<command>" to set a custom test command.'
   endif
 endfunction
 
