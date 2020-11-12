@@ -64,6 +64,7 @@ alias glo="git log --oneline"
 alias gl="git log"
 alias lc="git log --oneline -1"
 alias pullff="pull --ff-only"
+alias gd="git diff"
 alias gdc="git diff --cached"
 
 alias profile="vim ~/.zshrc"
