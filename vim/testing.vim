@@ -4,8 +4,8 @@ nnoremap <Leader>tt :call TestThis()<cr>
 
 function TestAll()
   try
-    let l:testcmd = GetTestCommand()
-    execute "vert term" l:testcmd
+    let l:test_command = GetTestCommand()
+    execute "vert term" l:test_command
   catch
     call FireWarning(v:exception)
   endtry
@@ -13,8 +13,8 @@ endfunction
 
 function TestFile()
   try
-    let l:testcmd = GetTestCommand()
-    execute "vert term" l:testcmd "%"
+    let l:test_command = GetTestCommand()
+    execute "vert term" l:test_command "%"
   catch
     call FireWarning(v:exception)
   endtry
@@ -22,27 +22,27 @@ endfunction
 
 function TestThis()
   try
-    let l:testcmd = GetTestCommand()
-    if IsJestTest(l:testcmd)
+    let l:test_command = GetTestCommand()
+    if IsJestTest(l:test_command)
       throw "Jest doesn't support testing a single test this way."
     endif
-    execute "vert term" l:testcmd "%:" . line(".")
+    execute "vert term" l:test_command "%:" . line(".")
   catch
     call FireWarning(v:exception)
   endtry
 endfunction
 
-function IsJestTest(testcmd)
-  let l:parsedjestcommand = matchstr(a:testcmd, "--watch-all=false")
-  return l:parsedjestcommand != ""
+function IsJestTest(test_command)
+  let l:parsed_jest_command = matchstr(a:test_command, "--watch-all=false")
+  return l:parsed_jest_command != ""
 endfunction
 
-let g:testcmd = ""
+let g:test_command_override = ""
 
 function GetTestCommand() 
-  if g:testcmd != ""
-    echo 'Running test with g:testcmd. Use :let g:testcmd = "" to reset'
-    return g:testcmd
+  if g:test_command_override != ""
+    echo 'Running test with g:test_command_override. Use :let g:test_command_override = "" to reset'
+    return g:test_command_override
   else
     return GetTestCommandByExt()
   endif
@@ -57,7 +57,7 @@ function GetTestCommandByExt()
   elseif l:extension == "exs"
     return "mix test"
   else 
-    throw 'Test file extension not recognized. Use :let g:testcmd="<command>" to set a custom test command.'
+    throw 'Test file extension not recognized. Use :let g:test_command_override="<command>" to set a custom test command.'
   endif
 endfunction
 
@@ -67,13 +67,15 @@ function FireWarning(warning)
   echohl None
 endfunction
 
-nnoremap <Leader>cl :call CloseTerminalTest()<CR>
+nnoremap <Leader>cl :call CloseTest()<CR>
 
-function CloseTerminalTest() 
-  let buffernumber = bufnr("%")
-  let termstatus = term_getstatus(buffernumber)
-  if &buftype == "terminal" && termstatus == "finished"
-    q
+function CloseTest() 
+  if &buftype == "terminal"
+    let l:buffer_number = bufnr("%")
+    let l:terminal_status = term_getstatus(buffer_number)
+    if l:terminal_status == "finished"
+      q
+    endif
   endif
 endfunction
 
