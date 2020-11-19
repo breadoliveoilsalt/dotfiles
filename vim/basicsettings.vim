@@ -38,8 +38,8 @@ set directory^=$HOME/.vim/swap//
 " No highlight search terms to start
 set nohls
 " Adjust highlighting colors
-highlight Search ctermbg=Black ctermfg=White
-highlight Visual ctermbg=Black ctermfg=White
+" highlight Search ctermbg=Black ctermfg=White
+" highlight Visual ctermbg=Black ctermfg=White
 
 " Search with case-insensitivity unless there's a capital letter 
 set ignorecase smartcase 
@@ -74,10 +74,15 @@ set splitright
 " Set clipboard to global clipboard by default
 set clipboard=unnamed 
 
-" Draw a line down this column. Useful for lining up
-" set colorcolumn=80
+" Draw a line down this column. Useful for lining up. Set it to Green.
+" Change it to red when in insertmode.
+set colorcolumn=81
+hi ColorColumn ctermbg=2 ctermfg=7
+autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7 
+autocmd InsertLeave * highlight ColorColumn ctermbg=2 ctermfg=7 
+
 " If you want to restrict the length of a row by column
-" set textwidth=80
+set textwidth=80
 
 " Insert line below
 " nnoremap <CR> o<Esc>k 
@@ -135,3 +140,17 @@ augroup BgHighlight
   autocmd WinLeave * set nocursorline 
 augroup END
 
+" Vim Save Session
+nnoremap <Leader>vss :mksession!<CR>
+
+" Disable autosuggest from ^P. Use ^N instead
+inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
+
+" Format current paragraph with column boundaries
+:nnoremap ,fmt {V}gq
+
+" Add # as a comment, and delete it. 
+" Assumes you hit this after selecting in Visual Line mode
+" <C-q> takes you from Visual Line mode to Visual Block mode
+vnoremap ,c <C-q>I#<Esc>
+vnoremap ,dc <C-q>x<Esc>
