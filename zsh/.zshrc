@@ -67,7 +67,7 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 
-alias profile="vim ~/.zshrc"
+alias profile="vim ~/Desktop/projects/dotfiles/zsh/.zshrc"
 
 alias proj="cd ~/Desktop/projects"
 alias desktop="cd ~/Desktop"
@@ -77,6 +77,9 @@ alias aproj="cd ~/Documents/projects-apprenticeship"
 alias blog="cd ~/Desktop/projects/breadoliveoilsalt.github.io" 
 
 alias ls="ls -lah"
+
+# Think: Vim Last Session (vls)
+alias vls='vim +"so Session.vim"'
 
 # The following lines were added by compinstall
 
@@ -115,4 +118,6 @@ setopt  autocd autopushd
 # allows asdf to work and read .tool-versions
 . /usr/local/opt/asdf/asdf.sh
 
-clear
+# load rbenv automatically
+eval "$(rbenv init -)"
+
