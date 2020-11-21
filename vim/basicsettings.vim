@@ -46,15 +46,6 @@ set ignorecase smartcase
 
 syntax on
 
-" Enlarge current window and shrink others
-" Taken from Gary Bernhardt as the magic formula 
-" See: https://www.destroyallsoftware.com/file-navigation-in-vim.html
-" See: https://github.com/tpope/vim-obsession/issues/4
-" set winwidth=84
-" set winheight=5
-" set winminheight=5
-" set winheight=999
-
 " Set status line to see full path and line, col
 " Alternative: To get just line, col, use set ruler
 set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
@@ -82,7 +73,7 @@ autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7
 autocmd InsertLeave * highlight ColorColumn ctermbg=2 ctermfg=7 
 
 " If you want to restrict the length of a row by column
-set textwidth=80
+set textwidth=0
 
 " Insert line below
 " nnoremap <CR> o<Esc>k 
@@ -104,26 +95,39 @@ nnoremap <Leader>fz :FZF<CR>
 " Copy relative path to clipboard
 nnoremap <Leader>yp :let @+=expand("%")<CR>
 
+" Enlarge current window and shrink others
+" Taken from Gary Bernhardt as the magic formula 
+" See: https://www.destroyallsoftware.com/file-navigation-in-vim.html
+" See: https://github.com/tpope/vim-obsession/issues/4
+" set winwidth=84
+" set winheight=5
+" set winminheight=5
+" set winheight=999
+
 " Automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
 
+" Increase or decrease window veritcal space by 10 lines
+nnoremap ,vv <C-w>10>
+nnoremap ,vl <C-w>10<
+
 " Increase or decrease window height by 10 lines
-nnoremap + <C-W>10+
-nnoremap - <C-W>10-
+nnoremap ,hh <C-w>10+
+nnoremap ,hl <C-w>10-
 
 " Zoom a vim pane
-nnoremap _ :wincmd _<cr>:wincmd \|<cr>
+nnoremap _ :wincmd _<CR>:wincmd \|<CR>
 " Rebalance all panes
-nnoremap = :wincmd =<cr>
+nnoremap = :wincmd =<CR>
 
 " Configurations for netrw (:Ex)
 " From here: https://github.com/changemewtf/no_plugins/blob/master/no_plugins.vim
 " Use :Vex to open netrw in vertical split
 let g:netrw_banner=0        " disable banner
 let g:netrw_altv=1          " open splits to the right
-"let g:netrw_browse_split=2  " open selected file in a new vertical split when hitting <CR>
 let g:netrw_liststyle=3     " tree view
 let g:netrw_hide=0          " show all files, including hidden ones
+" let g:netrw_browse_split=2  " open selected file in a new vertical split when hitting <CR>
 " let g:netrw_liststyle=1     " show files with timestamps etc. Overrides tree view
 " let g:netrw_winsize=25      " open width to 25% of page
 " let g:netrw_browse_split=4  " open in prior window
@@ -150,7 +154,17 @@ inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
 :nnoremap ,fmt {V}gq
 
 " Add # as a comment, and delete it. 
-" Assumes you hit this after selecting in Visual Line mode
+" For Visual maps, this assumes you the keystroke
+" after selecting in Visual Line mode
 " <C-q> takes you from Visual Line mode to Visual Block mode
-vnoremap ,c <C-q>I#<Esc>
-vnoremap ,dc <C-q>x<Esc>
+" vnoremap <Leader>cc <C-q>I# <Esc>
+" vnoremap <Leader>dc <C-q>x<Esc>
+" nnoremap <Leader>cc 0i# <Esc>
+" nnoremap <Leader>dc 0xx<Esc>
+vnoremap <Leader>cc :s/^/#\s/<CR>
+vnoremap <Leader>dc :s/^#\s//<CR>
+nnoremap <Leader>cc :s/^/#\s/<CR>
+noremap <Leader>dc :s/^#\s//<CR>
+
+" Reload (source) vimrc
+nnoremap ,so :so ~/.vimrc<CR>
