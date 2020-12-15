@@ -6,6 +6,7 @@ function TestAll()
   try
     let l:test_command = GetTestCommand()
     execute "vert term" l:test_command
+    execute 'vertical resize '. string(&columns * 0.50)
   catch
     call FireWarning(v:exception)
   endtry
@@ -15,6 +16,7 @@ function TestFile()
   try
     let l:test_command = GetTestCommand()
     execute "vert term" l:test_command "%"
+    execute 'vertical resize '. string(&columns * 0.50)
   catch
     call FireWarning(v:exception)
   endtry
@@ -27,6 +29,7 @@ function TestThis()
       throw "Jest doesn't support testing a single test this way."
     endif
     execute "vert term" l:test_command "%:" . line(".")
+    execute 'vertical resize '. string(&columns * 0.50)
   catch
     call FireWarning(v:exception)
   endtry
