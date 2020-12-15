@@ -20,17 +20,20 @@ set hidden
 " ^= prepends ** to the start of the list
 set path^=**
 set wildmode=list:longest,list:full
-set wildignore+=*/tmp/*                                     " ignore files in tmp directories
-set wildignore+=*/target/*                                  " ignore files in target directories
-set wildignore+=*/build/*                                   " ignore gradle build directories
-set wildignore+=*.class                                     " ignore .class files
-set wildignore+=*.swp                                       " ignore .swp files
-set wildignore+=*.zip                                       " ignore .zip files
-set wildignore+=*.pdf                                       " ignore .pdf files
-set wildignore+=*/node_modules/*                            " ignore node_modules
-set wildignore+=*/deps/*                                    " ignore deps in elixir 
-set wildignore+=*/_build/*                                  " ignore build in elixir 
-set wildignore+=Session.vim                                 " ignore any saved Session file
+set wildignore+=*/tmp/*                          " ignore files in tmp directories
+set wildignore+=*/target/*                       " ignore files in target directories
+set wildignore+=*/build/*                        " ignore gradle build directories
+set wildignore+=*.class                          " ignore .class files
+set wildignore+=*.swp                            " ignore .swp files
+set wildignore+=*.zip                            " ignore .zip files
+set wildignore+=*.pdf                            " ignore .pdf files
+set wildignore+=*/node_modules/*                 " ignore node_modules
+set wildignore+=*/deps/*                         " ignore deps in elixir 
+set wildignore+=*/_build/*                       " ignore build in elixir 
+set wildignore+=Session.vim                      " ignore any saved Session file
+set wildignore+=*/vendor/assets/*                " ignore vendor/assets for Rails projects
+set wildignore+=*/app/assets/images/*            " ignore other images dir for Rails projects
+set wildignore+=tags
 
 " Store all swp/swap files in a different directory
 set directory^=$HOME/.vim/swap//
@@ -67,7 +70,8 @@ set clipboard=unnamed
 
 " Draw a line down this column. Useful for lining up. Set it to Green.
 " Change it to red when in insertmode.
-set colorcolumn=81
+" set colorcolumn=81
+set colorcolumn=0
 hi ColorColumn ctermbg=2 ctermfg=7
 autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7 
 autocmd InsertLeave * highlight ColorColumn ctermbg=2 ctermfg=7 
@@ -139,9 +143,9 @@ set cursorline
 
 " Set cursorline for only the current window
 augroup BgHighlight
-  autocmd!
-  autocmd WinEnter * set cursorline
-  autocmd WinLeave * set nocursorline 
+autocmd!
+autocmd WinEnter * set cursorline
+autocmd WinLeave * set nocursorline 
 augroup END
 
 " Vim Save Session
@@ -161,10 +165,18 @@ inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
 " vnoremap <Leader>dc <C-q>x<Esc>
 " nnoremap <Leader>cc 0i# <Esc>
 " nnoremap <Leader>dc 0xx<Esc>
-vnoremap <Leader>cc :s/^/#\s/<CR>
-vnoremap <Leader>dc :s/^#\s//<CR>
-nnoremap <Leader>cc :s/^/#\s/<CR>
-noremap <Leader>dc :s/^#\s//<CR>
+
+" For the future on above: Below did not work to insert a space for some reason
+" vnoremap <Leader>c :s/^/#\s/<CR>
+" vnoremap <Leader>dc :s/^#\s//<CR>
+" nnoremap <Leader>c :s/^/#\s/<CR>
+" noremap <Leader>dc :s/^#\s//<CR>
+
+vnoremap <Leader>c :s/^/# /<CR>
+vnoremap <Leader>dc :s/^# /<CR>
+nnoremap <Leader>c :s/^/# /<CR>
+noremap <Leader>dc :s/^# /<CR>
+
 
 " Reload (source) vimrc
 nnoremap ,so :so ~/.vimrc<CR>
