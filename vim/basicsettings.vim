@@ -34,6 +34,10 @@ set wildignore+=Session.vim                      " ignore any saved Session file
 set wildignore+=*/vendor/assets/*                " ignore vendor/assets for Rails projects
 set wildignore+=*/app/assets/images/*            " ignore other images dir for Rails projects
 set wildignore+=tags
+set wildignore+=*/log/*                          
+set wildignore+=*.log
+set wildignore+=ngrok
+set wildignore+=*.svg
 
 " Store all swp/swap files in a different directory
 set directory^=$HOME/.vim/swap//
@@ -124,41 +128,31 @@ nnoremap _ :wincmd _<CR>:wincmd \|<CR>
 " Rebalance all panes
 nnoremap = :wincmd =<CR>
 
-" Configurations for netrw (:Ex)
-" From here: https://github.com/changemewtf/no_plugins/blob/master/no_plugins.vim
-" Use :Vex to open netrw in vertical split
-let g:netrw_banner=0        " disable banner
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
-let g:netrw_hide=0          " show all files, including hidden ones
-" let g:netrw_browse_split=2  " open selected file in a new vertical split when hitting <CR>
-" let g:netrw_liststyle=1     " show files with timestamps etc. Overrides tree view
-" let g:netrw_winsize=25      " open width to 25% of page
-" let g:netrw_browse_split=4  " open in prior window
-" let g:netrw_list_hide=netrw_gitignore#Hide()
-" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+" Disable <C-w>q b/c I keep closing vim by accident
+" when trying to switch panes
+nnoremap <C-w>q :echo "^wq disabled for quitting window"<CR>
 
 " Highlight current line as default
 set cursorline
 
 " Set cursorline for only the current window
 augroup BgHighlight
-autocmd!
-autocmd WinEnter * set cursorline
-autocmd WinLeave * set nocursorline 
+  autocmd!
+  autocmd WinEnter * set cursorline
+  autocmd WinLeave * set nocursorline 
 augroup END
 
 " Vim Save Session
 nnoremap <Leader>vss :mksession!<CR>
 
 " Disable autosuggest from ^P. Use ^N instead
-inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
+" inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
 
 " Format current paragraph with column boundaries
 :nnoremap ,fmt {V}gq
 
 " Add # as a comment, and delete it. 
-" For Visual maps, this assumes you the keystroke
+" For Visual maps, this assumes you hit the keystroke
 " after selecting in Visual Line mode
 " <C-q> takes you from Visual Line mode to Visual Block mode
 " vnoremap <Leader>cc <C-q>I# <Esc>
@@ -172,11 +166,26 @@ inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
 " nnoremap <Leader>c :s/^/#\s/<CR>
 " noremap <Leader>dc :s/^#\s//<CR>
 
-vnoremap <Leader>c :s/^/# /<CR>
+vnoremap <Leader>cc :s/^/# /<CR>
 vnoremap <Leader>dc :s/^# /<CR>
-nnoremap <Leader>c :s/^/# /<CR>
+nnoremap <Leader>cc :s/^/# /<CR>
 noremap <Leader>dc :s/^# /<CR>
-
 
 " Reload (source) vimrc
 nnoremap ,so :so ~/.vimrc<CR>
+
+" Turn off odd highlighting when there's a markdown file
+" Source: https://coderwall.com/p/bh4rwg/vim-disable-syntax-highlighter-only-for-markdown
+autocmd BufRead,BufNewFile {*.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt} set filetype=markdown
+autocmd FileType markdown setlocal syntax=off spell
+
+
+" An attempt to reconfigure cursor in highlight mode when 
+" using Tmux b/c can't see cursor
+"if exists('$TMUX')
+"  let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+"  let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+"else
+"  let &t_SI = "\e[5 q"
+"  let &t_EI = "\e[2 q"
+"endif

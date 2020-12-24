@@ -5,3 +5,4 @@
 
 runtime basicsettings.vim
 runtime testing.vim
+runtime netrw.vim
