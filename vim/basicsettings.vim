@@ -166,10 +166,12 @@ nnoremap <Leader>vss :mksession!<CR>
 " nnoremap <Leader>c :s/^/#\s/<CR>
 " noremap <Leader>dc :s/^#\s//<CR>
 
-vnoremap <Leader>cc :s/^/# /<CR>
-vnoremap <Leader>dc :s/^# /<CR>
-nnoremap <Leader>cc :s/^/# /<CR>
-noremap <Leader>dc :s/^# /<CR>
+" 210104 I installed NerdCommentary and am trying that out. 
+" Commenting out these for now
+" vnoremap <Leader>ic :s/^/# /<CR>
+" vnoremap <Leader>dc :s/^# /<CR>
+" nnoremap <Leader>ic :s/^/# /<CR>
+" noremap <Leader>dc :s/^# /<CR>
 
 " Reload (source) vimrc
 nnoremap ,so :so ~/.vimrc<CR>
@@ -177,8 +179,10 @@ nnoremap ,so :so ~/.vimrc<CR>
 " Turn off odd highlighting when there's a markdown file
 " Source: https://coderwall.com/p/bh4rwg/vim-disable-syntax-highlighter-only-for-markdown
 autocmd BufRead,BufNewFile {*.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt} set filetype=markdown
-autocmd FileType markdown setlocal syntax=off spell
+autocmd FileType markdown setlocal syntax=off
 
+nnoremap <Leader>tn :tabnew<CR>
+nnoremap <Leader>tc :tabclose<CR>
 
 " An attempt to reconfigure cursor in highlight mode when 
 " using Tmux b/c can't see cursor
@@ -189,3 +193,8 @@ autocmd FileType markdown setlocal syntax=off spell
 "  let &t_SI = "\e[5 q"
 "  let &t_EI = "\e[2 q"
 "endif
+
+" Adding b/c of Tim Pope's commentary.vim
+autocmd FileType apache setlocal commentstring=#\ %s
+
+filetype plugin on

@@ -70,7 +70,7 @@ function FireWarning(warning)
   echohl None
 endfunction
 
-nnoremap <Leader>cl :call CloseTest()<CR>
+nnoremap <Leader>ct :call CloseTest()<CR>
 
 function CloseTest() 
   if &buftype == "terminal"

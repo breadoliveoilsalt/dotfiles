@@ -17,3 +17,8 @@ let g:netrw_alto=0          " So preview window is opened to left
 
 nnoremap <Leader>lx :15Lex<CR>
 
+" Need to use Vex to keep folders open. Lex closes everything.
+nnoremap <Leader>ov :Vex<CR>
+" I have Vex always to the left, so this moves to left most window
+" and closes it
+nnoremap <Leader>cv <C-w>10h <bar> :q<CR> 
