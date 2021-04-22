@@ -39,6 +39,17 @@ setopt PROMPT_SUBST
 
 # Prior prompt before adding vim command mode status
 #PROMPT='%F{green}>>>> %F{yellow}%1~%f \$ '
+
+printDividingLineToEndOfWindow() {
+  echo
+  cols=$(tput cols)
+  for ((i=0; i<cols; i++));do printf "="; done; echo
+}
+
+precmd() {
+ printDividingLineToEndOfWindow
+}
+
 PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
 
 # The trick to getting the method to update each time was to surround the method
@@ -46,7 +57,6 @@ PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi
 # it kept returning the same branch every time. And double quotes would not
 # work. Single quote are so important for some reason.
 # export RPROMPT='%F{magenta}$(get_git_branch)%f'
-
 
 alias grw="./gradlew"
 
@@ -75,8 +85,11 @@ alias docs="cd ~/Documents"
 alias todo="cd ~/Documents/todo"
 alias aproj="cd ~/Documents/projects-apprenticeship"
 alias blog="cd ~/Desktop/projects/breadoliveoilsalt.github.io" 
+alias samaritan="cd ~/Desktop/projects/samaritan"
+alias dotfiles="cd ~/Desktop/projects/dotfiles"
 
 alias ls="ls -lah"
+alias reload="source ~/.zshrc"
 
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
