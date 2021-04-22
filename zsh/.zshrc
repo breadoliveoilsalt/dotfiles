@@ -2,6 +2,11 @@
 # See: https://opensource.com/article/18/9/tips-productivity-zsh
 bindkey -v
 
+# Reconciles whatever turns of ctrl-r to search command history,
+# So ctrl-r works again.
+# See: https://superuser.com/questions/403355/how-do-i-get-searching-through-my-command-history-working-with-tmux-and-zshell
+bindkey '^R' history-incremental-search-backward
+
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=1
 
