@@ -116,12 +116,12 @@ nnoremap <Leader>yp :let @+=expand("%")<CR>
 autocmd VimResized * :wincmd =
 
 " Increase or decrease window veritcal space by 10 lines
-nnoremap ,vv <C-w>10>
-nnoremap ,vl <C-w>10<
+nnoremap <Leader>vv <C-w>10>
+nnoremap <Leader>vl <C-w>10<
 
 " Increase or decrease window height by 10 lines
-nnoremap ,hh <C-w>10+
-nnoremap ,hl <C-w>10-
+nnoremap <Leader>hh <C-w>10+
+nnoremap <Leader>hl <C-w>10-
 
 " Zoom a vim pane
 nnoremap _ :wincmd _<CR>:wincmd \|<CR>
@@ -149,7 +149,7 @@ nnoremap <Leader>vss :mksession!<CR>
 " inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
 
 " Format current paragraph with column boundaries
-:nnoremap ,fmt {V}gq
+:nnoremap <Leader>fmt {V}gq
 
 " Add # as a comment, and delete it. 
 " For Visual maps, this assumes you hit the keystroke
@@ -174,7 +174,7 @@ nnoremap <Leader>vss :mksession!<CR>
 " noremap <Leader>dc :s/^# /<CR>
 
 " Reload (source) vimrc
-nnoremap ,so :so ~/.vimrc<CR>
+nnoremap <Leader>so :so ~/.vimrc<CR>
 
 " Turn off odd highlighting when there's a markdown file
 " Source: https://coderwall.com/p/bh4rwg/vim-disable-syntax-highlighter-only-for-markdown
