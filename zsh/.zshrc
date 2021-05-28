@@ -90,17 +90,32 @@ alias docs="cd ~/Documents"
 alias todo="cd ~/Documents/todo"
 alias aproj="cd ~/Documents/projects-apprenticeship"
 alias blog="cd ~/Desktop/projects/breadoliveoilsalt.github.io" 
-alias samaritan="cd ~/Desktop/projects/samaritan"
-alias dotfiles="cd ~/Desktop/projects/dotfiles"
 
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
+alias ideafix="git ls-files .idea | xargs git restore"
+
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
 
-# The following lines were added by compinstall
+alias samaritan=launchSamaritan
+launchSamaritan () {
+  tmux new-session -d -s samaritan -n backend
+  tmux send-keys -t samaritan:backend "cd ~/Desktop/projects/samaritan/backend; clear" Enter
+  tmux attach -t samaritan:backend
+}
 
+alias dotfiles=launchDotfiles
+launchDotfiles () {
+  tmux new-session -d -s dotfiles -n editPane
+  tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
+  tmux attach -t dotfiles:editPane
+}
+
+"cd ~/Desktop/projects/dotfiles"
+
+# The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 
