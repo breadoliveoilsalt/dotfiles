@@ -94,7 +94,7 @@ alias blog="cd ~/Desktop/projects/breadoliveoilsalt.github.io"
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
-alias ideafix="git ls-files .idea | xargs git restore"
+alias riderfix="git ls-files .idea | xargs git restore"
 
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
@@ -112,8 +112,6 @@ launchDotfiles () {
   tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
   tmux attach -t dotfiles:editPane
 }
-
-"cd ~/Desktop/projects/dotfiles"
 
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
