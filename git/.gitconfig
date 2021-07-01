@@ -1,0 +1,28 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+#	name = Tony Distinti
+#	email = adistinti@gmail.com
+[user]
+	email = 25881824+breadoliveoilsalt@users.noreply.github.com
+	name = Tony Distinti
+[credential]
+	helper = osxkeychain
+[filesystem "Oracle Corporation|11.0.5|/dev/disk1s1"]
+	timestampResolution = 6000 nanoseconds
+	minRacyThreshold = 0 nanoseconds
+[filesystem "Oracle Corporation|12.0.2|/dev/disk1s1"]
+	timestampResolution = 8000 nanoseconds
+	minRacyThreshold = 0 nanoseconds
+[core]
+	excludesfile = /Users/tonydistinti/.gitignore_global
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[diff]
+	tool = opendiff
+[init]
+	defaultBranch = main
+	templatedir = ~/.git_template
