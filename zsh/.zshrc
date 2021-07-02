@@ -81,6 +81,7 @@ alias lc="git log --oneline -1"
 alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
+alias openrepo="git remote -v | grep fetch | awk '{ print $2 }' | xargs open"
 
 alias profile="vim ~/Desktop/projects/dotfiles/zsh/.zshrc"
 
@@ -98,6 +99,11 @@ alias riderfix="git ls-files .idea | xargs git restore"
 
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
+
+# Automatically open Chrome with devtools in tabs.  Make sure all other Chrome
+# windows are closed first
+alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-for-tabs'
+
 
 alias samaritan=launchSamaritan
 launchSamaritan () {
