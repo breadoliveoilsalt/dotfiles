@@ -1,0 +1,41 @@
+"*":
+  "autocomplete-plus":
+    confirmCompletion: "tab"
+  core:
+    closeDeletedFileTabs: true
+    disabledPackages: [
+      "vim-mode-plus-ex-mode"
+      "language-gfm"
+      "language-toml"
+      "language-rust-bundled"
+      "language-python"
+      "language-php"
+      "language-perl"
+      "language-mustache"
+      "language-make"
+      "language-less"
+      "language-java"
+      "language-go"
+      "language-coffee-script"
+      "language-clojure"
+      "intentions"
+      "language-elixir"
+      "linter"
+      "linter-ui-default"
+      "linter-ruby"
+      "exception-reporting"
+      "metrics"
+    ]
+    packagesWithKeymapsDisabled: []
+    telemetryConsent: "no"
+  editor:
+    fontSize: 20
+    scrollPastEnd: true
+    softWrap: true
+    tabType: "soft"
+  "linter-ui-default": {}
+  "markdown-image-assistant":
+    preserveFileNameInAssetsFolder: true
+  "tree-view": {}
+  welcome:
+    showOnStartup: false
