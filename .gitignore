@@ -1,3 +1,5 @@
 !*.vim
 Session.vim
 session.vim
+
+ssh/
