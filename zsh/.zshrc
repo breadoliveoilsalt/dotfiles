@@ -63,8 +63,6 @@ PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi
 # work. Single quote are so important for some reason.
 # export RPROMPT='%F{magenta}$(get_git_branch)%f'
 
-alias grw="./gradlew"
-
 alias ga="git add"
 alias gaa="git add --all"
 alias ga.="git add ."
@@ -81,16 +79,25 @@ alias lc="git log --oneline -1"
 alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
-alias openrepo="git remote -v | grep fetch | awk '{ print $2 }' | xargs open"
 
-alias profile="vim ~/Desktop/projects/dotfiles/zsh/.zshrc"
+alias openrepo=openRepoFunction
+function openRepoFunction() {
+  git remote -v | grep fetch | awk '{ print $2 }' | xargs open
+}
 
-alias proj="cd ~/Desktop/projects"
+alias openprs=openPRsFunction
+function openPRsFunction() {
+  open "https://git.samaritanministries.org/smi/phoenix/backend/${PWD##*/}/-/merge_requests"
+}
+
+alias profile="vim ~/Documents/dotfiles/zsh/.zshrc"
+
+alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
 alias docs="cd ~/Documents"
 alias todo="cd ~/Documents/todo"
 alias aproj="cd ~/Documents/projects-apprenticeship"
-alias blog="cd ~/Desktop/projects/breadoliveoilsalt.github.io" 
+alias blog="cd ~/Documents/projects/breadoliveoilsalt.github.io" 
 
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
@@ -104,6 +111,7 @@ alias vls='vim +"so Session.vim"'
 # windows are closed first
 alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-for-tabs'
 
+alias sqlpro="open -a 'SQLPro for MSSQL'"
 
 alias samaritan=launchSamaritan
 launchSamaritan () {
@@ -114,9 +122,24 @@ launchSamaritan () {
 
 alias dotfiles=launchDotfiles
 launchDotfiles () {
-  tmux new-session -d -s dotfiles -n editPane
-  tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
-  tmux attach -t dotfiles:editPane
+#  tmux new-session -d -s dotfiles -n editPane
+#  tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
+#  tmux attach -t dotfiles:editPane
+  cd ~/Documents/dotfiles
+  vim .
+}
+
+alias start=startApps
+function startApps() {
+  open -a "Activity Monitor"
+  open -a "Slack"
+  open -na "Google Chrome" --args "--new-window" \
+    "https://outlook.office365.com/mail/inbox" \
+    "https://outlook.office365.com/calendar/view/week" \
+    "https://gmail.com" \
+    "https://docs.google.com/spreadsheets/d/1nnFSmpjkpXziMBjDkvbaFN8yA3j1-sqEOldIgQyUDPQ/edit#gid=399218509" \
+    "https://jira.samaritanministries.org/secure/RapidBoard.jspa?rapidView=294"
+  open -a "Boost Note"
 }
 
 # The following lines were added by compinstall
@@ -150,11 +173,11 @@ fpath=(~/.zsh $fpath)
 # This turns on directory navigation without having to type `cd`
 # See: https://opensource.com/article/18/9/tips-productivity-zsh
 # setopt  autocd autopushd \ pushdignoredups => this generates error showing
-setopt  autocd autopushd 
+# setopt  autocd autopushd 
 
 # allows asdf to work and read .tool-versions
 . /usr/local/opt/asdf/asdf.sh
 
-# load rbenv automatically
-eval "$(rbenv init -)"
+# load rbenv automatically -- commenting out 210705 switing to new computer
+# eval "$(rbenv init -)"
 
