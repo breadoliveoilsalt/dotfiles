@@ -133,13 +133,12 @@ alias start=startApps
 function startApps() {
   open -a "Activity Monitor"
   open -a "Slack"
-  open -na "Google Chrome" --args "--new-window" \
+  open -na safari \
     "https://outlook.office365.com/mail/inbox" \
     "https://outlook.office365.com/calendar/view/week" \
     "https://gmail.com" \
     "https://docs.google.com/spreadsheets/d/1nnFSmpjkpXziMBjDkvbaFN8yA3j1-sqEOldIgQyUDPQ/edit#gid=399218509" \
     "https://jira.samaritanministries.org/secure/RapidBoard.jspa?rapidView=294"
-  open -a "Boost Note"
 }
 
 # The following lines were added by compinstall
