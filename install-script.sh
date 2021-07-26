@@ -32,13 +32,14 @@ brew install --cask sqlpro-for-mssql
 
 # Symlinks
 # Note that relative paths did not seem to work, eg: ln -s vim/.vimrc ~/.vimrc
-ln -s ~/Documents/dotfiles/vim/.vimrc ~/.vimrc
-ln -s ~/Documents/dotfiles/zsh/.zshrc ~/.zshrc
-ln -s ~/Documents/dotfiles/tmux/.tmux.conf ~/.tmux.conf
-ln -s ~/Documents/dotfiles/git/.gitconfig ~/.gitconfig
-ln -s ~/Documents/dotfiles/git/.gitignore_global ~/.gitignore_global
-ln -s ~/Documents/dotfiles/git/.git_template ~/.git_template
-ln -s ~/Documents/dotfiles/git/.git-prompt.sh ~/.git-prompt.sh
+ln -fs ~/Documents/dotfiles/vim/.vimrc ~/.vimrc
+ln -fs ~/Documents/dotfiles/zsh/.zshrc ~/.zshrc
+ln -fs ~/Documents/dotfiles/tmux/.tmux.conf ~/.tmux.conf
+ln -fs ~/Documents/dotfiles/git/.gitconfig ~/.gitconfig
+ln -fs ~/Documents/dotfiles/git/.gitignore_global ~/.gitignore_global
+ln -fs ~/Documents/dotfiles/git/.git_template ~/.git_template
+ln -fs ~/Documents/dotfiles/git/.git-prompt.sh ~/.git-prompt.sh
+ln -fs ~/Documents/dotfiles/atom/config.cson ~/.atom/config.cson
 
 # Commands to open frequently used apps
 chmod +x ~/Documents/dotfiles/customCommands/rider

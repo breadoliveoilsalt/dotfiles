@@ -22,6 +22,13 @@
 - [ ] Import settings from:
   * iTerm
   * Atom
+    * Run this command on your old computer to update list of packages installed
+      * `apm list --installed --bare > ~/Desktop/projects/dotfiles/atom/packageList.list`
+    * On new computer, install these packages
+      * `apm install --packages-file ~/Documents/dotfiles/atom/packageList.list`
+    * Install script has a command to link the atom config file here
+
+
   * Rider
     * As of 200701, there were problems with using the Rider tool to import
       settings. Here are notes on the basic settings
