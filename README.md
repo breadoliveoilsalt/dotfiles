@@ -9,6 +9,8 @@
 ## Manual Installation Checklist 
 
 - [ ] Google Chrome
+- [ ] GitHub
+  * Because 2FA is on GitHub, you need to [generate a token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) and use that as your password when logging in from the command line
 - [ ] asp.net sdks
   * https://dotnet.microsoft.com/download/dotnet/2.1
   * https://dotnet.microsoft.com/download/dotnet/3.1
@@ -20,15 +22,14 @@
 - [ ] Any Password managers
 - [ ] Any VPNs, like global protect
 - [ ] Import settings from:
-  * iTerm
+  * iterm
+    * Install script `defaults` command should handle this
   * Atom
     * Run this command on your old computer to update list of packages installed
       * `apm list --installed --bare > ~/Desktop/projects/dotfiles/atom/packageList.list`
     * On new computer, install these packages
       * `apm install --packages-file ~/Documents/dotfiles/atom/packageList.list`
     * Install script has a command to link the atom config file here
-
-
   * Rider
     * As of 200701, there were problems with using the Rider tool to import
       settings. Here are notes on the basic settings
