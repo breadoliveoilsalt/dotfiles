@@ -2,11 +2,14 @@
 let mapleader=","
 
 set number
+set expandtab
 set tabstop=2
 set shiftwidth=2
-set expandtab 
 set autoindent
 set smartindent
+
+" Disable auto-indent so pasting does not result in odd lines being added
+set paste
 
 " Detect when there has been git reset --hard or file deletion
 " and reset buffer
@@ -43,7 +46,7 @@ set wildignore+=*.svg
 set directory^=$HOME/.vim/swap//
 
 " No highlight search terms to start
-set nohls
+" set nohls
 " Adjust highlighting colors
 " highlight Search ctermbg=Black ctermfg=White
 " highlight Visual ctermbg=Black ctermfg=White
