@@ -1,0 +1,5 @@
+set visualbell
+set noerrorbells
+set ignorecase 
+set smartcase 
+
