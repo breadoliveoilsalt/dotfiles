@@ -77,8 +77,8 @@ set clipboard=unnamed
 
 " Draw a line down this column. Useful for lining up. Set it to Green.
 " Change it to red when in insertmode.
-" set colorcolumn=81
-set colorcolumn=0
+set colorcolumn=81
+" set colorcolumn=0
 hi ColorColumn ctermbg=2 ctermfg=7
 autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7 
 autocmd InsertLeave * highlight ColorColumn ctermbg=2 ctermfg=7 
@@ -187,6 +187,9 @@ autocmd FileType markdown setlocal syntax=off
 nnoremap <Leader>tn :tabnew<CR>
 nnoremap <Leader>tc :tabclose<CR>
 
+" run current ruby file (aka 'run ruby')
+nnoremap <Leader>rr :w\|!ruby %<CR>
+
 " An attempt to reconfigure cursor in highlight mode when 
 " using Tmux b/c can't see cursor
 "if exists('$TMUX')
@@ -201,3 +204,8 @@ nnoremap <Leader>tc :tabclose<CR>
 autocmd FileType apache setlocal commentstring=#\ %s
 
 filetype plugin on
+
+" From here: https://www.mattcrampton.com/blog/move_vim_swp_files/
+set backupdir=~/.vim/backup_files//
+set directory=~/.vim/swap_files//
+set undodir=~/.vim/undo_files//

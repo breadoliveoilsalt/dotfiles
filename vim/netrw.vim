@@ -1,7 +1,7 @@
 " Configurations for netrw (:Ex)
 " From here: https://github.com/changemewtf/no_plugins/blob/master/no_plugins.vim
 " Use :Vex to open netrw in vertical split
-let g:netrw_banner=0        " disable banner
+let g:netrw_banner=0        " to disable banner change to 0
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_hide=0          " show all files, including hidden ones
