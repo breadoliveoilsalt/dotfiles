@@ -1,6 +1,11 @@
 "*":
   "autocomplete-plus":
+    autoActivationDelay: 200
     confirmCompletion: "tab"
+    includeCompletionsFromAllBuffers: false
+    maxVisibleSuggestions: 5
+  autosave:
+    enabled: true
   core:
     closeDeletedFileTabs: true
     disabledPackages: [
@@ -19,7 +24,6 @@
       "language-coffee-script"
       "language-clojure"
       "intentions"
-      "language-elixir"
       "linter"
       "linter-ui-default"
       "linter-ruby"
@@ -29,10 +33,15 @@
     packagesWithKeymapsDisabled: []
     telemetryConsent: "no"
   editor:
-    fontSize: 20
+    atomicSoftTabs: false
+    fontSize: 18
     scrollPastEnd: true
     softWrap: true
+    softWrapAtPreferredLineLength: true
     tabType: "soft"
+  "language-markdown":
+    addListItems: false
+    autoIncrementListItems: false
   "linter-ui-default": {}
   "markdown-image-assistant":
     preserveFileNameInAssetsFolder: true
