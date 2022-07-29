@@ -19,16 +19,17 @@ brew install ctags
 # brew install fzf
 # brew install tmate
 brew install --cask iterm2
-brew install --cask firefox
+# brew install --cask firefox
 brew install --cask atom
 brew install --cask rider
-brew install --cask boost-note
 brew install --cask postman
 brew install --cask slack
 brew install --cask docker
 brew install --cask zoom
 brew install --cask evernote
-brew install --cask sqlpro-for-mssql
+# brew install --cask sqlpro-for-mssql
+
+mkdir -p ~/.vim/{backup_files,swap_files,undo_files}
 
 # Symlinks
 # Note that relative paths did not seem to work, eg: ln -s vim/.vimrc ~/.vimrc
@@ -49,6 +50,8 @@ ln -s ~/Documents/dotfiles/customCommands/rider /usr/local/bin/rider
 chmod +x ~/Documents/dotfiles/customCommands/atom
 ln -s ~/Documents/dotfiles/customCommands/atom /usr/local/bin/atom
 
+chmod +x ~/Documents/dotfiles/customCommands/webstorm
+ln -s ~/Documents/dotfiles/customCommands/webstorm /usr/local/bin/webstorm 
 # Generate new ssh key and add to ssh-agent
 # See, e.g.:
 # https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
