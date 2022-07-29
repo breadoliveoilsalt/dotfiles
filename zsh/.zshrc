@@ -1,11 +1,30 @@
+# Add .NET Core SDK tools
+export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH:/Users/tonydistinti/.dotnet/tools"
+
+# I thought at one point this might have been necessary for history-pattern-searches below,
+# but now I don't think so 
+# [[ $- == *i* ]] && stty -ixon
+
 # This turns on vim keybindings for, eg, searching previous commands
 # See: https://opensource.com/article/18/9/tips-productivity-zsh
 bindkey -v
 
+# Lets you edit command in vim. Hit space bar in visual mode
+autoload edit-command-line; zle -N edit-command-line
+bindkey -M vicmd ' ' edit-command-line
+
 # Reconciles whatever turns of ctrl-r to search command history,
 # So ctrl-r works again.
 # See: https://superuser.com/questions/403355/how-do-i-get-searching-through-my-command-history-working-with-tmux-and-zshell
-bindkey '^R' history-incremental-search-backward
+# bindkey '^R' history-incremental-search-backward
+
+# https://unix.stackexchange.com/questions/30168/how-to-enable-reverse-search-in-zsh
+# https://stackoverflow.com/questions/14040351/filtering-zsh-history-by-command
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
+
+# Stop homebrew from auto updating
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=1
@@ -45,6 +64,7 @@ setopt PROMPT_SUBST
 # Prior prompt before adding vim command mode status
 #PROMPT='%F{green}>>>> %F{yellow}%1~%f \$ '
 
+# WHY DO I NOT NEED TO UPDATE THIS TO BE A FUNCTION??
 printDividingLineToEndOfWindow() {
   echo
   cols=$(tput cols)
@@ -55,12 +75,12 @@ precmd() {
  printDividingLineToEndOfWindow
 }
 
-PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
-
 # The trick to getting the method to update each time was to surround the method
 # call in single quotes.  I have no idea why. Without the external quotation marks,
 # it kept returning the same branch every time. And double quotes would not
 # work. Single quote are so important for some reason.
+PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+RPROMPT='$(date +%Y-%m-%d/%H:%M:%S)'
 # export RPROMPT='%F{magenta}$(get_git_branch)%f'
 
 alias ga="git add"
@@ -80,29 +100,50 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 
-alias openrepo=openRepoFunction
-function openRepoFunction() {
-  git remote -v | grep fetch | awk '{ print $2 }' | xargs open
+# function openRepo() {
+#   git remote -v | grep fetch | awk '{ print $2 }' | xargs open
+# }
+
+# Works assuming you clone with https
+# function openGitHubHttps() {
+#   git remote -v | grep fetch | awk '{ print $2 }' | sed 's/\.git//' | xargs open
+# }
+
+# Assumes you connect to GitHub via SSH not https
+function openGhRepo() {
+  git remote -v | grep fetch | \
+  awk '{ print $2 }' | sed 's/git@//' | \
+  sed 's/:/\//' | sed 's/.git//' | \
+  sed 's/^/https:\/\//' | xargs open
 }
 
-alias openprs=openPRsFunction
-function openPRsFunction() {
-  open "https://git.samaritanministries.org/smi/phoenix/backend/${PWD##*/}/-/merge_requests"
+# Assumes you connect to GitHub via SSH not https
+function openGhPRs() {
+  git remote -v | grep fetch | \
+    awk '{ print $2 }' | \
+    sed '
+      s/git@//
+      s/:/\//
+      s/.git//
+      s/^/https:\/\//
+      s/$/\/pulls/
+    ' | xargs open
 }
 
-alias profile="vim ~/Documents/dotfiles/zsh/.zshrc"
+# alias openprs=openPRsFunction
+# function openPRsFunction() {
+#   open "https://git.yourOrg.org/backend/${PWD##*/}/-/merge_requests"
+# }
 
 alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
 alias docs="cd ~/Documents"
-alias todo="cd ~/Documents/todo"
-alias aproj="cd ~/Documents/projects-apprenticeship"
+alias aproj="cd ~/Documents/projectsArchive/projectsApprenticeship"
 alias blog="cd ~/Documents/projects/breadoliveoilsalt.github.io" 
-
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
-alias riderfix="git ls-files .idea | xargs git restore"
+alias lz="cd ~/Documents/projects/legalZoom"
 
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
@@ -113,15 +154,13 @@ alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-fo
 
 alias sqlpro="open -a 'SQLPro for MSSQL'"
 
-alias samaritan=launchSamaritan
-launchSamaritan () {
-  tmux new-session -d -s samaritan -n backend
-  tmux send-keys -t samaritan:backend "cd ~/Desktop/projects/samaritan/backend; clear" Enter
-  tmux attach -t samaritan:backend
-}
+# launchSamaritan () {
+#   tmux new-session -d -s samaritan -n backend
+#   tmux send-keys -t samaritan:backend "cd ~/Documents/projects/samaritan/backend; clear" Enter
+#   tmux attach -t samaritan:backend
+# }
 
-alias dotfiles=launchDotfiles
-launchDotfiles () {
+function dotfiles() {
 #  tmux new-session -d -s dotfiles -n editPane
 #  tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
 #  tmux attach -t dotfiles:editPane
@@ -129,16 +168,20 @@ launchDotfiles () {
   vim .
 }
 
-alias start=startApps
-function startApps() {
+function start() {
   open -a "Activity Monitor"
+  sleep 2
   open -a "Slack"
-  open -na safari \
-    "https://outlook.office365.com/mail/inbox" \
-    "https://outlook.office365.com/calendar/view/week" \
-    "https://gmail.com" \
-    "https://docs.google.com/spreadsheets/d/1nnFSmpjkpXziMBjDkvbaFN8yA3j1-sqEOldIgQyUDPQ/edit#gid=399218509" \
-    "https://jira.samaritanministries.org/secure/RapidBoard.jspa?rapidView=294"
+  sleep 2
+#  open -a Safari "https://outlook.office365.com/calendar/view/week"
+#  open -a Safari "https://gmail.com"
+#  open -a Safari "https://docs.google.com/spreadsheets/d/1nnFSmpjkpXziMBjDkvbaFN8yA3j1-sqEOldIgQyUDPQ/edit#gid=399218509"
+#  open -a Safari "https://jira.samaritanministries.org/secure/RapidBoard.jspa?rapidView=294"
+#  sleep 3
+  open -a "Atom"
+  sleep 2
+	open "https://www.gmail.com"
+  open "https://calendar.google.com"
 }
 
 # The following lines were added by compinstall
@@ -174,9 +217,74 @@ fpath=(~/.zsh $fpath)
 # setopt  autocd autopushd \ pushdignoredups => this generates error showing
 # setopt  autocd autopushd 
 
-# allows asdf to work and read .tool-versions
-. /usr/local/opt/asdf/asdf.sh
-
 # load rbenv automatically -- commenting out 210705 switing to new computer
 # eval "$(rbenv init -)"
+
+# Increase history size
+# See: https://medium.com/macoclock/forced-to-use-zsh-by-macos-catalina-lets-fix-our-history-command-first-9ce86dca540e
+setopt HIST_IGNORE_SPACE
+HISTSIZE=99999
+HISTFILESIZE=99999
+SAVEHIST=$HISTSIZE
+HISTORY_IGNORE='(pwd)'
+# Add history alias to ensure starting from the beginning of history
+alias histgrep="history 1 | grep"
+
+# copy last command to clipboard
+# alias clc="history -1 | sed 's/^[[:blank:]]*[0-9]*[[:blank:]]*//' | tr -d '\n' | pbcopy"
+# Better:
+# alias clc="history -1 | sed 's/^[[:blank:]]*[0-9]*[[:blank:]]*//' | sed 's/\\n/\n/g' | pbcopy"
+# Best.  Works best as a function:
+function clc() {
+  history -1 | sed 's/^[[:blank:]]*[0-9]*[[:blank:]]*//' | sed 's/\\n/\n/g' | pbcopy
+}
+
+# function gitCommitsRecentOnThisNotThat() {
+#   if [ $# -lt 2 ]; then
+#     echo "You need to provide two branch names or two commits"
+#     return
+#   fi
+# 
+#   THIS=$1
+#   echo "$1"
+#   NOT_THAT=$2
+#   echo "$2"
+# 
+#   IGNORE_EVERYTHING_BEFORE_THIS_COMMIT=$(git merge-base $NOT_THAT $THIS)
+# 
+#   echo "git log --oneline --no-merges $IGNORE_EVERYTHING_BEFORE_THIS_COMMIT $THAT"
+#   git log --oneline --no-merges $IGNORE_EVERYTHING_BEFORE_THIS_COMMIT..$THAT
+# }
+
+function resetNode() {
+  rm -rf node_modules
+  npm install 
+}
+
+function resetDockerLZ() {
+  docker stop nginx iq-flow && \
+  docker rm nginx iq-flow 
+}
+
+# Takes object copied from browser and turns it into play js object
+function transformJson() {
+  pbpaste \
+    | sed "
+      s/\"//
+      s/\"//
+      s/\"/'/g
+      /__typename/d
+    " \
+    | pbcopy
+}
+
+function stopDockerLZ() {
+  cd apps/iq-flow
+  docker compose down
+  cd ../..
+}
+
+# allows asdf to work and read .tool-versions
+. /usr/local/opt/asdf/asdf.sh
+. $HOME/.asdf/shims
 
