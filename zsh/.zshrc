@@ -284,6 +284,44 @@ function stopDockerLZ() {
   cd ../..
 }
 
+
+function listFilesWithStatus {
+  git status | grep : | sed -n '
+    1d
+    s/\tmodified:[[:space:]]*//p
+  '
+}
+
+function gitAddNumber {
+  for LINE_NUMBER in $@; do
+    FILE=$(listFilesWithStatus | sed -n "$LINE_NUMBER"p)
+    git add $FILE
+
+    GREEN='\033[0;32m'
+    NO_COLOR='\033[0m'
+    echo "Added ${GREEN}$FILE${NO_COLOR}"
+  done
+}
+
+function gitRestoreNumber {
+  TMP_FILE=$(mktemp listOfStatusFiles.XXXXX)
+  listFilesWithStatus > $TMP_FILE
+
+  for LINE_NUMBER in $@; do
+    FILE=$(sed -n "$LINE_NUMBER"p "$TMP_FILE" )
+    git restore --staged $FILE
+
+    RED='\033[0;31m'
+    NO_COLOR='\033[0m'
+    echo "Unstaged ${RED}$FILE${NO_COLOR}"
+  done
+
+  rm $TMP_FILE
+}
+
+alias gan="gitAddNumber"
+alias grn="gitRestoreNumber"
+
 # allows asdf to work and read .tool-versions
 . /usr/local/opt/asdf/asdf.sh
 . $HOME/.asdf/shims
