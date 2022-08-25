@@ -8,8 +8,12 @@ set shiftwidth=2
 set autoindent
 set smartindent
 
+  
 " Disable auto-indent so pasting does not result in odd lines being added
-set paste
+" BUT this messes with expandtab, which ensures spaces are only used
+" instead of tabs.  Consider using paste sparingly
+" https://stackoverflow.com/questions/37957844/set-expandtab-in-vimrc-not-taking-effect
+" set paste
 
 " Detect when there has been git reset --hard or file deletion
 " and reset buffer
