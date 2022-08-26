@@ -110,7 +110,7 @@ alias gdc="git diff --cached"
 # }
 
 # Assumes you connect to GitHub via SSH not https
-function openGhRepo() {
+function openghrepo() {
   git remote -v | grep fetch | \
   awk '{ print $2 }' | sed 's/git@//' | \
   sed 's/:/\//' | sed 's/.git//' | \
@@ -118,7 +118,7 @@ function openGhRepo() {
 }
 
 # Assumes you connect to GitHub via SSH not https
-function openGhPRs() {
+function openghprs() {
   git remote -v | grep fetch | \
     awk '{ print $2 }' | \
     sed '
@@ -293,30 +293,55 @@ function listFilesWithStatus {
 }
 
 function gitAddNumber {
-  for LINE_NUMBER in $@; do
-    FILE=$(listFilesWithStatus | sed -n "$LINE_NUMBER"p)
-    git add $FILE
+  local tmp_sed_script=$(mktemp printLines.XXXXX)
+  local line_number
+  local git_file
 
-    GREEN='\033[0;32m'
-    NO_COLOR='\033[0m'
-    echo "Added ${GREEN}$FILE${NO_COLOR}"
+  function action {
+    while read git_file; do
+      git add $git_file
+
+      green='\033[0;32m'
+      no_color='\033[0m'
+      echo "Added ${green}${git_file}${no_color}"
+    done
+  }
+
+  trap "rm -f $tmp_sed_script" EXIT SIGINT
+
+  echo "#n" >> $tmp_sed_script
+
+  for line_number in $@; do
+    echo "${line_number}p" >> $tmp_sed_script
   done
+
+  sed -f $tmp_sed_script <(listFilesWithStatus) | action
 }
 
 function gitRestoreNumber {
-  TMP_FILE=$(mktemp listOfStatusFiles.XXXXX)
-  listFilesWithStatus > $TMP_FILE
+  local tmp_sed_script=$(mktemp printLines.XXXXX)
+  local line_number
+  local git_file
 
-  for LINE_NUMBER in $@; do
-    FILE=$(sed -n "$LINE_NUMBER"p "$TMP_FILE" )
-    git restore --staged $FILE
+  function action {
+    while read git_file; do
+      git restore --staged $git_file
 
-    RED='\033[0;31m'
-    NO_COLOR='\033[0m'
-    echo "Unstaged ${RED}$FILE${NO_COLOR}"
+      local red='\033[0;31m'
+      local no_color='\033[0m'
+      echo "Unstaged ${red}${git_file}${no_color}"
+    done
+  }
+
+  trap "rm -f $tmp_sed_script" EXIT SIGINT
+
+  echo "#n" >> $tmp_sed_script
+
+  for line_number in $@; do
+    echo "${line_number}p" >> $tmp_sed_script
   done
 
-  rm $TMP_FILE
+  sed -f $tmp_sed_script <(listFilesWithStatus) | action
 }
 
 alias gan="gitAddNumber"
