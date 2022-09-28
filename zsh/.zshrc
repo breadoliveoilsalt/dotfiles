@@ -5,6 +5,10 @@ export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH:/User
 # but now I don't think so 
 # [[ $- == *i* ]] && stty -ixon
 
+# disable ctrl+d...b/c I type it by accident too often, esp when scrolling down
+# https://unix.stackexchange.com/questions/139115/disable-ctrl-d-from-closing-my-window-with-the-terminator-terminal-emulator
+set -o ignoreeof
+
 # This turns on vim keybindings for, eg, searching previous commands
 # See: https://opensource.com/article/18/9/tips-productivity-zsh
 bindkey -v
@@ -110,7 +114,7 @@ alias gdc="git diff --cached"
 # }
 
 # Assumes you connect to GitHub via SSH not https
-function openghrepo() {
+function repo() {
   git remote -v | grep fetch | \
   awk '{ print $2 }' | sed 's/git@//' | \
   sed 's/:/\//' | sed 's/.git//' | \
@@ -118,7 +122,7 @@ function openghrepo() {
 }
 
 # Assumes you connect to GitHub via SSH not https
-function openghprs() {
+function prs() {
   git remote -v | grep fetch | \
     awk '{ print $2 }' | \
     sed '
@@ -127,6 +131,18 @@ function openghprs() {
       s/.git//
       s/^/https:\/\//
       s/$/\/pulls/
+    ' | xargs open
+}
+
+function myprs() {
+  git remote -v | grep fetch | \
+    awk '{ print $2 }' | \
+    sed '
+      s/git@//
+      s/:/\//
+      s/.git//
+      s/^/https:\/\//
+      s/$/\/pulls\/tdistinti/
     ' | xargs open
 }
 
@@ -180,8 +196,7 @@ function start() {
 #  sleep 3
   open -a "Atom"
   sleep 2
-	open "https://www.gmail.com"
-  open "https://calendar.google.com"
+  chromeWithDevTools "https://calendar.google.com"
 }
 
 # The following lines were added by compinstall
@@ -288,7 +303,7 @@ function stopDockerLZ() {
 function listFilesWithStatus {
   git status | grep : | sed -n '
     1d
-    s/\tmodified:[[:space:]]*//p
+    s/\t.*:[[:space:]]*//p
   '
 }
 
