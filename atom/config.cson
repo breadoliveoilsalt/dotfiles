@@ -34,7 +34,7 @@
     telemetryConsent: "no"
   editor:
     atomicSoftTabs: false
-    fontSize: 18
+    fontSize: 20
     scrollPastEnd: true
     softWrap: true
     softWrapAtPreferredLineLength: true
@@ -45,6 +45,7 @@
   "linter-ui-default": {}
   "markdown-image-assistant":
     preserveFileNameInAssetsFolder: true
-  "tree-view": {}
+  "tree-view":
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
