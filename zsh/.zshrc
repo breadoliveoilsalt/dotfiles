@@ -373,4 +373,7 @@ alias grn="gitRestoreNumber"
 . $HOME/.asdf/shims
 
 
+# Load fzf shortcut keys:
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Necessary so fzf finds directories and hidden files:
+export FZF_DEFAULT_COMMAND='find .'

@@ -1,3 +1,23 @@
+" Automate installation of vim-plug
+" See here: https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation-of-missing-plugins
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+" autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+"   \| PlugInstall --sync | source $MYVIMRC
+" \| endif
+
+call plug#begin()
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+call plug#end()
+
 " Set <Leader>
 let mapleader=","
 
@@ -7,14 +27,12 @@ set tabstop=2
 set shiftwidth=2
 set autoindent
 set smartindent
-
   
 " Disable auto-indent so pasting does not result in odd lines being added
 " BUT this messes with expandtab, which ensures spaces are only used
 " instead of tabs.  Consider using paste sparingly
 " https://stackoverflow.com/questions/37957844/set-expandtab-in-vimrc-not-taking-effect
 " set paste
-
 " Detect when there has been git reset --hard or file deletion
 " and reset buffer
 set autoread
@@ -213,3 +231,4 @@ filetype plugin on
 set backupdir=~/.vim/backup_files//
 set directory=~/.vim/swap_files//
 set undodir=~/.vim/undo_files//
+
