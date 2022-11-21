@@ -81,7 +81,7 @@ set clipboard=unnamed
 
 " Draw a line down this column. Useful for lining up. Set it to Green.
 " Change it to red when in insertmode.
-set colorcolumn=81
+" set colorcolumn=81
 " set colorcolumn=0
 hi ColorColumn ctermbg=2 ctermfg=7
 autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7 
@@ -123,17 +123,17 @@ nnoremap <Leader>yp :let @+=expand("%")<CR>
 autocmd VimResized * :wincmd =
 
 " Increase or decrease window veritcal space by 10 lines
-nnoremap <Leader>vv <C-w>10>
+nnoremap <Leader>vm <C-w>10>
 nnoremap <Leader>vl <C-w>10<
 
 " Increase or decrease window height by 10 lines
-nnoremap <Leader>hh <C-w>10+
+nnoremap <Leader>hm <C-w>10+
 nnoremap <Leader>hl <C-w>10-
 
 " Zoom a vim pane
-nnoremap _ :wincmd _<CR>:wincmd \|<CR>
+nnoremap <Leader>_ :wincmd _<CR>:wincmd \|<CR>
 " Rebalance all panes
-nnoremap = :wincmd =<CR>
+nnoremap <Leader>= :wincmd =<CR>
 
 " Disable <C-w>q b/c I keep closing vim by accident
 " when trying to switch panes
