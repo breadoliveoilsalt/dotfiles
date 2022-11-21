@@ -160,6 +160,8 @@ alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
 alias lz="cd ~/Documents/projects/legalZoom"
+alias iq="cd ~/Documents/projects/legalZoom/iq-flow"
+
 
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
@@ -300,6 +302,7 @@ function stopDockerLZ() {
 }
 
 
+# Problem: this doesn't capture files that are new
 function listFilesWithStatus {
   git status | grep : | sed -n '
     1d
@@ -363,6 +366,9 @@ alias gan="gitAddNumber"
 alias grn="gitRestoreNumber"
 
 # allows asdf to work and read .tool-versions
+# See meaning of dot here:
+# https://unix.stackexchange.com/questions/114300/whats-the-meaning-of-a-dot-before-a-command-in-shell
+# See also cat /usr/local/Cellar/asdf/0.9.0/libexec/asdf.sh
 . /usr/local/opt/asdf/asdf.sh
 . $HOME/.asdf/shims
 
