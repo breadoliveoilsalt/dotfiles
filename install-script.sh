@@ -41,6 +41,7 @@ ln -fs ~/Documents/dotfiles/git/.gitignore_global ~/.gitignore_global
 ln -fs ~/Documents/dotfiles/git/.git_template ~/.git_template
 ln -fs ~/Documents/dotfiles/git/.git-prompt.sh ~/.git-prompt.sh
 ln -fs ~/Documents/dotfiles/atom/config.cson ~/.atom/config.cson
+ln -fs ~/Documents/dotfiles/ctags/.ctags ~/.ctags
 ln -fs rider/.ideavimrc ~/.ideavimrc
 
 # Commands to open frequently used apps
