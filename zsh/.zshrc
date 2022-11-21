@@ -372,3 +372,5 @@ alias grn="gitRestoreNumber"
 . /usr/local/opt/asdf/asdf.sh
 . $HOME/.asdf/shims
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
