@@ -34,7 +34,7 @@
     telemetryConsent: "no"
   editor:
     atomicSoftTabs: false
-    fontSize: 20
+    fontSize: 18
     scrollPastEnd: true
     softWrap: true
     softWrapAtPreferredLineLength: true
