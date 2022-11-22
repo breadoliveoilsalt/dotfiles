@@ -15,10 +15,10 @@ let g:netrw_alto=0          " So preview window is opened to left
 " let g:netrw_list_hide=netrw_gitignore#Hide()
 " let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
-nnoremap <Leader>lx :15Lex<CR>
+" nnoremap <Leader>lx :15Lex<CR>
 
 " Need to use Vex to keep folders open. Lex closes everything.
-nnoremap <Leader>ov :Vex<CR>
+nnoremap <Leader>ov :15Vex<CR>
 " I have Vex always to the left, so this moves to left most window
 " and closes it
 nnoremap <Leader>cv <C-w>10h <bar> :q<CR> 

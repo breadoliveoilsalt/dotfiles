@@ -15,6 +15,8 @@ call plug#begin()
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-surround'
 
 call plug#end()
 
@@ -115,8 +117,8 @@ set textwidth=0
 
 " Set rel num
 set rnu
-nnoremap <Leader>r :set rnu<CR>
-nnoremap <Leader>R :set nornu<CR>
+" nnoremap <Leader>r :set rnu<CR>
+" nnoremap <Leader>R :set nornu<CR>
 
 " Map control+^ to open last open file quickly
 nmap <Leader><Leader> <C-^>
@@ -125,8 +127,11 @@ nmap <Leader><Leader> <C-^>
 set rtp+=/usr/local/opt/fzf
 nnoremap <Leader>fz :FZF<CR>
 
+nnoremap <Leader>rg :Rg<CR>
+
 " Copy relative path to clipboard
-nnoremap <Leader>yp :let @+=expand("%")<CR>
+" yank file path
+nnoremap <Leader>yf :let @+=expand("%")<CR>
 
 " Enlarge current window and shrink others
 " Taken from Gary Bernhardt as the magic formula 
@@ -141,15 +146,16 @@ nnoremap <Leader>yp :let @+=expand("%")<CR>
 autocmd VimResized * :wincmd =
 
 " Increase or decrease window veritcal space by 10 lines
-nnoremap <Leader>vm <C-w>10>
-nnoremap <Leader>vl <C-w>10<
+" Pane taller, shorter, (more) left, (more right)
+nnoremap <Leader>pr <C-w>20>
+nnoremap <Leader>pl <C-w>20<
 
 " Increase or decrease window height by 10 lines
-nnoremap <Leader>hm <C-w>10+
-nnoremap <Leader>hl <C-w>10-
+nnoremap <Leader>pt <C-w>20+
+nnoremap <Leader>ps <C-w>20-
 
 " Zoom a vim pane
-nnoremap <Leader>_ :wincmd _<CR>:wincmd \|<CR>
+nnoremap <Leader>z :wincmd _<CR>:wincmd \|<CR>
 " Rebalance all panes
 nnoremap <Leader>= :wincmd =<CR>
 
@@ -206,11 +212,11 @@ nnoremap <Leader>so :so ~/.vimrc<CR>
 autocmd BufRead,BufNewFile {*.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt} set filetype=markdown
 autocmd FileType markdown setlocal syntax=off
 
-nnoremap <Leader>tn :tabnew<CR>
-nnoremap <Leader>tc :tabclose<CR>
+" nnoremap <Leader>tn :tabnew<CR>
+" nnoremap <Leader>tc :tabclose<CR>
 
 " run current ruby file (aka 'run ruby')
-nnoremap <Leader>rr :w\|!ruby %<CR>
+" nnoremap <Leader>rr :w\|!ruby %<CR>
 
 " An attempt to reconfigure cursor in highlight mode when 
 " using Tmux b/c can't see cursor
@@ -232,3 +238,5 @@ set backupdir=~/.vim/backup_files//
 set directory=~/.vim/swap_files//
 set undodir=~/.vim/undo_files//
 
+command Iq :lcd ~/Documents/projects/legalZoom/iq-flow/
+command Dotfiles :lcd ~/Documents/dotfiles/
