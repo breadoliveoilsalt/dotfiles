@@ -240,3 +240,8 @@ set undodir=~/.vim/undo_files//
 
 command Iq :lcd ~/Documents/projects/legalZoom/iq-flow/
 command Dotfiles :lcd ~/Documents/dotfiles/
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
