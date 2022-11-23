@@ -243,5 +243,10 @@ command Dotfiles :lcd ~/Documents/dotfiles/
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git, build}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
+
+" Sets Ripgrep to :grep command
+" Can search regex with :grep -e "[Rr]egex"
+" To not jump to first result in quickfix => :grep! -e "[Rr]exex"
+set grepprg=rg\ --hidden\ --follow\ --vimgrep
