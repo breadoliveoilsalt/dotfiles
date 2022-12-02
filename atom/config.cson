@@ -49,3 +49,4 @@
     hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+    showSunsettingOnStartup: false
