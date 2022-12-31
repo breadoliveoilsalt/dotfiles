@@ -68,10 +68,16 @@ setopt PROMPT_SUBST
 # Prior prompt before adding vim command mode status
 #PROMPT='%F{green}>>>> %F{yellow}%1~%f \$ '
 
-# WHY DO I NOT NEED TO UPDATE THIS TO BE A FUNCTION??
+# Prints === across the entire screen
+# printDividingLineToEndOfWindow() {
+#   echo
+#   cols=$(tput cols)
+#   for ((i=0; i<cols; i++));do printf "="; done; echo
+# }
+
 printDividingLineToEndOfWindow() {
   echo
-  cols=$(tput cols)
+  cols=80
   for ((i=0; i<cols; i++));do printf "="; done; echo
 }
 
@@ -84,7 +90,8 @@ precmd() {
 # it kept returning the same branch every time. And double quotes would not
 # work. Single quote are so important for some reason.
 PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
-RPROMPT='$(date +%Y-%m-%d/%H:%M:%S)'
+# Print timestamp on right
+# RPROMPT='$(date +%Y-%m-%d/%H:%M:%S)'
 # export RPROMPT='%F{magenta}$(get_git_branch)%f'
 
 alias ga="git add"
