@@ -384,4 +384,5 @@ alias grn="gitRestoreNumber"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Necessary so fzf finds directories and hidden files:
 # export FZF_DEFAULT_COMMAND='find .'
-export FZF_DEFAULT_COMMAND='find . ! -path "*node_modules/*"'
+# export FZF_DEFAULT_COMMAND='find . ! -path "*node_modules/*"'
+export FZF_DEFAULT_COMMAND="rg --files --hidden" 
