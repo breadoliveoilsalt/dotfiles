@@ -17,6 +17,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -35,9 +36,29 @@ set smartindent
 " instead of tabs.  Consider using paste sparingly
 " https://stackoverflow.com/questions/37957844/set-expandtab-in-vimrc-not-taking-effect
 " set paste
+
 " Detect when there has been git reset --hard or file deletion
 " and reset buffer
 set autoread
+
+" Triger `autoread` when files changes on disk
+" From here: https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
+" " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" " https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+ \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Auto-save on buffer switch
+set autowriteall
+
+" Auto-save on focus lost, not saving untitled buffers or read-only files
+" See: https://vim.fandom.com/wiki/Auto_save_files_when_focus_is_lost
+autocmd FocusLost * silent! wa
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+ \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " Allow :close, ie, allow hiding unsaved buffers and remember 
 " marks/undo for them
@@ -116,22 +137,24 @@ set textwidth=0
 " commands from the command line window after hitting q:
 
 " Set rel num
-set rnu
+" set rnu
 " nnoremap <Leader>r :set rnu<CR>
 " nnoremap <Leader>R :set nornu<CR>
 
-" Map control+^ to open last open file quickly
+" Map control+^ to open alternate file quickly
 nmap <Leader><Leader> <C-^>
 
 " Enable fzf, installed using Homebrew
+" Note, because of the set below, I *probably* don't need the vim-fzf plugin
+" Think: find file; find word
 set rtp+=/usr/local/opt/fzf
-nnoremap <Leader>fz :FZF<CR>
+nnoremap <Leader>ff :FZF<CR>
 
-nnoremap <Leader>rg :Rg<CR>
+nnoremap <Leader>fw :Rg<CR>
 
 " Copy relative path to clipboard
 " yank file path
-nnoremap <Leader>yf :let @+=expand("%")<CR>
+nnoremap <Leader>yp :let @+=expand("%")<CR>
 
 " Enlarge current window and shrink others
 " Taken from Gary Bernhardt as the magic formula 
@@ -147,12 +170,12 @@ autocmd VimResized * :wincmd =
 
 " Increase or decrease window veritcal space by 10 lines
 " Pane taller, shorter, (more) left, (more right)
-nnoremap <Leader>pr <C-w>20>
-nnoremap <Leader>pl <C-w>20<
+nnoremap <Leader>wl <C-w>20<
+nnoremap <Leader>wr <C-w>20>
 
 " Increase or decrease window height by 10 lines
-nnoremap <Leader>pt <C-w>20+
-nnoremap <Leader>ps <C-w>20-
+nnoremap <Leader>wu <C-w>10+
+nnoremap <Leader>wd <C-w>10-
 
 " Zoom a vim pane
 nnoremap <Leader>z :wincmd _<CR>:wincmd \|<CR>
@@ -210,7 +233,7 @@ nnoremap <Leader>so :so ~/.vimrc<CR>
 " Turn off odd highlighting when there's a markdown file
 " Source: https://coderwall.com/p/bh4rwg/vim-disable-syntax-highlighter-only-for-markdown
 autocmd BufRead,BufNewFile {*.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt} set filetype=markdown
-autocmd FileType markdown setlocal syntax=off
+" autocmd FileType markdown setlocal syntax=off
 
 " nnoremap <Leader>tn :tabnew<CR>
 " nnoremap <Leader>tc :tabclose<CR>
@@ -241,12 +264,23 @@ set undodir=~/.vim/undo_files//
 command Iq :lcd ~/Documents/projects/legalZoom/iq-flow/
 command Dotfiles :lcd ~/Documents/dotfiles/
 
+" command! -bang -nargs=* Rg
+"   \ call fzf#vim#grep(
+"   \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git, build, tags}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+"   \   fzf#vim#with_preview(), <bang>0)
+
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git, build}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   'rg --hidden --follow --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
 
 " Sets Ripgrep to :grep command
 " Can search regex with :grep -e "[Rr]egex"
 " To not jump to first result in quickfix => :grep! -e "[Rr]exex"
 set grepprg=rg\ --hidden\ --follow\ --vimgrep
+
+" Run Prettier or eslint 
+" Depends on running `npx install -g prettier eslint`
+" command Pretty execute '!npx prettier --write '. expand("%")
+command Pretty execute 'term npx prettier --write '. expand("%")
+command Lint execute 'term npx eslint '. expand("%")
