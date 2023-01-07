@@ -22,7 +22,8 @@ Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 " Set <Leader>
-let mapleader=","
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 
 set number
 set expandtab
@@ -149,8 +150,26 @@ nmap <Leader><Leader> <C-^>
 " Think: find file; find word
 set rtp+=/usr/local/opt/fzf
 nnoremap <Leader>ff :FZF<CR>
-
 nnoremap <Leader>fw :Rg<CR>
+
+command! -bang -nargs=* Rgr
+  \ call fzf#run({'source': 'rg --hidden', 'sink': 'e', 'left': '50%'})
+
+" command! -bang -nargs=* Rg
+"   \ call fzf#vim#grep(
+"   \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git, build, tags}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+"   \   fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --follow --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+" Sets Ripgrep to :grep command
+" Can search regex with :grep -e "[Rr]egex"
+" To not jump to first result in quickfix => :grep! -e "[Rr]exex"
+set grepprg=rg\ --hidden\ --follow\ --vimgrep
+
 
 " Copy relative path to clipboard
 " yank file path
@@ -263,21 +282,6 @@ set undodir=~/.vim/undo_files//
 
 command Iq :lcd ~/Documents/projects/legalZoom/iq-flow/
 command Dotfiles :lcd ~/Documents/dotfiles/
-
-" command! -bang -nargs=* Rg
-"   \ call fzf#vim#grep(
-"   \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git, build, tags}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-"   \   fzf#vim#with_preview(), <bang>0)
-
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --hidden --follow --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(), <bang>0)
-
-" Sets Ripgrep to :grep command
-" Can search regex with :grep -e "[Rr]egex"
-" To not jump to first result in quickfix => :grep! -e "[Rr]exex"
-set grepprg=rg\ --hidden\ --follow\ --vimgrep
 
 " Run Prettier or eslint 
 " Depends on running `npx install -g prettier eslint`
