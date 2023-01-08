@@ -3,3 +3,4 @@ let &runtimepath=&runtimepath . "," . "~/Documents/dotfiles/vim"
 runtime basicsettings.vim
 runtime testing.vim
 runtime netrw.vim
+runtime pasteClipboardImageWithMarkdown.vim

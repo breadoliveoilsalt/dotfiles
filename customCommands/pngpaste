@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Based on: https://apple.stackexchange.com/questions/418043/macos-saving-images-from-the-clipboard-using-pngpaste-is-faded-and-white
+# Note: vim would not recognize pngpaste if it was a function in .zshrc
+
+DIRECTORY="${1}"
+NAME="${2}"
+
+if [[ ! "$NAME" == *.png ]]; then
+  echo "no png ext"
+  NAME="$NAME.png"
+fi
+
+osascript -e "tell application \"System Events\" to ¬
+              write (the clipboard as «class PNGf») to ¬
+              (make new file at folder \"${DIRECTORY}\" with properties ¬
+              {name:\"${NAME}\"})"

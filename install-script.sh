@@ -53,6 +53,9 @@ ln -s ~/Documents/dotfiles/customCommands/atom /usr/local/bin/atom
 
 chmod +x ~/Documents/dotfiles/customCommands/webstorm
 ln -s ~/Documents/dotfiles/customCommands/webstorm /usr/local/bin/webstorm 
+
+chmod +x ~/Documents/dotfiles/customCommands/pngpaste
+ln -s ~/Documents/dotfiles/customCommands/pngpaste /usr/local/bin/pngpaste
 # Generate new ssh key and add to ssh-agent
 # See, e.g.:
 # https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
