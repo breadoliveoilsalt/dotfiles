@@ -1,4 +1,5 @@
-nnoremap <Leader>ps :call PasteClipboardImageWithMarkdown()<cr>
+nnoremap <Leader>ps :call PasteClipboardImageWithMarkdown()<CR>
+nnoremap <Leader>om :call OpenMarkdownViewer()<CR>
 
 " If current working file is vim/pasteScreenShot.vim', this will paste
 " screen shot in vim/assets.pasteScreenShot/image-2022-01-08-00-00-00.png
@@ -24,4 +25,10 @@ function PasteClipboardImageWithMarkdown()
   else
     execute "normal! i![](" . img_dir . "/" . file_name . ")"
   endif
+endfunction
+
+function OpenMarkdownViewer()
+  let file_name_full_path = expand("%:p")
+  let open_markdown_viewer_command = "open -a 'Google Chrome' file://" . file_name_full_path
+  silent call system(open_markdown_viewer_command)
 endfunction
