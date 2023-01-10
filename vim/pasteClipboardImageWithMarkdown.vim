@@ -2,17 +2,19 @@ nnoremap <Leader>ps :call PasteClipboardImageWithMarkdown()<CR>
 nnoremap <Leader>om :call OpenMarkdownViewer()<CR>
 
 " If current working file is vim/pasteScreenShot.vim', this will paste
-" screen shot in vim/assets.pasteScreenShot/image-2022-01-08-00-00-00.png
+" screen shot in vim/assets.pasteScreenShot/pasteScreenShot-image-2022-01-08-00-00-00.png
 function PasteClipboardImageWithMarkdown()
   let current_file_name_without_ext = expand("%:t:r")
-  let img_dir = expand("%:p:h") . "/" . current_file_name_without_ext . ".assets"
+  let img_directory_name = current_file_name_without_ext . ".assets"
+  let img_directory_absolute_path = expand("%:p:h") . "/" . img_directory_name
 
-  if !isdirectory(img_dir)
-    silent call mkdir(img_dir)
+  if !isdirectory(img_directory_absolute_path)
+    silent call mkdir(img_directory_absolute_path)
   endif
 
-  let file_name = "image-" . strftime("%Y-%m-%d-%H-%M-%S") . ".png"
-  let paste_command = "pngpaste " . img_dir . " " . file_name
+  let img_file_name = current_file_name_without_ext . "-image-" . strftime("%Y-%m-%d-%H-%M-%S") . ".png"
+
+  let paste_command = "pngpaste " . img_directory_absolute_path . " " . img_file_name
 
   " Note below the dependency on `pngpaste`. This is defined here in the
   " `customCommands` directory.  Also note: To be recognized by `system` (or by
@@ -23,7 +25,7 @@ function PasteClipboardImageWithMarkdown()
   if v:shell_error == 1
     echo "Something went wrong saving image from clipboard. Maybe text was there."
   else
-    execute "normal! i![](" . img_dir . "/" . file_name . ")"
+   execute "normal! i![](" . img_directory_name . "/" . img_file_name . ")"
   endif
 endfunction
 
