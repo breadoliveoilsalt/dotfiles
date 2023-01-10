@@ -1,11 +1,7 @@
 # Add .NET Core SDK tools
 export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH:/Users/tonydistinti/.dotnet/tools"
 
-# I thought at one point this might have been necessary for history-pattern-searches below,
-# but now I don't think so 
-# [[ $- == *i* ]] && stty -ixon
-
-# disable ctrl+d...b/c I type it by accident too often, esp when scrolling down
+# Disable ctrl+d...b/c I type it by accident too often, esp when scrolling down
 # https://unix.stackexchange.com/questions/139115/disable-ctrl-d-from-closing-my-window-with-the-terminator-terminal-emulator
 set -o ignoreeof
 
@@ -42,20 +38,15 @@ function zle-keymap-select() {
 
 zle -N zle-keymap-select
 
+# Git status only shows after entering normal mode, so this makes sure insert
+# mode is inserted first and prompt does not jump
 function vi_mode_prompt_info() {
-  # Git status only shows after entering normal mode, so 
-  # this makes sure insert mode is inserted first and prompt 
-  # does not jump
   git_status=${${KEYMAP/vicmd/[% N] %}/(main|viins)/[% I] %}
   if [ -n "$git_status" ]; then
     echo "$git_status"
   else
     echo "[I]"
   fi
-    
-# Prior versions
-#  echo "${${KEYMAP/vicmd/[% NORMAL] %}/(main|viins)/[% INSERT] %}"
-#  echo "${${KEYMAP/vicmd/[% N] %}/(main|viins)/[% I] %}" 
 }
 
 export get_git_branch() {
@@ -64,9 +55,6 @@ export get_git_branch() {
 
 # Need below to call method in prompt
 setopt PROMPT_SUBST
-
-# Prior prompt before adding vim command mode status
-#PROMPT='%F{green}>>>> %F{yellow}%1~%f \$ '
 
 # Prints === across the entire screen
 # printDividingLineToEndOfWindow() {
@@ -90,6 +78,7 @@ precmd() {
 # it kept returning the same branch every time. And double quotes would not
 # work. Single quote are so important for some reason.
 PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+
 # Print timestamp on right
 # RPROMPT='$(date +%Y-%m-%d/%H:%M:%S)'
 # export RPROMPT='%F{magenta}$(get_git_branch)%f'
@@ -110,10 +99,6 @@ alias lc="git log --oneline -1"
 alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
-
-# function openRepo() {
-#   git remote -v | grep fetch | awk '{ print $2 }' | xargs open
-# }
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
@@ -153,11 +138,6 @@ function myprs() {
     ' | xargs open
 }
 
-# alias openprs=openPRsFunction
-# function openPRsFunction() {
-#   open "https://git.yourOrg.org/backend/${PWD##*/}/-/merge_requests"
-# }
-
 alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
 alias docs="cd ~/Documents"
@@ -169,7 +149,6 @@ alias reload="source ~/.zshrc"
 alias lz="cd ~/Documents/projects/legalZoom"
 alias iq="cd ~/Documents/projects/legalZoom/iq-flow"
 
-
 # Think: Vim Last Session (vls)
 alias vls='vim +"so Session.vim"'
 
@@ -179,31 +158,33 @@ alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-fo
 
 alias sqlpro="open -a 'SQLPro for MSSQL'"
 
-# launchSamaritan () {
+# function tmuxExampleStartSessionAndJumpToDirectory() {
 #   tmux new-session -d -s samaritan -n backend
 #   tmux send-keys -t samaritan:backend "cd ~/Documents/projects/samaritan/backend; clear" Enter
 #   tmux attach -t samaritan:backend
 # }
-
-function dotfiles() {
+#
+# function tmuxExampleStartSessionAndOpenVim() {
 #  tmux new-session -d -s dotfiles -n editPane
 #  tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
 #  tmux attach -t dotfiles:editPane
+#  }
+
+function dotfiles() {
   cd ~/Documents/dotfiles
   vim .
+}
+
+function atomNotes() {
+  cd ~/Documents/atomNotes
+  vim
+# vim +"so Session.vim"
 }
 
 function start() {
   open -a "Activity Monitor"
   sleep 2
   open -a "Slack"
-  sleep 2
-#  open -a Safari "https://outlook.office365.com/calendar/view/week"
-#  open -a Safari "https://gmail.com"
-#  open -a Safari "https://docs.google.com/spreadsheets/d/1nnFSmpjkpXziMBjDkvbaFN8yA3j1-sqEOldIgQyUDPQ/edit#gid=399218509"
-#  open -a Safari "https://jira.samaritanministries.org/secure/RapidBoard.jspa?rapidView=294"
-#  sleep 3
-  open -a "Atom"
   sleep 2
   chromeWithDevTools "https://calendar.google.com"
 }
@@ -230,19 +211,6 @@ compinit
 # https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
 zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
 fpath=(~/.zsh $fpath)
-
-# This makes the suggestion appear in line, roughly. See one of the answers
-# here: https://unix.stackexchange.com/questions/84844/how-to-make-zsh-completion-show-the-first-guess-on-the-same-line-like-fish://unix.stackexchange.com/questions/84844/how-to-make-zsh-completion-show-the-first-guess-on-the-same-line-like-fishs
-# autoload predict-on
-# predict-on
-
-# This turns on directory navigation without having to type `cd`
-# See: https://opensource.com/article/18/9/tips-productivity-zsh
-# setopt  autocd autopushd \ pushdignoredups => this generates error showing
-# setopt  autocd autopushd 
-
-# load rbenv automatically -- commenting out 210705 switing to new computer
-# eval "$(rbenv init -)"
 
 # Increase history size
 # See: https://medium.com/macoclock/forced-to-use-zsh-by-macos-catalina-lets-fix-our-history-command-first-9ce86dca540e
@@ -307,7 +275,6 @@ function stopDockerLZ() {
   docker compose down
   cd ../..
 }
-
 
 # Problem: this doesn't capture files that are new
 function listFilesWithStatus {
@@ -382,7 +349,5 @@ alias grn="gitRestoreNumber"
 
 # Load fzf shortcut keys:
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# Necessary so fzf finds directories and hidden files:
-# export FZF_DEFAULT_COMMAND='find .'
-# export FZF_DEFAULT_COMMAND='find . ! -path "*node_modules/*"'
+
 export FZF_DEFAULT_COMMAND="rg --files --hidden" 
