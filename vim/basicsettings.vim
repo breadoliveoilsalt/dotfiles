@@ -170,7 +170,6 @@ command! -bang -nargs=* Rg
 " To not jump to first result in quickfix => :grep! -e "[Rr]exex"
 set grepprg=rg\ --hidden\ --follow\ --vimgrep
 
-
 " Copy relative path to clipboard
 " yank file path
 nnoremap <Leader>yp :let @+=expand("%")<CR>
@@ -251,7 +250,8 @@ nnoremap <Leader>so :so ~/.vimrc<CR>
 
 " Turn off odd highlighting when there's a markdown file
 " Source: https://coderwall.com/p/bh4rwg/vim-disable-syntax-highlighter-only-for-markdown
-autocmd BufRead,BufNewFile {*.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt} set filetype=markdown
+" https://stackoverflow.com/questions/10964681/enabling-markdown-highlighting-in-vim
+autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown
 " autocmd FileType markdown setlocal syntax=off
 
 " nnoremap <Leader>tn :tabnew<CR>
