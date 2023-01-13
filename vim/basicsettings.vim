@@ -91,12 +91,6 @@ set wildignore+=*.svg
 " Store all swp/swap files in a different directory
 set directory^=$HOME/.vim/swap//
 
-" No highlight search terms to start
-" set nohls
-" Adjust highlighting colors
-" highlight Search ctermbg=Black ctermfg=White
-" highlight Visual ctermbg=Black ctermfg=White
-
 " Search with case-insensitivity unless there's a capital letter 
 set ignorecase smartcase 
 
@@ -138,9 +132,7 @@ set textwidth=0
 " commands from the command line window after hitting q:
 
 " Set rel num
-" set rnu
-" nnoremap <Leader>r :set rnu<CR>
-" nnoremap <Leader>R :set nornu<CR>
+set rnu
 
 " Map control+^ to open alternate file quickly
 nmap <Leader><Leader> <C-^>
@@ -150,7 +142,10 @@ nmap <Leader><Leader> <C-^>
 " Think: find file; find word
 set rtp+=/usr/local/opt/fzf
 nnoremap <Leader>ff :FZF<CR>
-nnoremap <Leader>fw :Rg<CR>
+
+" Trying this out temporarily
+" nnoremap <Leader>fw :Rg<CR>
+nnoremap <Leader>fw :grep
 
 command! -bang -nargs=* Rgr
   \ call fzf#run({'source': 'rg --hidden', 'sink': 'e', 'left': '50%'})
@@ -217,9 +212,6 @@ augroup END
 " Vim Save Session
 nnoremap <Leader>vss :mksession!<CR>
 
-" Disable autosuggest from ^P. Use ^N instead
-" inoremap <C-p> <C-[>:echo "^P autocomplete disabled"<CR>
-
 " Format current paragraph with column boundaries
 :nnoremap <Leader>fmt {V}gq
 
@@ -232,43 +224,10 @@ nnoremap <Leader>vss :mksession!<CR>
 " nnoremap <Leader>cc 0i# <Esc>
 " nnoremap <Leader>dc 0xx<Esc>
 
-" For the future on above: Below did not work to insert a space for some reason
-" vnoremap <Leader>c :s/^/#\s/<CR>
-" vnoremap <Leader>dc :s/^#\s//<CR>
-" nnoremap <Leader>c :s/^/#\s/<CR>
-" noremap <Leader>dc :s/^#\s//<CR>
-
-" 210104 I installed NerdCommentary and am trying that out. 
-" Commenting out these for now
-" vnoremap <Leader>ic :s/^/# /<CR>
-" vnoremap <Leader>dc :s/^# /<CR>
-" nnoremap <Leader>ic :s/^/# /<CR>
-" noremap <Leader>dc :s/^# /<CR>
-
 " Reload (source) vimrc
 nnoremap <Leader>so :so ~/.vimrc<CR>
 
-" Turn off odd highlighting when there's a markdown file
-" Source: https://coderwall.com/p/bh4rwg/vim-disable-syntax-highlighter-only-for-markdown
-" https://stackoverflow.com/questions/10964681/enabling-markdown-highlighting-in-vim
 autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown
-" autocmd FileType markdown setlocal syntax=off
-
-" nnoremap <Leader>tn :tabnew<CR>
-" nnoremap <Leader>tc :tabclose<CR>
-
-" run current ruby file (aka 'run ruby')
-" nnoremap <Leader>rr :w\|!ruby %<CR>
-
-" An attempt to reconfigure cursor in highlight mode when 
-" using Tmux b/c can't see cursor
-"if exists('$TMUX')
-"  let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
-"  let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
-"else
-"  let &t_SI = "\e[5 q"
-"  let &t_EI = "\e[2 q"
-"endif
 
 " Adding b/c of Tim Pope's commentary.vim
 autocmd FileType apache setlocal commentstring=#\ %s
