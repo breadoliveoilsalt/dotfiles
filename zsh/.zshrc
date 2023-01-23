@@ -339,15 +339,13 @@ function gitRestoreNumber {
 alias gan="gitAddNumber"
 alias grn="gitRestoreNumber"
 
-# allows asdf to work and read .tool-versions
-# See meaning of dot here:
-# https://unix.stackexchange.com/questions/114300/whats-the-meaning-of-a-dot-before-a-command-in-shell
-# See also cat /usr/local/Cellar/asdf/0.9.0/libexec/asdf.sh
-. /usr/local/opt/asdf/asdf.sh
-. $HOME/.asdf/shims
-
-
 # Load fzf shortcut keys:
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND="rg --files --hidden" 
+
+# allows asdf to work and read .tool-versions
+# Dot is equivalent to `source`.  See meaning of dot here:
+# https://unix.stackexchange.com/questions/114300/whats-the-meaning-of-a-dot-before-a-command-in-shell
+# See also cat /usr/local/Cellar/asdf/0.11.1/libexec/asdf.sh
+. /usr/local/opt/asdf/libexec/asdf.sh
