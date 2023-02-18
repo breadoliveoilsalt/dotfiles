@@ -14,9 +14,10 @@ endif
 call plug#begin()
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
@@ -41,13 +42,17 @@ set smartindent
 " Detect when there has been git reset --hard or file deletion
 " and reset buffer
 set autoread
+" See: https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
+" :help checktime
+au CursorHold,CursorHoldI * checktime
+au FocusGained,BufEnter * checktime
 
 " Triger `autoread` when files changes on disk
 " From here: https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
 " " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
 " " https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
- \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+"autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+" \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 
 " Auto-save on buffer switch
 set autowriteall
@@ -131,8 +136,9 @@ set textwidth=0
 " 201109: Disabled the above so I could hit <CR> to implement past
 " commands from the command line window after hitting q:
 
-" Set rel num
-set rnu
+" Toggle rnu on and off
+" For more on toggling, see: https://learnvimscriptthehardway.stevelosh.com/chapters/38.html
+nnoremap <Leader>rn :setlocal rnu!<cr>
 
 " Map control+^ to open alternate file quickly
 nmap <Leader><Leader> <C-^>
@@ -142,23 +148,26 @@ nmap <Leader><Leader> <C-^>
 " Think: find file; find word
 set rtp+=/usr/local/opt/fzf
 nnoremap <Leader>ff :FZF<CR>
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.3, 'relative': v:true, 'yoffset': 1.0 } }
+
 
 " Trying this out temporarily
 " nnoremap <Leader>fw :Rg<CR>
-nnoremap <Leader>fw :grep
-
-command! -bang -nargs=* Rgr
-  \ call fzf#run({'source': 'rg --hidden', 'sink': 'e', 'left': '50%'})
+" nnoremap <Leader>fw :grep -g '!*.snap' -g '!*test*' -g '!*spec*' -e '
+" nnoremap <Leader>fw :grep! -g "!{*snap, *test*, *spec*, *cypress/, build/, test/}" -g "!*.snap" -g "!.git/" -e '
+" NOTE that folder exclusions are read relative to the root directory. -g \"!build/\" will only work if build is in the root directory
+" nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -g "!**/*/cypress/" -g "!*test*" -e '
+nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -e '
 
 " command! -bang -nargs=* Rg
 "   \ call fzf#vim#grep(
 "   \   'rg --hidden --follow --no-ignore-vcs -g "!{node_modules,.git, build, tags}" --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
 "   \   fzf#vim#with_preview(), <bang>0)
 
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --hidden --follow --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(), <bang>0)
+" command! -bang -nargs=* Rg
+"   \ call fzf#vim#grep(
+"   \   'rg --hidden --follow --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+"   \   fzf#vim#with_preview(), <bang>0)
 
 " Sets Ripgrep to :grep command
 " Can search regex with :grep -e "[Rr]egex"
