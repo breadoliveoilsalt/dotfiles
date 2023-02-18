@@ -150,7 +150,7 @@ alias lz="cd ~/Documents/projects/legalZoom"
 alias iq="cd ~/Documents/projects/legalZoom/iq-flow"
 
 # Think: Vim Last Session (vls)
-alias vls='vim +"so Session.vim"'
+alias vls='vim -S'
 
 # Automatically open Chrome with devtools in tabs.  Make sure all other Chrome
 # windows are closed first
@@ -175,10 +175,9 @@ function dotfiles() {
   vim .
 }
 
-function atomNotes() {
+function notes() {
   cd ~/Documents/atomNotes
-  vim
-# vim +"so Session.vim"
+  vim -S
 }
 
 function start() {
