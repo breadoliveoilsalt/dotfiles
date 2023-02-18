@@ -247,3 +247,35 @@ command Dotfiles :lcd ~/Documents/dotfiles/
 " command Pretty execute '!npx prettier --write '. expand("%")
 command Pretty execute 'term npx prettier --write '. expand("%")
 command Lint execute 'term npx eslint '. expand("%")
+
+" Open quickfix immediately upon search
+" https://www.reddit.com/r/vim/comments/bmh977/automatically_open_quickfix_window_after/
+" https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3
+augroup quickfix
+    autocmd!
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow
+augroup END
+
+" This is an autocommand to make session on save, but
+" really what I need is something that confirms quitting and
+" asks if you want to make session: y/n/c
+" autocmd VimLeavePre * exec "mks!"
+
+
+" Show trailing whitespaces. See link below
+" https://stackoverflow.com/questions/48935451/how-do-i-get-vim-to-highlight-trailing-whitespaces-while-using-vim-at-the-same-t
+highlight TrailingWhiteSpaces ctermbg=red guibg=red
+match TrailingWhiteSpaces /\s\+$/
+
+
+function AppendConsoleLog()
+  let l:current_word = expand('<cword>')
+  execute "normal! daw"
+  execute "normal! i// eslint-disable-next-line\<ESC>"
+  " execute "normal! o// eslint-disable-next-line \<ESC>"
+  execute "normal! oconsole.log('" . l:current_word . "', " . l:current_word . ")"
+endfunction
+
+" `il` for insert logger. Changes word under cursor in to logging command
+nnoremap <Leader>il :call AppendConsoleLog()<CR>
