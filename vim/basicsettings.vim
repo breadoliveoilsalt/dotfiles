@@ -271,20 +271,33 @@ augroup END
 " asks if you want to make session: y/n/c
 " autocmd VimLeavePre * exec "mks!"
 
-
 " Show trailing whitespaces. See link below
 " https://stackoverflow.com/questions/48935451/how-do-i-get-vim-to-highlight-trailing-whitespaces-while-using-vim-at-the-same-t
 highlight TrailingWhiteSpaces ctermbg=red guibg=red
 match TrailingWhiteSpaces /\s\+$/
 
-
 function AppendConsoleLog()
   let l:current_word = expand('<cword>')
   execute "normal! daw"
   execute "normal! i// eslint-disable-next-line\<ESC>"
-  " execute "normal! o// eslint-disable-next-line \<ESC>"
   execute "normal! oconsole.log('" . l:current_word . "', " . l:current_word . ")"
 endfunction
 
 " `il` for insert logger. Changes word under cursor in to logging command
 nnoremap <Leader>il :call AppendConsoleLog()<CR>
+
+function ConfirmQuit()
+  "See :help confirm() -- not :help confirm
+  let l:choice = confirm("Save session first?", "&Save\n&Quit\n&Cancel")
+  if choice == 1
+    mks!
+    quit
+  elseif choice == 2
+    quit
+  endif
+endfunction
+
+cnoremap <silent> q<CR> :call ConfirmQuit()<CR>
+" Below not really work, but above slows down qa for some reason
+cnoremap <silent> qa<CR> :echo "no no no"<CR>
+
