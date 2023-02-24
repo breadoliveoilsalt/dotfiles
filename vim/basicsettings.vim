@@ -32,7 +32,7 @@ set tabstop=2
 set shiftwidth=2
 set autoindent
 set smartindent
-  
+
 " Disable auto-indent so pasting does not result in odd lines being added
 " BUT this messes with expandtab, which ensures spaces are only used
 " instead of tabs.  Consider using paste sparingly
@@ -66,7 +66,7 @@ autocmd FocusLost * silent! wa
 autocmd FileChangedShellPost *
  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-" Allow :close, ie, allow hiding unsaved buffers and remember 
+" Allow :close, ie, allow hiding unsaved buffers and remember
 " marks/undo for them
 set hidden
 
@@ -82,13 +82,13 @@ set wildignore+=*.swp                            " ignore .swp files
 set wildignore+=*.zip                            " ignore .zip files
 set wildignore+=*.pdf                            " ignore .pdf files
 set wildignore+=*/node_modules/*                 " ignore node_modules
-set wildignore+=*/deps/*                         " ignore deps in elixir 
-set wildignore+=*/_build/*                       " ignore build in elixir 
+set wildignore+=*/deps/*                         " ignore deps in elixir
+set wildignore+=*/_build/*                       " ignore build in elixir
 set wildignore+=Session.vim                      " ignore any saved Session file
 set wildignore+=*/vendor/assets/*                " ignore vendor/assets for Rails projects
 set wildignore+=*/app/assets/images/*            " ignore other images dir for Rails projects
 set wildignore+=tags
-set wildignore+=*/log/*                          
+set wildignore+=*/log/*
 set wildignore+=*.log
 set wildignore+=ngrok
 set wildignore+=*.svg
@@ -96,8 +96,8 @@ set wildignore+=*.svg
 " Store all swp/swap files in a different directory
 set directory^=$HOME/.vim/swap//
 
-" Search with case-insensitivity unless there's a capital letter 
-set ignorecase smartcase 
+" Search with case-insensitivity unless there's a capital letter
+set ignorecase smartcase
 
 syntax on
 
@@ -109,7 +109,7 @@ set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 set laststatus=2
 
 " To deal with delete key not working properly
-set backspace=indent,eol,start 
+set backspace=indent,eol,start
 
 " This might be useless.  See :help nocompatible
 " set nocp
@@ -118,24 +118,25 @@ set splitbelow
 set splitright
 
 " Set clipboard to global clipboard by default
-set clipboard=unnamed 
+set clipboard=unnamed
 
 " Draw a line down this column. Useful for lining up. Set it to Green.
 " Change it to red when in insertmode.
 " set colorcolumn=81
 " set colorcolumn=0
 hi ColorColumn ctermbg=2 ctermfg=7
-autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7 
-autocmd InsertLeave * highlight ColorColumn ctermbg=2 ctermfg=7 
+autocmd InsertEnter * highlight ColorColumn ctermbg=1 ctermfg=7
+autocmd InsertLeave * highlight ColorColumn ctermbg=2 ctermfg=7
 
 " If you want to restrict the length of a row by column
 set textwidth=0
 
 " Insert line below
-" nnoremap <CR> o<Esc>k 
+" nnoremap <CR> o<Esc>k
 " 201109: Disabled the above so I could hit <CR> to implement past
 " commands from the command line window after hitting q:
 
+set rnu
 " Toggle rnu on and off
 " For more on toggling, see: https://learnvimscriptthehardway.stevelosh.com/chapters/38.html
 nnoremap <Leader>rn :setlocal rnu!<cr>
@@ -148,7 +149,8 @@ nmap <Leader><Leader> <C-^>
 " Think: find file; find word
 set rtp+=/usr/local/opt/fzf
 nnoremap <Leader>ff :FZF<CR>
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.3, 'relative': v:true, 'yoffset': 1.0 } }
+" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.3, 'relative': v:true, 'yoffset': 1.0 } }
+let g:fzf_layout = { 'window': { 'width': 0.6, 'height': 0.3, 'yoffset': 1.0 } }
 
 
 " Trying this out temporarily
@@ -179,7 +181,7 @@ set grepprg=rg\ --hidden\ --follow\ --vimgrep
 nnoremap <Leader>yp :let @+=expand("%")<CR>
 
 " Enlarge current window and shrink others
-" Taken from Gary Bernhardt as the magic formula 
+" Taken from Gary Bernhardt as the magic formula
 " See: https://www.destroyallsoftware.com/file-navigation-in-vim.html
 " See: https://github.com/tpope/vim-obsession/issues/4
 " set winwidth=84
@@ -190,14 +192,12 @@ nnoremap <Leader>yp :let @+=expand("%")<CR>
 " Automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
 
-" Increase or decrease window veritcal space by 10 lines
-" Pane taller, shorter, (more) left, (more right)
-nnoremap <Leader>wl <C-w>20<
-nnoremap <Leader>wr <C-w>20>
-
-" Increase or decrease window height by 10 lines
-nnoremap <Leader>wu <C-w>10+
-nnoremap <Leader>wd <C-w>10-
+" Increase or decrease window
+" Think: window-wider, window-narrower, window-taller, window-shorter
+nnoremap <Leader>ww <C-w>20>
+nnoremap <Leader>wn <C-w>20<
+nnoremap <Leader>wt <C-w>10+
+nnoremap <Leader>ws <C-w>10-
 
 " Zoom a vim pane
 nnoremap <Leader>z :wincmd _<CR>:wincmd \|<CR>
@@ -215,7 +215,7 @@ set cursorline
 augroup BgHighlight
   autocmd!
   autocmd WinEnter * set cursorline
-  autocmd WinLeave * set nocursorline 
+  autocmd WinLeave * set nocursorline
 augroup END
 
 " Vim Save Session
@@ -224,7 +224,7 @@ nnoremap <Leader>vss :mksession!<CR>
 " Format current paragraph with column boundaries
 :nnoremap <Leader>fmt {V}gq
 
-" Add # as a comment, and delete it. 
+" Add # as a comment, and delete it.
 " For Visual maps, this assumes you hit the keystroke
 " after selecting in Visual Line mode
 " <C-q> takes you from Visual Line mode to Visual Block mode
@@ -251,7 +251,7 @@ set undodir=~/.vim/undo_files//
 command Iq :lcd ~/Documents/projects/legalZoom/iq-flow/
 command Dotfiles :lcd ~/Documents/dotfiles/
 
-" Run Prettier or eslint 
+" Run Prettier or eslint
 " Depends on running `npx install -g prettier eslint`
 " command Pretty execute '!npx prettier --write '. expand("%")
 command Pretty execute 'term npx prettier --write '. expand("%")
@@ -299,5 +299,28 @@ endfunction
 
 cnoremap <silent> q<CR> :call ConfirmQuit()<CR>
 " Below not really work, but above slows down qa for some reason
-cnoremap <silent> qa<CR> :echo "no no no"<CR>
+" cnoremap <silent> qa<CR> :echo "no no no"<CR>
 
+function InsertBackticks()
+  execute "normal! i```\n\n```"
+  execute "normal! k"
+endfunction
+
+nnoremap <Leader>ib :call InsertBackticks()<CR>
+
+" for use of `range` see: https://vi.stackexchange.com/questions/17606/vmap-and-visual-block-how-do-i-write-a-function-to-operate-once-for-the-entire
+function SurroundVisualLinesWithBackticks() range
+  '<
+  execute "normal! O```"
+  '>
+  execute "normal! o```"
+endfunction
+
+vnoremap <Leader>ib :call SurroundVisualLinesWithBackticks()<CR>
+
+function DeleteTrailingWhitespace()
+  s/\s*$//
+endfunction
+
+nnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
+vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
