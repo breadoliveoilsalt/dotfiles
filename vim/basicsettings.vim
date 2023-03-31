@@ -42,12 +42,16 @@ set smartindent
 " Detect when there has been git reset --hard or file deletion
 " and reset buffer
 set autoread
-" See: https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
-" :help checktime
-au CursorHold,CursorHoldI * checktime
-au FocusGained,BufEnter * checktime
-
 " Triger `autoread` when files changes on disk
+" See:
+"  - https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
+"    - NOTE with above: it requires a tmux conf change
+"  - https://stackoverflow.com/questions/923737/detect-file-change-offer-to-reload-file
+"  - :help checktime
+au CursorHold,CursorHoldI,FocusGained,BufEnter * checktime
+au FileChangedShell * echo "TN Warning: File changed on disk"
+
+" Alternatively:
 " From here: https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
 " " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
 " " https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
@@ -136,7 +140,6 @@ set textwidth=0
 " 201109: Disabled the above so I could hit <CR> to implement past
 " commands from the command line window after hitting q:
 
-set rnu
 " Toggle rnu on and off
 " For more on toggling, see: https://learnvimscriptthehardway.stevelosh.com/chapters/38.html
 nnoremap <Leader>rn :setlocal rnu!<cr>
@@ -279,7 +282,7 @@ match TrailingWhiteSpaces /\s\+$/
 function AppendConsoleLog()
   let l:current_word = expand('<cword>')
   execute "normal! daw"
-  execute "normal! i// eslint-disable-next-line\<ESC>"
+  execute "normal! i// eslint-disable-next-line"
   execute "normal! oconsole.log('" . l:current_word . "', " . l:current_word . ")"
 endfunction
 
@@ -297,7 +300,9 @@ function ConfirmQuit()
   endif
 endfunction
 
-cnoremap <silent> q<CR> :call ConfirmQuit()<CR>
+" cnoremap <silent> q<CR> :call ConfirmQuit()<CR>
+" NOTE: this is mapping an Ex-mode command. Note that `:` not needed
+cnoremap q<CR> call ConfirmQuit()<CR>
 " Below not really work, but above slows down qa for some reason
 " cnoremap <silent> qa<CR> :echo "no no no"<CR>
 
@@ -324,3 +329,7 @@ endfunction
 
 nnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
 vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
+
+" Disable auto-commenting next line
+" See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
+:set formatoptions-=cro
