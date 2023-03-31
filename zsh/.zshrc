@@ -99,6 +99,7 @@ alias lc="git log --oneline -1"
 alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
+alias gb="git branch --show-current"
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
@@ -142,7 +143,7 @@ alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
 alias docs="cd ~/Documents"
 alias aproj="cd ~/Documents/projectsArchive/projectsApprenticeship"
-alias blog="cd ~/Documents/projects/breadoliveoilsalt.github.io" 
+alias blog="cd ~/Documents/projects/breadoliveoilsalt.github.io"
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
