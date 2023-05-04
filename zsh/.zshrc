@@ -100,6 +100,7 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
+alias gitlastbranches="git branch --sort=-committerdate | head -10"
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
@@ -177,8 +178,9 @@ function dotfiles() {
 }
 
 function notes() {
-  cd ~/Documents/atomNotes
-  vim -S
+  cd ~/Documents/notes
+#  vim -S
+  vim
 }
 
 function start() {

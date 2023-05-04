@@ -19,6 +19,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'preservim/nerdtree'
 
 call plug#end()
 
@@ -161,7 +162,7 @@ let g:fzf_layout = { 'window': { 'width': 0.6, 'height': 0.3, 'yoffset': 1.0 } }
 " nnoremap <Leader>fw :grep -g '!*.snap' -g '!*test*' -g '!*spec*' -e '
 " nnoremap <Leader>fw :grep! -g "!{*snap, *test*, *spec*, *cypress/, build/, test/}" -g "!*.snap" -g "!.git/" -e '
 " NOTE that folder exclusions are read relative to the root directory. -g \"!build/\" will only work if build is in the root directory
-" nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -g "!**/*/cypress/" -g "!*test*" -e '
+" nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -g "!**/*/cypress/" -g "!*test*" -g ".yarn/" -e '
 nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -e '
 
 " command! -bang -nargs=* Rg
@@ -282,8 +283,9 @@ match TrailingWhiteSpaces /\s\+$/
 function AppendConsoleLog()
   let l:current_word = expand('<cword>')
   execute "normal! daw"
-  execute "normal! i// eslint-disable-next-line"
-  execute "normal! oconsole.log('" . l:current_word . "', " . l:current_word . ")"
+  execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
+"  execute "normal! i// eslint-disable-next-line"
+"  execute "normal! oconsole.log('" . l:current_word . "', " . l:current_word . ")"
 endfunction
 
 " `il` for insert logger. Changes word under cursor in to logging command
@@ -333,3 +335,13 @@ vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
 " Disable auto-commenting next line
 " See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
 :set formatoptions-=cro
+
+au InsertEnter * hi StatusLine ctermfg=red ctermbg=white
+au InsertEnter * hi VertSplit ctermfg=red ctermbg=white
+au InsertLeave * hi StatusLine ctermfg=NONE ctermbg=NONE
+au InsertLeave * hi VertSplit ctermfg=NONE ctermbg=NONE
+
+nnoremap <leader>on :NERDTreeFocus<CR>
+nnoremap <leader>cn :NERDTreeClose<CR>
+let g:NERDTreeShowHidden=1
+let g:NERDTreeDirArrows=0
