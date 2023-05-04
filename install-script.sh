@@ -16,7 +16,7 @@ brew install tree
 brew install pstree
 brew install ctags
 # brew install rbenv
-# brew install fzf
+brew install fzf
 # brew install tmate
 brew install --cask iterm2
 # brew install --cask firefox
@@ -43,6 +43,7 @@ ln -fs ~/Documents/dotfiles/git/.git-prompt.sh ~/.git-prompt.sh
 ln -fs ~/Documents/dotfiles/atom/config.cson ~/.atom/config.cson
 ln -fs ~/Documents/dotfiles/ctags/.ctags ~/.ctags
 ln -fs rider/.ideavimrc ~/.ideavimrc
+ln -fs ~/.vimrc ~/.ideavimrc
 
 # Commands to open frequently used apps
 chmod +x ~/Documents/dotfiles/customCommands/rider
