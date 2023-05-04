@@ -1,0 +1,64 @@
+#!/bin/sh
+
+set -Eeou pipefail
+
+# Redirect stdin to file descriptor 3, used below
+exec 3<&0
+
+DIVIDER="====================="
+PROTECTED_BRANCHES="main master develop"
+
+function skipCurrentBranch {
+  while read BRANCH; do
+    if echo "$BRANCH" | grep -q "*"; then
+      echo
+    else
+      echo "$BRANCH"
+    fi
+  done
+}
+
+function skipProtectedBranch {
+  while read BRANCH; do
+    if echo "$PROTECTED_BRANCHES" | grep -q "$BRANCH"; then
+      echo
+    else
+      echo "$BRANCH"
+    fi
+  done
+}
+
+function deleteBranch {
+  while read BRANCH; do
+    if [ -n "$BRANCH" ]; then
+      LAST_MODIFIED=$(git show -s --format="Last modified %cr on %cD" "$BRANCH")
+
+      echo
+      echo $DIVIDER
+      echo "Branch: $BRANCH"
+      echo "$LAST_MODIFIED"
+      echo
+
+      read -n 1 -p "REMOVE $BRANCH? [y/n] " REMOVE_BRANCH <&3
+      echo
+
+      if [ "$REMOVE_BRANCH" = "y" ] || [ "$REMOVE_BRANCH" = "Y" ]; then
+        if $(git branch -d "$BRANCH" &> /dev/null); then
+          echo
+          echo "$BRANCH deleted"
+        else
+          read -n 1 -p "$BRANCH has not been pushed up to its remote branch. Proceed? [y/n] " FORCE_REMOVE_BRANCH <&3
+          if [ "$FORCE_REMOVE_BRANCH" = "y" ] || [ "$FORCE_REMOVE_BRANCH" = "Y" ]; then
+            git branch -D "$BRANCH"
+            echo
+            echo "$BRANCH force deleted"
+          fi
+        fi
+      fi
+    fi
+  done
+}
+
+git branch | skipCurrentBranch | skipProtectedBranch | deleteBranch
+
+
