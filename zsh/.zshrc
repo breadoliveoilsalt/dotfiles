@@ -64,12 +64,16 @@ setopt PROMPT_SUBST
 # }
 
 printDividingLineToEndOfWindow() {
-  echo
   cols=80
   for ((i=0; i<cols; i++));do printf "="; done; echo
 }
 
+# Does stuff after command run
+# See: https://unix.stackexchange.com/questions/703918/print-exit-status-code-after-each-command-in-terminal
 precmd() {
+ printDividingLineToEndOfWindow
+ echo "Exit Code: $?"
+ echo "<<$(date +%m-%d/%H:%M:%S)>>"
  printDividingLineToEndOfWindow
 }
 
@@ -78,13 +82,13 @@ precmd() {
 # it kept returning the same branch every time. And double quotes would not
 # work. Single quote are so important for some reason.
 # Classic prompt:
-# PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
 
 # PROMPT with timestamp - including year
 # PROMPT='%F{green}<<$(date +%Y-%m-%d/%H:%M:%S)>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
 
 # PROMPT with timestamp - no year
-PROMPT='%F{green}<<$(date +%m-%d/%H:%M:%S)>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+# PROMPT='%F{green}<<$(date +%m-%d/%H:%M:%S)>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
 
 # Print timestamp on right
 # RPROMPT='$(date +%Y-%m-%d/%H:%M:%S)'
