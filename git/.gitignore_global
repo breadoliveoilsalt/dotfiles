@@ -20,4 +20,4 @@ deps/
 
 # 210923: Ignore file setting SDK for dotnet projects
 global.json
-
+.vscode/

@@ -77,7 +77,14 @@ precmd() {
 # call in single quotes.  I have no idea why. Without the external quotation marks,
 # it kept returning the same branch every time. And double quotes would not
 # work. Single quote are so important for some reason.
-PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+# Classic prompt:
+# PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+
+# PROMPT with timestamp - including year
+# PROMPT='%F{green}<<$(date +%Y-%m-%d/%H:%M:%S)>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
+
+# PROMPT with timestamp - no year
+PROMPT='%F{green}<<$(date +%m-%d/%H:%M:%S)>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi_mode_prompt_info) %f\$ '
 
 # Print timestamp on right
 # RPROMPT='$(date +%Y-%m-%d/%H:%M:%S)'
@@ -100,7 +107,7 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
-alias gitlastbranches="git branch --sort=-committerdate | head -10"
+alias gitRecentBranches="git branch --sort=-committerdate | head -10"
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
@@ -150,6 +157,7 @@ alias reload="source ~/.zshrc"
 
 alias lz="cd ~/Documents/projects/legalZoom"
 alias iq="cd ~/Documents/projects/legalZoom/iq-flow"
+alias mylz="cd ~/Documents/projects/legalZoom/my-lz"
 
 # Think: Vim Last Session (vls)
 alias vls='vim -S'

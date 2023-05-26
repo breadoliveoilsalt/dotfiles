@@ -33,6 +33,7 @@ mkdir -p ~/.vim/{backup_files,swap_files,undo_files}
 
 # Symlinks
 # Note that relative paths did not seem to work, eg: ln -s vim/.vimrc ~/.vimrc
+# I should refactor this to a loop through the files
 ln -fs ~/Documents/dotfiles/vim/.vimrc ~/.vimrc
 ln -fs ~/Documents/dotfiles/zsh/.zshrc ~/.zshrc
 ln -fs ~/Documents/dotfiles/tmux/.tmux.conf ~/.tmux.conf
@@ -46,6 +47,7 @@ ln -fs rider/.ideavimrc ~/.ideavimrc
 ln -fs ~/.vimrc ~/.ideavimrc
 
 # Commands to open frequently used apps
+# I should refactor this to a loop through the files
 chmod +x ~/Documents/dotfiles/customCommands/rider
 ln -s ~/Documents/dotfiles/customCommands/rider /usr/local/bin/rider
 
@@ -53,7 +55,13 @@ chmod +x ~/Documents/dotfiles/customCommands/atom
 ln -s ~/Documents/dotfiles/customCommands/atom /usr/local/bin/atom
 
 chmod +x ~/Documents/dotfiles/customCommands/webstorm
-ln -s ~/Documents/dotfiles/customCommands/webstorm /usr/local/bin/webstorm 
+ln -s ~/Documents/dotfiles/customCommands/webstorm /usr/local/bin/webstorm
+
+chmod +x ~/Documents/dotfiles/customCommands/idea
+ln -s ~/Documents/dotfiles/customCommands/idea /usr/local/bin/idea
+
+chmod +x ~/Documents/dotfiles/customCommands/gitPruneBranches
+ln -s ~/Documents/dotfiles/customCommands/gitPruneBranches /usr/local/bin/gitPruneBranches
 
 chmod +x ~/Documents/dotfiles/customCommands/pngpaste
 ln -s ~/Documents/dotfiles/customCommands/pngpaste /usr/local/bin/pngpaste
