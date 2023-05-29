@@ -212,7 +212,7 @@ zstyle :compinstall filename '/Users/tonydistinti/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-# The last two lines above, in particular, are responsible for 
+# The last two lines above, in particular, are responsible for
 # running zsh's more powerfule autocompletion
 # the matcher-list was taken from the scriptingos blog post below
 # it works great and even seems to include partial string completion
@@ -223,8 +223,10 @@ compinit
 # Include stuff in new .zsh directory, like git-completion
 # Git completion for bash is required, see:
 # https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-fpath=(~/.zsh $fpath)
+# https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
+# https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
+zstyle ':completion:*:*:git:*' script ./zsh/functions/git-completion.bash
+fpath=(./zsh/functions $fpath)
 
 # Increase history size
 # See: https://medium.com/macoclock/forced-to-use-zsh-by-macos-catalina-lets-fix-our-history-command-first-9ce86dca540e
