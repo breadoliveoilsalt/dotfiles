@@ -19,7 +19,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'preservim/nerdtree'
+" Plug 'preservim/nerdtree'
 
 call plug#end()
 
@@ -194,7 +194,7 @@ nnoremap <Leader>yp :let @+=expand("%")<CR>
 " set winheight=999
 
 " Automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
+autocmd VimResized * wincmd =
 
 " Increase or decrease window
 " Think: window-wider, window-narrower, window-taller, window-shorter
@@ -240,7 +240,9 @@ nnoremap <Leader>vss :mksession!<CR>
 " Reload (source) vimrc
 nnoremap <Leader>so :so ~/.vimrc<CR>
 
-autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown
+" autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown
+
+autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown tabstop=2 shiftwidth=2
 
 " Adding b/c of Tim Pope's commentary.vim
 autocmd FileType apache setlocal commentstring=#\ %s
@@ -326,6 +328,7 @@ endfunction
 vnoremap <Leader>ib :call SurroundVisualLinesWithBackticks()<CR>
 
 function DeleteTrailingWhitespace()
+  " %s/\s*$//
   s/\s*$//
 endfunction
 
@@ -345,3 +348,5 @@ nnoremap <leader>on :NERDTreeFocus<CR>
 nnoremap <leader>cn :NERDTreeClose<CR>
 let g:NERDTreeShowHidden=1
 let g:NERDTreeDirArrows=0
+
+au BufWritePre * call DeleteTrailingWhitespace()
