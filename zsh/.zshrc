@@ -71,9 +71,9 @@ printDividingLineToEndOfWindow() {
 # Does stuff after command run
 # See: https://unix.stackexchange.com/questions/703918/print-exit-status-code-after-each-command-in-terminal
 precmd() {
- printDividingLineToEndOfWindow
+ # printDividingLineToEndOfWindow
  echo "Exit Code: $?"
- echo "<<$(date +%m-%d/%H:%M:%S)>>"
+ echo "<< $(date +%m-%d/%H:%M:%S) >>"
  printDividingLineToEndOfWindow
 }
 
@@ -192,7 +192,7 @@ function dotfiles() {
 function notes() {
   cd ~/Documents/notes
 #  vim -S
-  vim
+#  vim
 }
 
 function start() {
@@ -225,8 +225,8 @@ compinit
 # https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
 # https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
 # https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
-zstyle ':completion:*:*:git:*' script ./zsh/functions/git-completion.bash
-fpath=(./zsh/functions $fpath)
+zstyle ':completion:*:*:git:*' script ~/Documents/dotfiles/zsh/functions/git-completion.bash
+fpath=(~/Documents/dotfiles/zsh/functions $fpath)
 
 # Increase history size
 # See: https://medium.com/macoclock/forced-to-use-zsh-by-macos-catalina-lets-fix-our-history-command-first-9ce86dca540e
