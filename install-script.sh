@@ -20,6 +20,7 @@ brew install fzf
 # brew install tmate
 brew install --cask iterm2
 # brew install --cask firefox
+# brew install neovim
 brew install --cask atom
 brew install --cask rider
 brew install --cask postman
@@ -45,6 +46,8 @@ ln -fs ~/Documents/dotfiles/atom/config.cson ~/.atom/config.cson
 ln -fs ~/Documents/dotfiles/ctags/.ctags ~/.ctags
 ln -fs rider/.ideavimrc ~/.ideavimrc
 ln -fs ~/.vimrc ~/.ideavimrc
+# mkdir -p ~/.config/nvim
+# ln -fs ~/Documents/dotfiles/nvim/nvChad/init.lua ~/.config/nvim/init.lua
 
 # Commands to open frequently used apps
 # I should refactor this to a loop through the files
