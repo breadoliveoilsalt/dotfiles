@@ -20,12 +20,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
---
 
 require("lazy").setup("plugins")
-
--- require("lazy").setup(plugins, opts)
-
 
 ---------------------------
 -- OPTIONS FOR NVIM TREE --
@@ -45,6 +41,7 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 -- TEST TO SEE IF COPY WORKS
 -- Does not work
 -- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>") 
+-- Can I add silent to this?
 vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>")
 
 vim.opt.number = true
@@ -67,6 +64,13 @@ vim.opt.hidden = true
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
 vim.opt.formatoptions:remove('cro')
+
+-- Show trailing whitespaces.
+-- See: https://stackoverflow.com/questions/48935451/how-do-i-get-vim-to-highlight-trailing-whitespaces-while-using-vim-at-the-same-t
+vim.cmd([[
+  highlight TrailingWhiteSpaces ctermbg=red guibg=red
+  match TrailingWhiteSpaces /\s\+$/
+]])
 
 ----------------
 -- AUTOSAVING --
@@ -125,4 +129,14 @@ vim.api.nvim_create_autocmd(
   }
 )
 
+-- TELESCOPE --
+
+require('telescope').setup()
+require('telescope').load_extension('fzf')
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fw', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
