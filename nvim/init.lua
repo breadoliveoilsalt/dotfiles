@@ -1,8 +1,51 @@
+vim.keymap.set("n", "<Space>", "<Nop>", { silent = true })
+vim.g.mapleader = " "
+
 print("LOADING CONFIG FROM DOTFILES")
 
-vim.keymap.set("n", "<Space>", "<Nop>", { silent = true })
+-------------------------
+-- BOOTSTRAP lazy.nvim --
+-------------------------
 
-vim.g.mapleader = " "
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+
+vim.opt.rtp:prepend(lazypath)
+--
+
+require("lazy").setup("plugins")
+
+-- require("lazy").setup(plugins, opts)
+
+
+---------------------------
+-- OPTIONS FOR NVIM TREE --
+---------------------------
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+
+
+vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
+vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
+
+-----------------
+-- MY SETTINGS --
+-----------------
+
+-- TEST TO SEE IF COPY WORKS
+-- Does not work
+-- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>") 
+vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>")
 
 vim.opt.number = true
 vim.opt.expandtab = true
@@ -12,12 +55,18 @@ vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
 -- Allow :close, ie, allow hiding unsaved buffers
 vim.opt.hidden = true
+
 -- Set status line to see full path and line, col
 -- Alternative: To get just line, col, use set ruler
 -- I may not need this?
 -- vim.opt.statusline="%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)"
+
+-- Disable auto-commenting next line
+-- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
+vim.opt.formatoptions:remove('cro')
 
 ----------------
 -- AUTOSAVING --
