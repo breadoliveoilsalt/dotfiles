@@ -78,6 +78,26 @@ vim.cmd([[set formatoptions-=cro]])
 -- yank file path
 vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
 
+-- Increase or decrease window
+-- Think: window-wider, window-narrower, window-taller, window-shorter
+vim.cmd([[
+  nnoremap <Leader>ww <C-w>20>
+  nnoremap <Leader>wn <C-w>20<
+  nnoremap <Leader>wt <C-w>10+
+  nnoremap <Leader>ws <C-w>10-
+]])
+
+-- Automatically rebalance windows on vim resize
+vim.cmd([[
+  autocmd VimResized * wincmd =
+]])
+
+-- Disable <C-w>q b/c I keep closing vim by accident
+-- when trying to switch panes
+vim.cmd([[
+  nnoremap <C-w>q :echo "^wq disabled for quitting window"<CR>
+]])
+
 -------------------------
 -- TRAILING WHITESPACE --
 -------------------------
@@ -101,19 +121,44 @@ vim.cmd([[
   vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
 ]])
 
+
+----------------------
+-- ADDING BACKTICKS --
+----------------------
+
+-- for use of `range` see:
+-- https://vi.stackexchange.com/questions/17606/vmap-and-visual-block-how-do-i-write-a-function-to-operate-once-for-the-entire
+
+vim.api.nvim_exec([[
+  function InsertBackticks()
+    execute "normal! i```\n\n```"
+    execute "normal! k"
+  endfunction
+
+  function SurroundVisualLinesWithBackticks() range
+    '<
+    execute "normal! O```"
+    '>
+    execute "normal! o```"
+  endfunction
+]], false)
+
+vim.cmd([[
+  nnoremap <Leader>ib :call InsertBackticks()<CR>
+  vnoremap <Leader>ib :call SurroundVisualLinesWithBackticks()<CR>
+]])
+
 -- Highlight current line as default
--- vim.opt.cursorline = true
+vim.opt.cursorline = true
 
 -- Set cursorline for only the current window
--- vim.cmd([[
---   augroup BgHighlight
---     autocmd!
---     autocmd WinEnter * set cursorline
---     autocmd WinLeave * set nocursorline
---   augroup END
--- ]])
---
---
+vim.cmd([[
+  augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set cursorline
+    autocmd WinLeave * set nocursorline
+  augroup END
+]])
 
 ----------------
 -- AUTOSAVING --
@@ -141,7 +186,13 @@ vim.api.nvim_create_autocmd("FileChangedShellPost",
 )
 
 -- Store all swp/swap files in a different directory
-vim.opt.directory:prepend("$HOME/.config/nvim/swap//")
+-- From here: https://www.mattcrampton.com/blog/move_vim_swp_files/
+vim.cmd([[
+  set backupdir=~/.config/nvim/backup_files//
+  set directory=~/.config/nvim/swap_files//
+  set undodir=~/.config/nvim/undo_files//
+]])
+
 
 ------------------------------
 -- SAVING BY OTHER PROGRAMS --
@@ -178,9 +229,7 @@ require('telescope').setup()
 require('telescope').load_extension('fzf')
 
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fw', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
-
+vim.keymap.set('n', '<Leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<Leader>fw', builtin.live_grep, {})
+vim.keymap.set('n', '<Leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<Leader>fh', builtin.help_tags, {})

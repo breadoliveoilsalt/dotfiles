@@ -110,7 +110,6 @@ syntax on
 " Alternative: To get just line, col, use set ruler
 set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
-" UP TO HERE IN NEOVIM CONVERSION
 " Always see the status line even if window not split
 set laststatus=2
 

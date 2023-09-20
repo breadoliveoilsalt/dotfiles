@@ -11,7 +11,7 @@
 	<key>CloseBookmarksWindowAfterOpening</key>
 	<true/>
 	<key>Default Bookmark Guid</key>
-	<string>28A48CFA-538A-4DA7-9E98-C8D7B77F0F54</string>
+	<string>00C9FE11-0BDB-4373-97FD-AF1861010E21</string>
 	<key>GlobalKeyMap</key>
 	<dict>
 		<key>0x19-0x60000</key>
@@ -847,7 +847,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HackNF-Regular 15</string>
+			<string>HackNF-Regular 18</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
