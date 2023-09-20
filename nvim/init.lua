@@ -52,6 +52,15 @@ vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.hls = false
+
+vim.cmd([[colorscheme industry]])
+
+-- Go to alternate file quickly
+vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
+
+-- Set clipboard to global clipboard by default
+vim.opt.clipboard = "unnamed"
 
 -- Allow :close, ie, allow hiding unsaved buffers
 vim.opt.hidden = true
@@ -63,7 +72,15 @@ vim.opt.hidden = true
 
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
-vim.opt.formatoptions:remove('cro')
+-- vim.opt.formatoptions:remove('cro')
+vim.cmd([[set formatoptions-=cro]])
+
+-- yank file path
+vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
+
+-------------------------
+-- TRAILING WHITESPACE --
+-------------------------
 
 -- Show trailing whitespaces.
 -- See: https://stackoverflow.com/questions/48935451/how-do-i-get-vim-to-highlight-trailing-whitespaces-while-using-vim-at-the-same-t
@@ -71,6 +88,32 @@ vim.cmd([[
   highlight TrailingWhiteSpaces ctermbg=red guibg=red
   match TrailingWhiteSpaces /\s\+$/
 ]])
+
+vim.api.nvim_exec([[
+  function DeleteTrailingWhitespace()
+    " %s/\s*$//
+    s/\s*$//
+  endfunction
+]], false)
+
+vim.cmd([[
+  nnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
+  vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
+]])
+
+-- Highlight current line as default
+-- vim.opt.cursorline = true
+
+-- Set cursorline for only the current window
+-- vim.cmd([[
+--   augroup BgHighlight
+--     autocmd!
+--     autocmd WinEnter * set cursorline
+--     autocmd WinLeave * set nocursorline
+--   augroup END
+-- ]])
+--
+--
 
 ----------------
 -- AUTOSAVING --
@@ -139,4 +182,5 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fw', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+
 
