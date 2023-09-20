@@ -17,6 +17,12 @@ return {
   {
     'nvim-telescope/telescope-fzf-native.nvim', build = 'make'
   },
+  {
+    'tpope/vim-commentary'
+  },
+  {
+    'tpope/vim-surround'
+  },
   -- "folke/neodev.nvim",
   -- "folke/which-key.nvim",
   -- { "folke/neoconf.nvim", cmd = "Neoconf" },
