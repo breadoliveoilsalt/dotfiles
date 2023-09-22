@@ -30,7 +30,6 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
-
 vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
 vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 
@@ -42,7 +41,7 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 -- Does not work
 -- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>") 
 -- Can I add silent to this?
-vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>")
+vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>", { silent = true } )
 
 vim.opt.number = true
 vim.opt.expandtab = true
@@ -63,17 +62,23 @@ vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
 vim.opt.clipboard = "unnamed"
 
 -- Allow :close, ie, allow hiding unsaved buffers
+--
 vim.opt.hidden = true
 
 -- Set status line to see full path and line, col
+
 -- Alternative: To get just line, col, use set ruler
 -- I may not need this?
 -- vim.opt.statusline="%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)"
 
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
+-- dc for disable comment
+vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>')
+-- For some reason, these will not work in the init file
 -- vim.opt.formatoptions:remove('cro')
-vim.cmd([[set formatoptions-=cro]])
+-- vim.cmd([[ set formatoptions-=cro]])
+
 
 -- yank file path
 vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
@@ -85,6 +90,8 @@ vim.cmd([[
   nnoremap <Leader>wn <C-w>20<
   nnoremap <Leader>wt <C-w>10+
   nnoremap <Leader>ws <C-w>10-
+  nnoremap <Leader>z :wincmd _<CR>:wincmd \|<CR>
+  nnoremap <Leader>= :wincmd =<CR>
 ]])
 
 -- Automatically rebalance windows on vim resize
@@ -97,6 +104,49 @@ vim.cmd([[
 vim.cmd([[
   nnoremap <C-w>q :echo "^wq disabled for quitting window"<CR>
 ]])
+
+
+-- Open quickfix immediately upon search
+-- https://www.reddit.com/r/vim/comments/bmh977/automatically_open_quickfix_window_after/
+-- https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3
+vim.cmd([[
+  augroup quickfix
+      autocmd!
+      autocmd QuickFixCmdPost [^l]* cwindow
+      autocmd QuickFixCmdPost l* lwindow
+  augroup END
+]])
+
+-- Sets Ripgrep to :grep command
+-- Can search regex with :grep -e "[Rr]egex"
+-- To not jump to first result in quickfix => :grep! -e "[Rr]exex"
+-- TODO update this
+vim.cmd([[
+  set grepprg=rg\ --hidden\ --follow\ --vimgrep
+]])
+
+
+  -- filetype plugin on
+-- markdown help
+-- vim.cmd([[
+--   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown tabstop=2 shiftwidth=2
+-- ]])
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufFilePre" }, {
+  pattern = {
+    "*.markdown",
+    "*.mdown",
+    "*.mkdn",
+    "*.md",
+    "*.mkd",
+    "*.mdwn",
+    "*.mdxt",
+    "*.mdtext",
+    "*.text",
+    "*.txt",
+  },
+  command = "set filetype=markdown tabstop=2 shiftwidth=2",
+})
 
 -------------------------
 -- TRAILING WHITESPACE --
@@ -146,6 +196,51 @@ vim.api.nvim_exec([[
 vim.cmd([[
   nnoremap <Leader>ib :call InsertBackticks()<CR>
   vnoremap <Leader>ib :call SurroundVisualLinesWithBackticks()<CR>
+]])
+
+-------------------------
+-- PASTING SCREENSHOTS --
+-------------------------
+
+vim.api.nvim_exec([[
+  " If current working file is vim/pasteScreenShot.vim', this will paste
+  " screen shot in vim/assets.pasteScreenShot/pasteScreenShot-image-2022-01-08-00-00-00.png
+  function PasteClipboardImageWithMarkdown()
+    let current_file_name_without_ext = expand("%:t:r")
+    let img_directory_name = current_file_name_without_ext . ".assets"
+    let img_directory_absolute_path = expand("%:p:h") . "/" . img_directory_name
+
+    if !isdirectory(img_directory_absolute_path)
+      silent call mkdir(img_directory_absolute_path)
+    endif
+
+    let img_file_name = current_file_name_without_ext . "-image-" . strftime("%Y-%m-%d-%H-%M-%S") . ".png"
+
+    let paste_command = "pngpaste " . img_directory_absolute_path . " " . img_file_name
+
+    " Note below the dependency on `pngpaste`. This is defined here in the
+    " `customCommands` directory.  Also note: To be recognized by `system` (or by
+    " an Ex bang command), pngpaste must be a script available in /usr/local/bin.
+    " It cannot be a function loaded up in .zshrc
+    silent call system(paste_command)
+
+    if v:shell_error == 1
+      echo "Something went wrong saving image from clipboard. Maybe text was there."
+    else
+     execute "normal! i![](" . img_directory_name . "/" . img_file_name . ")"
+    endif
+  endfunction
+
+  function OpenMarkdownViewer()
+    let file_name_full_path = expand("%:p")
+    let open_markdown_viewer_command = "open -a 'Google Chrome' file://" . file_name_full_path
+    silent call system(open_markdown_viewer_command)
+  endfunction
+]], false)
+
+vim.cmd([[
+  nnoremap <Leader>ps :call PasteClipboardImageWithMarkdown()<CR>
+  nnoremap <Leader>om :call OpenMarkdownViewer()<CR>
 ]])
 
 -- Highlight current line as default
@@ -233,3 +328,96 @@ vim.keymap.set('n', '<Leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<Leader>fw', builtin.live_grep, {})
 vim.keymap.set('n', '<Leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<Leader>fh', builtin.help_tags, {})
+
+
+-------------
+-- LSP'ing --
+-------------
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+local lspconfig = require('lspconfig')
+lspconfig.tsserver.setup {}
+
+lspconfig.lua_ls.setup {
+  -- Source: https://github.com/neovim/neovim/issues/21686
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using
+        -- (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {
+          'vim',
+          'require'
+        },
+      },
+      -- workspace = {
+        -- Make the server aware of Neovim runtime files
+        -- library = vim.api.nvim_get_runtime_file("", true),
+      -- },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
+
+-- lspconfig.rust_analyzer.setup {
+  -- Server-specific settings. See `:help lspconfig-setup`
+  -- settings = {
+    -- ['rust-analyzer'] = {},
+  -- },
+-- }
+
+
+-- TN: change all <space> to <Leader>
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
+
+vim.keymap.set('n', '<Leader>cf', vim.lsp.buf.format)
+
+-- vim.cmd([[set formatoptions-=cro]])
+-- vim.cmd([[
+--   set formatoptions-=c formatoptions-=r formatoptions-=o
+-- ]])

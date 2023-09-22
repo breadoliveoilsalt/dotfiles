@@ -293,20 +293,20 @@ endfunction
 " `il` for insert logger. Changes word under cursor in to logging command
 nnoremap <Leader>il :call AppendConsoleLog()<CR>
 
-function ConfirmQuit()
-  "See :help confirm() -- not :help confirm
-  let l:choice = confirm("Save session first?", "&Save\n&Quit\n&Cancel")
-  if choice == 1
-    mks!
-    quit
-  elseif choice == 2
-    quit
-  endif
-endfunction
+" 230926 commenting out
+"function ConfirmQuit()
+"  "See :help confirm() -- not :help confirm
+"  let l:choice = confirm("Save session first?", "&Save\n&Quit\n&Cancel")
+"  if choice == 1
+"    mks!
+"    quit
+"  elseif choice == 2
+"    quit
+"  endif
+"endfunction
 
-" cnoremap <silent> q<CR> :call ConfirmQuit()<CR>
 " NOTE: this is mapping an Ex-mode command. Note that `:` not needed
-cnoremap q<CR> call ConfirmQuit()<CR>
+" cnoremap q<CR> call ConfirmQuit()<CR>
 " Below not really work, but above slows down qa for some reason
 " cnoremap <silent> qa<CR> :echo "no no no"<CR>
 
