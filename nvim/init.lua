@@ -1,8 +1,6 @@
 vim.keymap.set("n", "<Space>", "<Nop>", { silent = true })
 vim.g.mapleader = " "
 
-print("LOADING CONFIG FROM DOTFILES")
-
 -------------------------
 -- BOOTSTRAP lazy.nvim --
 -------------------------
@@ -39,9 +37,9 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 
 -- TEST TO SEE IF COPY WORKS
 -- Does not work
--- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>") 
+-- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>")
 -- Can I add silent to this?
-vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>", { silent = true } )
+vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>", { silent = true })
 
 vim.opt.number = true
 vim.opt.expandtab = true
@@ -53,7 +51,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hls = false
 
-vim.cmd([[colorscheme industry]])
+vim.cmd([[colorscheme slate]])
 
 -- Go to alternate file quickly
 vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
@@ -78,7 +76,6 @@ vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>')
 -- For some reason, these will not work in the init file
 -- vim.opt.formatoptions:remove('cro')
 -- vim.cmd([[ set formatoptions-=cro]])
-
 
 -- yank file path
 vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
@@ -121,12 +118,12 @@ vim.cmd([[
 -- Can search regex with :grep -e "[Rr]egex"
 -- To not jump to first result in quickfix => :grep! -e "[Rr]exex"
 -- TODO update this
-vim.cmd([[
-  set grepprg=rg\ --hidden\ --follow\ --vimgrep
-]])
+-- vim.cmd([[
+--   set grepprg=rg\ --hidden\ --follow\ --vimgrep
+-- ]])
 
 
-  -- filetype plugin on
+-- filetype plugin on
 -- markdown help
 -- vim.cmd([[
 --   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown tabstop=2 shiftwidth=2
@@ -147,6 +144,10 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufFilePre" }, {
   },
   command = "set filetype=markdown tabstop=2 shiftwidth=2",
 })
+
+vim.cmd([[
+  nnoremap <Leader>ss :mks!<CR>
+]])
 
 -------------------------
 -- TRAILING WHITESPACE --
@@ -173,7 +174,7 @@ vim.cmd([[
 
 
 ----------------------
--- ADDING BACKTICKS --
+-- MARKDOWN HELPERS --
 ----------------------
 
 -- for use of `range` see:
@@ -191,11 +192,24 @@ vim.api.nvim_exec([[
     '>
     execute "normal! o```"
   endfunction
+
+  function InsertBreak() 
+    set formatoptions-=cro
+    normal! i-----
+    normal! o
+    normal! o
+  endfunction
 ]], false)
 
 vim.cmd([[
-  nnoremap <Leader>ib :call InsertBackticks()<CR>
-  vnoremap <Leader>ib :call SurroundVisualLinesWithBackticks()<CR>
+  nnoremap <Leader>it :call InsertBackticks()<CR>
+  vnoremap <Leader>it :call SurroundVisualLinesWithBackticks()<CR>
+  nnoremap <Leader>ib :call InsertBreak()<CR>
+]])
+
+-- Assumes slate colorscheme. Better color for comments 
+vim.cmd([[
+  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow 
 ]])
 
 -------------------------
@@ -289,6 +303,19 @@ vim.cmd([[
 ]])
 
 
+vim.api.nvim_create_autocmd({ "BufWritePre"}, {
+  pattern = {
+    "*.js",
+    "*.jsx",
+    "*.ts",
+    "*.tsx",
+  },
+  callback = function()
+    vim.lsp.buf.format()
+  end
+})
+
+
 ------------------------------
 -- SAVING BY OTHER PROGRAMS --
 ------------------------------
@@ -303,9 +330,9 @@ vim.opt.autoread = true
 --   * https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
 --     * NOTE with above: it requires a tmux conf change
 vim.api.nvim_create_autocmd(
-  {"CursorHold","CursorHoldI","FocusGained","BufEnter"},
+  { "CursorHold", "CursorHoldI", "FocusGained", "BufEnter" },
   {
-    pattern = {"*"},
+    pattern = { "*" },
     command = "checktime"
   }
 )
@@ -313,22 +340,29 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_autocmd(
   "FileChangedShell",
   {
-    pattern = {"*"},
+    pattern = { "*" },
     callback = function() print("TN Warning: File changed on disk") end
   }
 )
 
+---------------
 -- TELESCOPE --
+---------------
 
 require('telescope').setup()
 require('telescope').load_extension('fzf')
 
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<Leader>ff', builtin.find_files, {})
+
+-- vim.keymap.set('n', '<Leader>ff', builtin.find_files, {})
+-- https://www.reddit.com/r/neovim/comments/nspg8o/telescope_find_files_not_showing_hidden_files/
+
+vim.keymap.set('n', '<leader>ff',
+  "<cmd>lua require'telescope.builtin'.find_files({ find_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!**/*/PackageBuilder/resources.js', '-g', '!**/*/src/assets/', '-g', '!*.snap', '-g', '!build/' }})<cr>")
+
 vim.keymap.set('n', '<Leader>fw', builtin.live_grep, {})
 vim.keymap.set('n', '<Leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<Leader>fh', builtin.help_tags, {})
-
 
 -------------
 -- LSP'ing --
@@ -357,8 +391,8 @@ lspconfig.lua_ls.setup {
         },
       },
       -- workspace = {
-        -- Make the server aware of Neovim runtime files
-        -- library = vim.api.nvim_get_runtime_file("", true),
+      -- Make the server aware of Neovim runtime files
+      -- library = vim.api.nvim_get_runtime_file("", true),
       -- },
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {
@@ -369,10 +403,10 @@ lspconfig.lua_ls.setup {
 }
 
 -- lspconfig.rust_analyzer.setup {
-  -- Server-specific settings. See `:help lspconfig-setup`
-  -- settings = {
-    -- ['rust-analyzer'] = {},
-  -- },
+-- Server-specific settings. See `:help lspconfig-setup`
+-- settings = {
+-- ['rust-analyzer'] = {},
+-- },
 -- }
 
 
@@ -409,15 +443,57 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
-    end, opts)
+    -- vim.keymap.set('n', '<Leader>fm', function()
+    --   vim.lsp.buf.format { async = true }
+    -- end, opts)
   end,
 })
 
-vim.keymap.set('n', '<Leader>cf', vim.lsp.buf.format)
 
 -- vim.cmd([[set formatoptions-=cro]])
 -- vim.cmd([[
 --   set formatoptions-=c formatoptions-=r formatoptions-=o
 -- ]])
+--
+
+
+-- Turning off tsserver formatter so pretterd can work with null-ls
+-- See: help vim.lsp.buf.format
+vim.lsp.buf.format {
+  filter = function(client) return client.name ~= "tsserver" end
+}
+
+vim.keymap.set('n', '<Leader>cf', vim.lsp.buf.format)
+
+-- Keep gutter open for LSP diagnostics
+-- https://github.com/neovim/nvim-lspconfig/issues/1309
+vim.opt.signcolumn = 'yes'
+
+--  Autoformat on save
+-- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
+
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+require("null-ls").setup({
+  -- you can reuse a shared lspconfig on_attach callback here
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({ async = false })
+          -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+          -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+          -- vim.lsp.buf.formatting_sync()
+
+
+        end,
+      })
+    end
+  end,
+})
+-- set signcolumn=yes
+
+-- Avoids diagnostics disappearing on insert mode and reappearing in normal mode
+vim.diagnostic.config({ update_in_insert = true })

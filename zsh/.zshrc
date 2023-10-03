@@ -187,7 +187,7 @@ alias sqlpro="open -a 'SQLPro for MSSQL'"
 
 function dotfiles() {
   cd ~/Documents/dotfiles
-  vim .
+  # vim .
 }
 
 function notes() {

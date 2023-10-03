@@ -11,7 +11,8 @@ return {
     end,
   },
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.3',
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.3',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   {
@@ -28,41 +29,21 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    config = function ()
+    config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript", "tsx" },
         -- only applied to `ensure_installed`
         sync_install = false,
         auto_install = false,
-
-        -- List of parsers to ignore installing (or "all")
-        -- ignore_install = { "javascript" },
-
         ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
         -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
         highlight = {
           enable = true,
-
-          -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-          -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-          -- the name of the parser)
-          -- list of language that will be disabled
-          -- disable = { "c", "rust" },
-          -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-          -- disable = function(lang, buf)
-          --     local max_filesize = 100 * 1024 -- 100 KB
-          --     local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-          --     if ok and stats and stats.size > max_filesize then
-          --         return true
-          --     end
-          -- end,
-
-          -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-          -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-          -- Using this option may slow down your editor, and you may see some duplicate highlights.
-          -- Instead of true it can also be a list of languages
           additional_vim_regex_highlighting = false,
+        },
+        rainbow = {
+          enable = true,
+          extended_mode = true,
         },
       }
     end
@@ -79,11 +60,35 @@ return {
   {
     "tpope/vim-unimpaired",
   },
-  -- "folke/neodev.nvim",
-  -- "folke/which-key.nvim",
-  -- { "folke/neoconf.nvim", cmd = "Neoconf" },
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup({
+        options = {
+          -- theme = 'moonfly'
+          theme = 'papercolor_light'
+          -- theme = 'papercolor_dark'
+        }
+      })
+    end
+  },
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    config = function()
+      local null_ls = require("null-ls")
+      -- local config_file = "~/Documents/projects/legalZoom/my-lz/packages/config/prettier.default.js"
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.prettierd.with({
+            filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "css", "html", "json",
+              "markdown" },
+            -- env = {
+            --   PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(config_file)
+            -- },
+          })
+        }
+      })
+    end
+  }
 }
-
-
-
-
