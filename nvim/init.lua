@@ -125,25 +125,26 @@ vim.cmd([[
 
 -- filetype plugin on
 -- markdown help
--- vim.cmd([[
---   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown tabstop=2 shiftwidth=2
--- ]])
+vim.cmd([[
+  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.mdown,*.mkdn,*.md,*.mkd,*.mdwn,*.mdxt,*.mdtext,*.text,*.txt set filetype=markdown tabstop=2 shiftwidth=2
+]])
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufFilePre" }, {
-  pattern = {
-    "*.markdown",
-    "*.mdown",
-    "*.mkdn",
-    "*.md",
-    "*.mkd",
-    "*.mdwn",
-    "*.mdxt",
-    "*.mdtext",
-    "*.text",
-    "*.txt",
-  },
-  command = "set filetype=markdown tabstop=2 shiftwidth=2",
-})
+-- commenting out 231005, going to see what happens
+-- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufFilePre" }, {
+--   pattern = {
+--     "*.markdown",
+--     "*.mdown",
+--     "*.mkdn",
+--     "*.md",
+--     "*.mkd",
+--     "*.mdwn",
+--     "*.mdxt",
+--     "*.mdtext",
+--     "*.text",
+--     "*.txt",
+--   },
+--   command = "set filetype=markdown tabstop=2 shiftwidth=2",
+-- })
 
 vim.cmd([[
   nnoremap <Leader>ss :mks!<CR>
@@ -193,7 +194,7 @@ vim.api.nvim_exec([[
     execute "normal! o```"
   endfunction
 
-  function InsertBreak() 
+  function InsertBreak()
     set formatoptions-=cro
     normal! i-----
     normal! o
@@ -207,9 +208,9 @@ vim.cmd([[
   nnoremap <Leader>ib :call InsertBreak()<CR>
 ]])
 
--- Assumes slate colorscheme. Better color for comments 
+-- Assumes slate colorscheme. Better color for comments
 vim.cmd([[
-  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow 
+  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow
 ]])
 
 -------------------------
@@ -303,7 +304,7 @@ vim.cmd([[
 ]])
 
 
-vim.api.nvim_create_autocmd({ "BufWritePre"}, {
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = {
     "*.js",
     "*.jsx",
@@ -314,7 +315,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre"}, {
     vim.lsp.buf.format()
   end
 })
-
 
 ------------------------------
 -- SAVING BY OTHER PROGRAMS --
@@ -463,7 +463,9 @@ vim.lsp.buf.format {
   filter = function(client) return client.name ~= "tsserver" end
 }
 
-vim.keymap.set('n', '<Leader>cf', vim.lsp.buf.format)
+vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
+  desc = '[r]un [f]ormatter'
+})
 
 -- Keep gutter open for LSP diagnostics
 -- https://github.com/neovim/nvim-lspconfig/issues/1309
@@ -486,8 +488,6 @@ require("null-ls").setup({
           -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
           -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
           -- vim.lsp.buf.formatting_sync()
-
-
         end,
       })
     end

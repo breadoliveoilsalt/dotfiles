@@ -69,6 +69,14 @@ return {
           -- theme = 'moonfly'
           theme = 'papercolor_light'
           -- theme = 'papercolor_dark'
+        },
+        sections = {
+          lualine_a = {
+            {
+              'filename',
+              path = 1
+            }
+          }
         }
       })
     end
