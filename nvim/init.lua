@@ -72,18 +72,6 @@ vim.opt.hidden = true
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
 vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>', { desc = '[d]isable/delete/destory auto-[c]ommenting'})
--- For some reason, none of these will work
--- vim.cmd([[set formatoptions-=cro]])
--- vim.opt.formatoptions = vim.opt.formatoptions - "cro"
--- vim.cmd([[set formatoptions-=cro]])
--- vim.cmd([[
---   set formatoptions-=c formatoptions-=r formatoptions-=o
--- ]])
--- For some reason, these will not work in the init file
--- vim.opt.formatoptions:remove('cro')
--- vim.opt.formatoptions:remove('c')
--- vim.opt.formatoptions:remove('r')
--- vim.opt.formatoptions:remove('o')
 
 -- yank file path
 vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
