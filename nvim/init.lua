@@ -39,7 +39,7 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 -- Does not work
 -- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>")
 -- Can I add silent to this?
-vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>", { silent = true })
+vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>", { silent = true, desc = "[c]opy [s]ource" })
 
 vim.opt.number = true
 vim.opt.expandtab = true
@@ -71,11 +71,19 @@ vim.opt.hidden = true
 
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
--- dc for disable comment
-vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>')
+vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>', { desc = '[d]isable/delete/destory auto-[c]ommenting'})
+-- For some reason, none of these will work
+-- vim.cmd([[set formatoptions-=cro]])
+-- vim.opt.formatoptions = vim.opt.formatoptions - "cro"
+-- vim.cmd([[set formatoptions-=cro]])
+-- vim.cmd([[
+--   set formatoptions-=c formatoptions-=r formatoptions-=o
+-- ]])
 -- For some reason, these will not work in the init file
 -- vim.opt.formatoptions:remove('cro')
--- vim.cmd([[ set formatoptions-=cro]])
+-- vim.opt.formatoptions:remove('c')
+-- vim.opt.formatoptions:remove('r')
+-- vim.opt.formatoptions:remove('o')
 
 -- yank file path
 vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
@@ -443,18 +451,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    -- vim.keymap.set('n', '<Leader>fm', function()
-    --   vim.lsp.buf.format { async = true }
-    -- end, opts)
   end,
 })
 
-
--- vim.cmd([[set formatoptions-=cro]])
--- vim.cmd([[
---   set formatoptions-=c formatoptions-=r formatoptions-=o
--- ]])
---
+vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
+  desc = '[r]un [f]ormatter'
+})
 
 
 -- Turning off tsserver formatter so pretterd can work with null-ls
@@ -462,10 +464,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.lsp.buf.format {
   filter = function(client) return client.name ~= "tsserver" end
 }
-
-vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
-  desc = '[r]un [f]ormatter'
-})
 
 -- Keep gutter open for LSP diagnostics
 -- https://github.com/neovim/nvim-lspconfig/issues/1309
@@ -475,6 +473,7 @@ vim.opt.signcolumn = 'yes'
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
 require("null-ls").setup({
   -- you can reuse a shared lspconfig on_attach callback here
   on_attach = function(client, bufnr)
@@ -493,7 +492,7 @@ require("null-ls").setup({
     end
   end,
 })
--- set signcolumn=yes
 
 -- Avoids diagnostics disappearing on insert mode and reappearing in normal mode
+
 vim.diagnostic.config({ update_in_insert = true })
