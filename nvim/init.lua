@@ -337,20 +337,25 @@ vim.api.nvim_create_autocmd(
 -- TELESCOPE --
 ---------------
 
-require('telescope').setup()
-require('telescope').load_extension('fzf')
+local telescope = require('telescope')
 
-local builtin = require('telescope.builtin')
+telescope.load_extension('fzf')
 
--- vim.keymap.set('n', '<Leader>ff', builtin.find_files, {})
--- https://www.reddit.com/r/neovim/comments/nspg8o/telescope_find_files_not_showing_hidden_files/
+local find_file_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!**/*/PackageBuilder/resources.js', '-g', '!**/*/src/assets/', '-g', '!*.snap', '-g', '!build/' }
 
-vim.keymap.set('n', '<leader>ff',
-  "<cmd>lua require'telescope.builtin'.find_files({ find_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!**/*/PackageBuilder/resources.js', '-g', '!**/*/src/assets/', '-g', '!*.snap', '-g', '!build/' }})<cr>")
+telescope.setup({
+	pickers = {
+		find_files = {
+			find_command = find_file_command,
+		},
+	},
+})
 
-vim.keymap.set('n', '<Leader>fw', builtin.live_grep, {})
-vim.keymap.set('n', '<Leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<Leader>fh', builtin.help_tags, {})
+local telescope_builtin = require('telescope.builtin')
+
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
+vim.keymap.set('n', '<Leader>fw', telescope_builtin.live_grep, {})
+vim.keymap.set('n', '<Leader>fb', telescope_builtin.buffers, {})
 
 -------------
 -- LSP'ing --
