@@ -86,14 +86,14 @@ return {
     config = function()
       local null_ls = require("null-ls")
       -- local config_file = "~/Documents/projects/legalZoom/my-lz/packages/config/prettier.default.js"
+      local config_file = "~/Documents/dotfiles/prettier/.prettierrc"
       null_ls.setup({
         sources = {
           null_ls.builtins.formatting.prettierd.with({
-            filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "css", "html", "json",
-              "markdown" },
-            -- env = {
-            --   PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(config_file)
-            -- },
+            filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "css", "html", "json", "markdown" },
+            env = {
+              PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(config_file)
+            },
           })
         }
       })

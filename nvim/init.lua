@@ -21,9 +21,10 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
----------------------------
--- OPTIONS FOR NVIM TREE --
----------------------------
+---------------
+-- NVIM TREE --
+---------------
+
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
@@ -32,14 +33,12 @@ vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
 vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 
 -----------------
--- MY SETTINGS --
+-- MY SETTINGS -
 -----------------
 
--- TEST TO SEE IF COPY WORKS
--- Does not work
--- vim.keymap.set("n", "<Leader>so", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim | so ~/.config/nvim/init.lua<cr>")
--- Can I add silent to this?
-vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr>", { silent = true, desc = "[c]opy [s]ource" })
+-- Note extra <CR> to force silence after the bang command is run
+vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr>",
+  { silent = true, desc = "[c]opy [s]ource" })
 
 vim.opt.number = true
 vim.opt.expandtab = true
@@ -60,21 +59,14 @@ vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
 vim.opt.clipboard = "unnamed"
 
 -- Allow :close, ie, allow hiding unsaved buffers
---
 vim.opt.hidden = true
-
--- Set status line to see full path and line, col
-
--- Alternative: To get just line, col, use set ruler
--- I may not need this?
--- vim.opt.statusline="%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)"
 
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
-vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>', { desc = '[d]isable/delete/destory auto-[c]ommenting'})
+vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>',
+  { desc = '[d]isable/delete/destory auto-[c]ommenting' })
 
--- yank file path
-vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>')
+vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>', { desc = '[y]ank [p]ath' })
 
 -- Increase or decrease window
 -- Think: window-wider, window-narrower, window-taller, window-shorter
@@ -445,7 +437,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
   desc = '[r]un [f]ormatter'
 })
-
 
 -- Turning off tsserver formatter so pretterd can work with null-ls
 -- See: help vim.lsp.buf.format
