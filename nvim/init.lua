@@ -317,14 +317,15 @@ local telescope = require('telescope')
 
 telescope.load_extension('fzf')
 
-local find_file_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!**/*/PackageBuilder/resources.js', '-g', '!**/*/src/assets/', '-g', '!*.snap', '-g', '!build/' }
+local find_file_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!**/*/PackageBuilder/resources.js', '-g',
+  '!**/*/src/assets/', '-g', '!*.snap', '-g', '!build/' }
 
 telescope.setup({
-	pickers = {
-		find_files = {
-			find_command = find_file_command,
-		},
-	},
+  pickers = {
+    find_files = {
+      find_command = find_file_command,
+    },
+  },
 })
 
 local telescope_builtin = require('telescope.builtin')
@@ -332,6 +333,7 @@ local telescope_builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
 vim.keymap.set('n', '<Leader>fw', telescope_builtin.live_grep, {})
 vim.keymap.set('n', '<Leader>fb', telescope_builtin.buffers, {})
+vim.keymap.set('n', '<Leader>fh', telescope_builtin.help_tags, {})
 
 -------------
 -- LSP'ing --
@@ -403,14 +405,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set('n', '<space>wl', function()
+    vim.keymap.set('n', '<Leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<Leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<Leader>wl', function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, opts)
-    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', '<Leader>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<Leader>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   end,
 })
@@ -419,7 +421,7 @@ vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
   desc = '[r]un [f]ormatter'
 })
 
--- Turning off tsserver formatter so pretterd can work with null-ls
+-- Never request typescript-language-server for formatting
 -- See: help vim.lsp.buf.format
 vim.lsp.buf.format {
   filter = function(client) return client.name ~= "tsserver" end
