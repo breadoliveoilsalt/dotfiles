@@ -251,7 +251,7 @@ vim.api.nvim_create_autocmd("FocusLost",
 )
 
 -- Notification after file change
--- See: https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+-- https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
 vim.api.nvim_create_autocmd("FileChangedShellPost",
   {
     pattern = "*",
@@ -260,7 +260,7 @@ vim.api.nvim_create_autocmd("FileChangedShellPost",
 )
 
 -- Store all swp/swap files in a different directory
--- From here: https://www.mattcrampton.com/blog/move_vim_swp_files/
+-- https://www.mattcrampton.com/blog/move_vim_swp_files/
 vim.cmd([[
   set backupdir=~/.config/nvim/backup_files//
   set directory=~/.config/nvim/swap_files//
@@ -343,19 +343,20 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 
 local lspconfig = require('lspconfig')
+
+-- tsserver config options are limited
+-- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
 lspconfig.tsserver.setup {}
 
+-- Source: https://github.com/neovim/neovim/issues/21686
 lspconfig.lua_ls.setup {
-  -- Source: https://github.com/neovim/neovim/issues/21686
   settings = {
     Lua = {
       runtime = {
-        -- Tell the language server which version of Lua you're using
-        -- (most likely LuaJIT in the case of Neovim)
         version = 'LuaJIT',
       },
       diagnostics = {
-        -- Get the language server to recognize the `vim` global
+        -- Get the language server to recognize the `vim` global and not consider `vim.*` an error, for example.
         globals = {
           'vim',
           'require'
@@ -373,21 +374,58 @@ lspconfig.lua_ls.setup {
   },
 }
 
--- lspconfig.rust_analyzer.setup {
--- Server-specific settings. See `:help lspconfig-setup`
--- settings = {
--- ['rust-analyzer'] = {},
--- },
--- }
+local prettier_config_file = "~/Documents/dotfiles/prettier/.prettierrc"
 
+local prettier_d_config = {
+  formatCommand = 'prettierd "${INPUT}"',
+  formatStdin = true,
+  env = {
+    string.format('PRETTIERD_DEFAULT_CONFIG=%s',
+      vim.fn.expand(prettier_config_file)),
+  }
+}
 
--- TN: change all <space> to <Leader>
--- Global mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+-- BIG LESSONS LEARNED:
+-- got to set the `filetypes` property with strings
+-- got to set the `langauges` property with the proper filetype.
+-- It did not recognize my tsx file until I added `languages = { ...typescriptreact = ...}`
+-- TODO: investigate more why root dir seems to be off in client proj
+lspconfig.efm.setup {
+  init_options = { documentFormatting = true },
+  filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
+  settings = {
+    -- rootMarkers = { ".git/" },
+    rootMarkers = { "package.json" },
+    languages = {
+      typescript = { prettier_d_config },
+      typescriptreact = { prettier_d_config },
+      -- lua = {
+      --   { formatCommand = "lua-format -i", formatStdin = true }
+      -- }
+    }
+  },
+  on_attach = function(client, bufnr)
+    -- Autoformat on save
+    -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
+    if client.supports_method("textDocument/formatting") then
+      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({ async = false })
+          -- vim.lsp.buf.formatting_sync()
+        end,
+      })
+    end
+  end,
+}
+
+vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<Leader>q', vim.diagnostic.setloclist)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -396,9 +434,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     -- Enable completion triggered by <c-x><c-o>
     vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    -- `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -422,7 +458,7 @@ vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
 })
 
 -- Never request typescript-language-server for formatting
--- See: help vim.lsp.buf.format
+-- :help vim.lsp.buf.format
 vim.lsp.buf.format {
   filter = function(client) return client.name ~= "tsserver" end
 }
@@ -431,30 +467,6 @@ vim.lsp.buf.format {
 -- https://github.com/neovim/nvim-lspconfig/issues/1309
 vim.opt.signcolumn = 'yes'
 
---  Autoformat on save
--- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
-
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-require("null-ls").setup({
-  -- you can reuse a shared lspconfig on_attach callback here
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format({ async = false })
-          -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-          -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
-          -- vim.lsp.buf.formatting_sync()
-        end,
-      })
-    end
-  end,
-})
-
--- Avoids diagnostics disappearing on insert mode and reappearing in normal mode
-
+-- Avoid diagnostics disappearing on insert mode
+-- and reappearing in normal mode
 vim.diagnostic.config({ update_in_insert = true })
