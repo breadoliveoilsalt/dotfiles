@@ -31,11 +31,11 @@ function skipProtectedBranch {
 function deleteBranch {
   while read BRANCH; do
     if [ -n "$BRANCH" ]; then
-      LAST_MODIFIED=$(git show -s --format="Last modified %cr on %cD" "$BRANCH")
+      LAST_MODIFIED=$(git show -s --format="  Last modified\n    %cr on %cD\n    by %an" "$BRANCH")
 
       echo
-      echo $DIVIDER
-      echo "Branch: $BRANCH"
+      echo "$DIVIDER"
+      echo "$BRANCH"
       echo "$LAST_MODIFIED"
       echo
 
@@ -47,6 +47,7 @@ function deleteBranch {
           echo
           echo "$BRANCH deleted"
         else
+          echo
           read -n 1 -p "$BRANCH has not been pushed up to its remote branch. Proceed? [y/n] " FORCE_REMOVE_BRANCH <&3
           if [ "$FORCE_REMOVE_BRANCH" = "y" ] || [ "$FORCE_REMOVE_BRANCH" = "Y" ]; then
             git branch -D "$BRANCH"
