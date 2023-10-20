@@ -67,11 +67,11 @@ return {
       require('lualine').setup({
         options = {
           -- theme = 'moonfly'
-          theme = 'papercolor_light'
           -- theme = 'papercolor_dark'
+          theme = 'papercolor_light'
         },
         sections = {
-          lualine_a = {
+          lualine_c = {
             {
               'filename',
               path = 1

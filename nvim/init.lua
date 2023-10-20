@@ -37,7 +37,10 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 -----------------
 
 -- Note extra <CR> to force silence after the bang command is run
-vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr>",
+-- vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr>",
+--   { silent = true, desc = "[c]opy [s]ource" })
+vim.keymap.set("n", "<Leader>cs",
+  "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'dotfiles copied!'<cr>",
   { silent = true, desc = "[c]opy [s]ource" })
 
 vim.opt.number = true
@@ -90,7 +93,6 @@ vim.cmd([[
   nnoremap <C-w>q :echo "^wq disabled for quitting window"<CR>
 ]])
 
-
 -- Open quickfix immediately upon search
 -- https://www.reddit.com/r/vim/comments/bmh977/automatically_open_quickfix_window_after/
 -- https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3
@@ -102,18 +104,21 @@ vim.cmd([[
   augroup END
 ]])
 
--- Sets Ripgrep to :grep command
--- Can search regex with :grep -e "[Rr]egex"
--- To not jump to first result in quickfix => :grep! -e "[Rr]exex"
--- TODO update this
+vim.keymap.set("n", "<Leader>ss", "<cmd>mks!<cr> | <cmd>echo 'Session saved!'<cr>",
+  { silent = true, desc = "[s]ave [s]ession" })
 -- vim.cmd([[
---   set grepprg=rg\ --hidden\ --follow\ --vimgrep
+--   nnoremap <Leader>ss :mks!<CR> | echo 'Session saved!'
 -- ]])
 
+-- Hide mode in status line, deferring to lualine
+-- With noshowmode in effect, hide last ex-command entered
 vim.cmd([[
-  nnoremap <Leader>ss :mks!<CR>
+  set noshowmode
+  augroup cmdline
+    autocmd!
+    autocmd CmdlineLeave : echo ''
+  augroup end
 ]])
-
 -------------------------
 -- TRAILING WHITESPACE --
 -------------------------
