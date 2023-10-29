@@ -113,6 +113,7 @@ alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
 alias gitRecentBranches="git branch --sort=-committerdate | head -10"
+alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
