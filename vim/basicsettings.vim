@@ -285,8 +285,9 @@ match TrailingWhiteSpaces /\s\+$/
 function AppendConsoleLog()
   let l:current_word = expand('<cword>')
   execute "normal! daw"
+  " execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
+  execute "normal! i// eslint-disable-next-line"
   execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
-"  execute "normal! i// eslint-disable-next-line"
 "  execute "normal! oconsole.log('" . l:current_word . "', " . l:current_word . ")"
 endfunction
 

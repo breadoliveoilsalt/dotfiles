@@ -119,6 +119,21 @@ vim.cmd([[
     autocmd CmdlineLeave : echo ''
   augroup end
 ]])
+
+vim.api.nvim_exec([[
+  function AppendConsoleLog()
+    let l:current_word = expand('<cword>')
+    execute "normal! daw"
+    execute "normal! i// eslint-disable-next-line"
+    execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
+  endfunction
+]], false)
+
+-- `il` for insert logger. Changes word under cursor in to logging command
+vim.cmd([[
+  nnoremap <Leader>il :call AppendConsoleLog()<CR>
+]])
+
 -------------------------
 -- TRAILING WHITESPACE --
 -------------------------
@@ -254,15 +269,6 @@ vim.api.nvim_create_autocmd("FocusLost",
   }
 )
 
--- Notification after file change
--- https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
-vim.api.nvim_create_autocmd("FileChangedShellPost",
-  {
-    pattern = "*",
-    command = "echohl WarningMsg | echo 'File changed on disk. Buffer reloaded.' | echohl None"
-  }
-)
-
 -- Store all swp/swap files in a different directory
 -- https://www.mattcrampton.com/blog/move_vim_swp_files/
 vim.cmd([[
@@ -270,22 +276,6 @@ vim.cmd([[
   set directory=~/.config/nvim/swap_files//
   set undodir=~/.config/nvim/undo_files//
 ]])
-
-
--- commenting out, I think this is calling stuff to soon
--- I am seeing an error message about formatting right when 
--- it starts up
--- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
---   pattern = {
---     "*.js",
---     "*.jsx",
---     "*.ts",
---     "*.tsx",
---   },
---   callback = function()
---     vim.lsp.buf.format()
---   end
--- })
 
 ------------------------------
 -- SAVING BY OTHER PROGRAMS --
@@ -308,13 +298,24 @@ vim.api.nvim_create_autocmd(
   }
 )
 
-vim.api.nvim_create_autocmd(
-  "FileChangedShell",
+-- Notification after file change
+-- https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+vim.api.nvim_create_autocmd("FileChangedShellPost",
   {
-    pattern = { "*" },
-    callback = function() print("TN Warning: File changed on disk") end
+    pattern = "*",
+    command = "echohl WarningMsg | echo 'File changed on disk. Buffer reloaded.' | echohl None"
   }
 )
+
+-- Probably redundant of above. Consider deleting after
+-- wait period
+-- vim.api.nvim_create_autocmd(
+--   "FileChangedShell",
+--   {
+--     pattern = { "*" },
+--     callback = function() print("TN Warning: File changed on disk") end
+--   }
+-- )
 
 ---------------
 -- TELESCOPE --
