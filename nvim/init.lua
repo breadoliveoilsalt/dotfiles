@@ -7,14 +7,14 @@ vim.g.mapleader = " "
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -39,9 +39,12 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
 -- Note extra <CR> to force silence after the bang command is run
 -- vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr>",
 --   { silent = true, desc = "[c]opy [s]ource" })
-vim.keymap.set("n", "<Leader>cs",
-  "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'dotfiles copied!'<cr>",
-  { silent = true, desc = "[c]opy [s]ource" })
+vim.keymap.set(
+	"n",
+	"<Leader>cs",
+	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'dotfiles copied!'<cr>",
+	{ silent = true, desc = "[c]opy [s]ource" }
+)
 
 vim.opt.number = true
 vim.opt.expandtab = true
@@ -66,10 +69,14 @@ vim.opt.hidden = true
 
 -- Disable auto-commenting next line
 -- See: https://superuser.com/questions/271023/can-i-disable-continuation-of-comments-to-the-next-line-in-vim
-vim.keymap.set('n', '<Leader>dc', '<cmd>set formatoptions-=cro<cr>',
-  { desc = '[d]isable/delete/destory auto-[c]ommenting' })
+vim.keymap.set(
+	"n",
+	"<Leader>dc",
+	"<cmd>set formatoptions-=cro<cr>",
+	{ desc = "[d]isable/delete/destory auto-[c]ommenting" }
+)
 
-vim.keymap.set('n', '<Leader>yp', '<cmd>let @+=expand("%")<cr>', { desc = '[y]ank [p]ath' })
+vim.keymap.set("n", "<Leader>yp", '<cmd>let @+=expand("%")<cr>', { desc = "[y]ank [p]ath" })
 
 -- Increase or decrease window
 -- Think: window-wider, window-narrower, window-taller, window-shorter
@@ -104,8 +111,12 @@ vim.cmd([[
   augroup END
 ]])
 
-vim.keymap.set("n", "<Leader>ss", "<cmd>mks!<cr> | <cmd>echo 'Session saved!'<cr>",
-  { silent = true, desc = "[s]ave [s]ession" })
+vim.keymap.set(
+	"n",
+	"<Leader>ss",
+	"<cmd>mks!<cr> | <cmd>echo 'Session saved!'<cr>",
+	{ silent = true, desc = "[s]ave [s]ession" }
+)
 -- vim.cmd([[
 --   nnoremap <Leader>ss :mks!<CR> | echo 'Session saved!'
 -- ]])
@@ -120,14 +131,17 @@ vim.cmd([[
   augroup end
 ]])
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
   function AppendConsoleLog()
     let l:current_word = expand('<cword>')
     execute "normal! daw"
     execute "normal! i// eslint-disable-next-line"
     execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
   endfunction
-]], false)
+]],
+	false
+)
 
 -- `il` for insert logger. Changes word under cursor in to logging command
 vim.cmd([[
@@ -145,12 +159,15 @@ vim.cmd([[
   match TrailingWhiteSpaces /\s\+$/
 ]])
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
   function DeleteTrailingWhitespace()
     " %s/\s*$//
     s/\s*$//
   endfunction
-]], false)
+]],
+	false
+)
 
 vim.cmd([[
   nnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
@@ -164,7 +181,8 @@ vim.cmd([[
 -- for use of `range` see:
 -- https://vi.stackexchange.com/questions/17606/vmap-and-visual-block-how-do-i-write-a-function-to-operate-once-for-the-entire
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
   function InsertBackticks()
     execute "normal! i```\n\n```"
     execute "normal! k"
@@ -183,7 +201,9 @@ vim.api.nvim_exec([[
     normal! o
     normal! o
   endfunction
-]], false)
+]],
+	false
+)
 
 vim.cmd([[
   nnoremap <Leader>it :call InsertBackticks()<CR>
@@ -200,7 +220,8 @@ vim.cmd([[
 -- PASTING SCREENSHOTS --
 -------------------------
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
   " If current working file is vim/pasteScreenShot.vim', this will paste
   " screen shot in vim/assets.pasteScreenShot/pasteScreenShot-image-2022-01-08-00-00-00.png
   function PasteClipboardImageWithMarkdown()
@@ -234,7 +255,9 @@ vim.api.nvim_exec([[
     let open_markdown_viewer_command = "open -a 'Google Chrome' file://" . file_name_full_path
     silent call system(open_markdown_viewer_command)
   endfunction
-]], false)
+]],
+	false
+)
 
 vim.cmd([[
   nnoremap <Leader>ps :call PasteClipboardImageWithMarkdown()<CR>
@@ -262,12 +285,10 @@ vim.opt.autowriteall = true
 
 -- Auto-save on focus lost, not saving untitled buffers or read-only files
 -- See: https://vim.fandom.com/wiki/Auto_save_files_when_focus_is_lost
-vim.api.nvim_create_autocmd("FocusLost",
-  {
-    pattern = "*",
-    command = "silent! wa"
-  }
-)
+vim.api.nvim_create_autocmd("FocusLost", {
+	pattern = "*",
+	command = "silent! wa",
+})
 
 -- Store all swp/swap files in a different directory
 -- https://www.mattcrampton.com/blog/move_vim_swp_files/
@@ -290,22 +311,17 @@ vim.opt.autoread = true
 --   * https://stackoverflow.com/questions/923737/detect-file-change-offer-to-reload-file
 --   * https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
 --     * NOTE with above: it requires a tmux conf change
-vim.api.nvim_create_autocmd(
-  { "CursorHold", "CursorHoldI", "FocusGained", "BufEnter" },
-  {
-    pattern = { "*" },
-    command = "checktime"
-  }
-)
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "FocusGained", "BufEnter" }, {
+	pattern = { "*" },
+	command = "checktime",
+})
 
 -- Notification after file change
 -- https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
-vim.api.nvim_create_autocmd("FileChangedShellPost",
-  {
-    pattern = "*",
-    command = "echohl WarningMsg | echo 'File changed on disk. Buffer reloaded.' | echohl None"
-  }
-)
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+	pattern = "*",
+	command = "echohl WarningMsg | echo 'File changed on disk. Buffer reloaded.' | echohl None",
+})
 
 -- Probably redundant of above. Consider deleting after
 -- wait period
@@ -321,27 +337,40 @@ vim.api.nvim_create_autocmd("FileChangedShellPost",
 -- TELESCOPE --
 ---------------
 
-local telescope = require('telescope')
+local telescope = require("telescope")
 
-telescope.load_extension('fzf')
+telescope.load_extension("fzf")
 
-local find_file_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!**/*/PackageBuilder/resources.js', '-g',
-  '!**/*/src/assets/', '-g', '!*.snap', '-g', '!build/' }
+local find_file_command = {
+	"rg",
+	"--files",
+	"--hidden",
+	"-g",
+	"!.git",
+	"-g",
+	"!**/*/PackageBuilder/resources.js",
+	"-g",
+	"!**/*/src/assets/",
+	"-g",
+	"!*.snap",
+	"-g",
+	"!build/",
+}
 
 telescope.setup({
-  pickers = {
-    find_files = {
-      find_command = find_file_command,
-    },
-  },
+	pickers = {
+		find_files = {
+			find_command = find_file_command,
+		},
+	},
 })
 
-local telescope_builtin = require('telescope.builtin')
+local telescope_builtin = require("telescope.builtin")
 
-vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
-vim.keymap.set('n', '<Leader>fw', telescope_builtin.live_grep, {})
-vim.keymap.set('n', '<Leader>fb', telescope_builtin.buffers, {})
-vim.keymap.set('n', '<Leader>fh', telescope_builtin.help_tags, {})
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
+vim.keymap.set("n", "<Leader>fw", telescope_builtin.live_grep, {})
+vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, {})
+vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, {})
 
 -------------
 -- LSP'ing --
@@ -350,36 +379,36 @@ vim.keymap.set('n', '<Leader>fh', telescope_builtin.help_tags, {})
 require("mason").setup()
 require("mason-lspconfig").setup()
 
-local lspconfig = require('lspconfig')
+local lspconfig = require("lspconfig")
 
 -- vim.lsp.set_log_level("debug")
 
 -- tsserver config options are limited
 -- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
-lspconfig.tsserver.setup {}
+lspconfig.tsserver.setup({})
 
-lspconfig.eslint.setup {}
+lspconfig.eslint.setup({})
 
 -- Source: https://github.com/neovim/neovim/issues/21686
-lspconfig.lua_ls.setup {
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global and not consider `vim.*` an error, for example.
-        globals = {
-          'vim',
-          'require'
-        },
-      },
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-}
+lspconfig.lua_ls.setup({
+	settings = {
+		Lua = {
+			runtime = {
+				version = "LuaJIT",
+			},
+			diagnostics = {
+				-- Get the language server to recognize the `vim` global and not consider `vim.*` an error, for example.
+				globals = {
+					"vim",
+					"require",
+				},
+			},
+			telemetry = {
+				enable = false,
+			},
+		},
+	},
+})
 
 -- IMPORTANT LESSONS SETTING UP PRETTIERD AND EFMLS
 -- 1) You can double check whether your prettier config
@@ -412,54 +441,59 @@ lspconfig.lua_ls.setup {
 local prettier_config_file = "~/Documents/dotfiles/prettier/.prettierrc"
 
 local prettier_d_config = {
-  formatCommand = 'prettierd "${INPUT}"',
-  formatStdin = true,
-  env = {
-    string.format('PRETTIERD_DEFAULT_CONFIG=%s',
-      vim.fn.expand(prettier_config_file)),
-  }
+	formatCommand = 'prettierd "${INPUT}"',
+	formatStdin = true,
+	env = {
+		string.format("PRETTIERD_DEFAULT_CONFIG=%s", vim.fn.expand(prettier_config_file)),
+	},
+	rootMarkers = {
+		".prettierrc",
+		".prettierrc.json",
+		".prettierrc.js",
+		".prettierrc.yml",
+		".prettierrc.yaml",
+		".prettierrc.json5",
+		".prettierrc.mjs",
+		".prettierrc.cjs",
+		".prettierrc.toml",
+	},
 }
 
-lspconfig.efm.setup {
-  init_options = { documentFormatting = true },
-  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', },
-  settings = {
-    rootMarkers = {
-      '.prettierrc',
-      '.prettierrc.json',
-      '.prettierrc.js',
-      '.prettierrc.yml',
-      '.prettierrc.yaml',
-      '.prettierrc.json5',
-      '.prettierrc.mjs',
-      '.prettierrc.cjs',
-      '.prettierrc.toml',
-      -- 'package.json',
-      -- '.git/',
-    },
-    languages = {
-      typescript = { prettier_d_config },
-      javascript = { prettier_d_config },
-      javascriptreact = { prettier_d_config },
-      typescriptreact = { prettier_d_config },
-    }
-  },
-  -- Autoformat on save
-  -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
-  -- on_attach = function(client, bufnr)
-  -- if client.supports_method("textDocument/formatting") then
-  --   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-  --   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-  --   vim.api.nvim_create_autocmd("BufWritePre", {
-  --     group = augroup,
-  --     buffer = bufnr,
-  --     callback = function()
-  --       vim.lsp.buf.format({ async = false })
-  --     end,
-  --   })
-  -- end
-  -- end,
+local stylua_config = {
+	formatCommand = "stylua --color Never ${--range-start:charStart} ${--range-end:charEnd} -",
+	formatStdin = true,
+	formatCanRange = true,
+	rootMarkers = { "stylua.toml", ".stylua.toml" },
 }
+
+lspconfig.efm.setup({
+	init_options = { documentFormatting = true },
+	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "lua" },
+	settings = {
+		languages = {
+			typescript = { prettier_d_config },
+			javascript = { prettier_d_config },
+			javascriptreact = { prettier_d_config },
+			typescriptreact = { prettier_d_config },
+			lua = { stylua_config },
+		},
+	},
+	-- Autoformat on save
+	-- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
+	-- on_attach = function(client, bufnr)
+	-- if client.supports_method("textDocument/formatting") then
+	--   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+	--   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+	--   vim.api.nvim_create_autocmd("BufWritePre", {
+	--     group = augroup,
+	--     buffer = bufnr,
+	--     callback = function()
+	--       vim.lsp.buf.format({ async = false })
+	--     end,
+	--   })
+	-- end
+	-- end,
+})
 
 -- General format on save:
 -- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -474,50 +508,52 @@ lspconfig.efm.setup {
 --   end
 -- })
 
-vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<Leader>q', vim.diagnostic.setloclist)
+vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-    -- `:help vim.lsp.*` for documentation on any of the below functions
-    local opts = { buffer = ev.buf }
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<Leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set('n', '<Leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set('n', '<Leader>wl', function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, opts)
-    vim.keymap.set('n', '<Leader>D', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set({ 'n', 'v' }, '<Leader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-  end,
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		-- Enable completion triggered by <c-x><c-o>
+		vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+		-- `:help vim.lsp.*` for documentation on any of the below functions
+		local opts = { buffer = ev.buf }
+		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+		vim.keymap.set("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder, opts)
+		vim.keymap.set("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
+		vim.keymap.set("n", "<Leader>wl", function()
+			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+		end, opts)
+		vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+		vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+	end,
 })
 
-vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.format, {
-  desc = '[r]un [f]ormatter'
+vim.keymap.set("n", "<Leader>rf", vim.lsp.buf.format, {
+	desc = "[r]un [f]ormatter",
 })
 
 -- Never request typescript-language-server for formatting
 -- :help vim.lsp.buf.format
-vim.lsp.buf.format {
-  filter = function(client) return client.name ~= "tsserver" end
-}
+vim.lsp.buf.format({
+	filter = function(client)
+		return client.name ~= "tsserver"
+	end,
+})
 
 -- Keep gutter open for LSP diagnostics
 -- https://github.com/neovim/nvim-lspconfig/issues/1309
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 
 -- Avoid diagnostics disappearing on insert mode
 -- and reappearing in normal mode
