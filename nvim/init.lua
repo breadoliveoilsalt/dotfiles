@@ -98,9 +98,9 @@ vim.cmd([[
 -- https://gist.github.com/romainl/56f0c28ef953ffc157f36cc495947ab3
 vim.cmd([[
   augroup quickfix
-      autocmd!
-      autocmd QuickFixCmdPost [^l]* cwindow
-      autocmd QuickFixCmdPost l* lwindow
+    autocmd!
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow
   augroup END
 ]])
 
@@ -141,7 +141,6 @@ vim.cmd([[
   nnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
   vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
 ]])
-
 
 ----------------------
 -- MARKDOWN HELPERS --
@@ -352,9 +351,13 @@ require("mason-lspconfig").setup()
 
 local lspconfig = require('lspconfig')
 
+-- vim.lsp.set_log_level("debug")
+
 -- tsserver config options are limited
 -- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
 lspconfig.tsserver.setup {}
+
+lspconfig.eslint.setup {}
 
 -- Source: https://github.com/neovim/neovim/issues/21686
 lspconfig.lua_ls.setup {
@@ -370,11 +373,6 @@ lspconfig.lua_ls.setup {
           'require'
         },
       },
-      -- workspace = {
-      -- Make the server aware of Neovim runtime files
-      -- library = vim.api.nvim_get_runtime_file("", true),
-      -- },
-      -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {
         enable = false,
       },
@@ -382,95 +380,49 @@ lspconfig.lua_ls.setup {
   },
 }
 
+-- IMPORTANT LESSONS SETTING UP PRETTIERD AND EFMLS
+-- 1) You can double check whether your prettier config
+-- file is formatted correctly by running something like
+-- this, b/c the LSP server will not tell you the error
+--  `cat nvimTest.js | PRETTIERD_DEFAULT_CONFIG=~/Documents/dotfiles/prettier/.prettierrc prettierd nvimTest.js`
+-- 2) For an lsp set up with lspconfig, the order of
+-- filttypes listed in the `filetypes` property must
+-- be repeated in the `languages` property. The order
+-- of the languages must match (be repeated) or
+-- things will not work!
+-- 3) `rootMarkers` matter for efmls. That is, if the
+-- underlying program or daemon efmls trigges relies
+-- some kind of config file (`e.g., `.prettierrc`),
+-- then that must be in the table of rootMarkers.
+-- 4) For prettierd, changes in closest prettierrd
+-- config file take effect immediately. HOWEVER, if
+-- that file imports another file, and changes are
+-- made in the imported file, the changes will not
+-- take effect until prettierd damon is stopped &
+-- started again:
+--   `prettierd stop && prettierd start`
+
+-- Alternatives to prettierd config below:
+-- a) Call daemon and have it search up until it finds a
+-- config in your home directory:
+--   `ln -fs ~/Documents/dotfiles/prettier/.prettierrc ~/.prettierrc`
+-- b) A different format command:
+--   `formatCommand = 'PRETTIERD_DEFAULT_CONFIG=~/Documents/dotfiles/prettier/.prettierrc prettierd "${INPUT}"',`
 local prettier_config_file = "~/Documents/dotfiles/prettier/.prettierrc"
--- local prettier = require('efmls-configs.formatters.prettier_d')
--- prettier = vim.tbl_extend('force', prettier, {
---   rootMarkers = {},
---   env = {
---     string.format('PRETTIERD_DEFAULT_CONFIG=%s', vim.fn.expand(prettier_config_file)),
---   }
--- })
-
-vim.lsp.set_log_level("debug")
-
--- Helpful to run something like this, which will report errors
--- in the prettier config file. The LSP alone, trying to reach the
--- config file, will not report the errors and format incorrectly
--- `cat nvimTest.js | PRETTIERD_DEFAULT_CONFIG=~/Documents/dotfiles/prettier/.prettierrc prettierd nvimTest.js`
--- When testing with a vanilla js file, any changes to prettier config
--- will be immediate.
--- local prettier_config_file = "~/Documents/dotfiles/prettier/.prettierrc"
 
 local prettier_d_config = {
   formatCommand = 'prettierd "${INPUT}"',
-  -- formatCommand = 'PRETTIERD_DEFAULT_CONFIG=~/Documents/dotfiles/prettier/.prettierrc prettierd "${INPUT}"',
   formatStdin = true,
-  -- trying instead of setting env below
-  -- ln -fs ~/Documents/dotfiles/prettier/.prettierrc ~/.prettierrc
-  -- This works for js/ts files with no config in the directory
-  -- env = {
-  --   string.format('PRETTIERD_DEFAULT_CONFIG=%s',
-  --     vim.fn.expand(prettier_config_file)),
-  -- }
+  env = {
+    string.format('PRETTIERD_DEFAULT_CONFIG=%s',
+      vim.fn.expand(prettier_config_file)),
+  }
 }
--- BIG LESSONS LEARNED:
--- Got to set the `filetypes` property with strings
--- Got to set the `langauges` property with the proper filetype.
--- It did not recognize my tsx file until I added `languages = { ...typescriptreact = ...}`
--- Use :set ft? to see filetype
--- TODO: investigate more why root dir seems to be off in client proj
---
+
 lspconfig.efm.setup {
   init_options = { documentFormatting = true },
-  -- filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
-  -- filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
-  -- filetypes = { 'javascript', 'typescript'},
   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', },
   settings = {
-    -- rootMarkers = { "package.json", ".git/" },
-    -- rootMarkers = { "package.json" },
-    -- IMP: format with prettier works when I add the list of
-    -- pretteir files as rootMarkers. .git and package.json did not do it.
-    -- Now, what happens if I manipulate client config file?
-    -- What happens if I start deleting client config files?
-    -- Does prettier still work when i am in root client directory, instead of just sub app directory??
-      -- it does work from root dir
-      -- With iq CRA, I can confirm it's reading from this file, which is not in the root, but at the app level
-      -- apps/iq-flow/.prettierrc.yml.  That's even when I'm in the root dir of that repo
-      -- Next day:
-        -- I was in my lz and opened nvim without session.  All of a sudden, the double quote worked! It seems it took some time for some odd reason...
-        -- But which file was it?
-        -- Not default prettier config
-        -- Not this file either: mini-apps/document-editor/.prettierrc
-        -- Neither does changing the prettierrc in iqflow cra (in mylz).  In other words
-        -- simply changing the files does not work
-        -- BUT the config is a package, and I did do a yarn install last night...after all my node modules were deleted...
-        -- A yarn install by itself does not have any effect...
-        -- A build of the entire app has no effect...
-        -- OK: i did confirm that in my lz, we are reading from apps/iq-flow/prettier.config.cjs, b/c if I make an override change there, I see it:
-        --
-        --module.exports = {
-          -- ...require("config/prettier"),
-          -- singleQuote: true,
-        -- };
-        -- But I tried these three files, no changes took effect immediately.  And whenI changed the default file, gutted nm, and fress reinstall, nothing
-        -- ?? Do I need to build?
-        -- Ok, in another twist of events, I have prettierd installed for node 18.12.0, but not 18.15.0 AND mylz is on 18.12.0
-        -- and I can see it's in the file path
-        -- Ok, I ran prettierd stop from mylz...and it stopped...and I could see the process stop in activity monitory
-        -- On my desktop tests, I also had node 18.12.0
-        -- Ok, I can't tell if it's b/c I resetarted pretterd server or changed ALL of the files back to single quotes, but now I can see it working again...in single quotes...
-        -- SOLVED IT.
-        -- prettierd is reading from
-        -- here apps/iq-flow/prettier.config.cjs, which is just the import of the next file - BUT if you make changes here, they take effect immediately
-        -- then here packages/config/prettier.default.js, which has all the read configs
-        -- BUT in changes in the main config do NOT take effect unless you run
-        -- prettierd stop && prettierd start.  Has to do with whatever the caching issue
-        -- is with prettierd!
-        -- MIP: changes in closest prettierrd file take effect immediately. HOWEVER, if that file imports another file, and changes are made in the imported file, they will not take effect until prettierd damon is stopped & started again.
-          -- it has nothing to do with deleting node modules and running a fresh yarn install, that was a red herring
-        -- Another lesson: tsserver won't show eslint problems unless you have an eslint file!
-
     rootMarkers = {
       '.prettierrc',
       '.prettierrc.json',
@@ -484,34 +436,42 @@ lspconfig.efm.setup {
       -- 'package.json',
       -- '.git/',
     },
-    -- DID ALL THIS GO SIDEWAYS BEFORE BC THE LOST OF FILETYPES WAS OUT OF ORDER FROM THE LANGUAGES???
     languages = {
       typescript = { prettier_d_config },
       javascript = { prettier_d_config },
       javascriptreact = { prettier_d_config },
       typescriptreact = { prettier_d_config },
-
-      -- lua = {
-      --   { formatCommand = "lua-format -i", formatStdin = true }
-      -- }
     }
   },
-  on_attach = function(client, bufnr)
-    -- Autoformat on save
-    -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
-    if client.supports_method("textDocument/formatting") then
-      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format({ async = false })
-        end,
-      })
-    end
-  end,
+  -- Autoformat on save
+  -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
+  -- on_attach = function(client, bufnr)
+  -- if client.supports_method("textDocument/formatting") then
+  --   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+  --   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+  --   vim.api.nvim_create_autocmd("BufWritePre", {
+  --     group = augroup,
+  --     buffer = bufnr,
+  --     callback = function()
+  --       vim.lsp.buf.format({ async = false })
+  --     end,
+  --   })
+  -- end
+  -- end,
 }
+
+-- General format on save:
+-- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+--   pattern = {
+--     "*.js",
+--     "*.jsx",
+--     "*.ts",
+--     "*.tsx",
+--   },
+--   callback = function()
+--     vim.lsp.buf.format()
+--   end
+-- })
 
 vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
