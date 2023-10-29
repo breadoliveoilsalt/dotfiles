@@ -547,7 +547,7 @@ vim.keymap.set("n", "<Leader>rf", vim.lsp.buf.format, {
 -- :help vim.lsp.buf.format
 vim.lsp.buf.format({
 	filter = function(client)
-		return client.name ~= "tsserver"
+		return client.name ~= "tsserver" or client.name ~= "lua_ls"
 	end,
 })
 
