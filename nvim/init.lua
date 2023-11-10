@@ -32,6 +32,13 @@ vim.opt.termguicolors = true
 vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
 vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFindFile<cr>")
 
+-- Show gitignored files, like `node_modules`
+require("nvim-tree").setup({
+  filters = {
+    git_ignored = false
+  }
+})
+
 -----------------
 -- MY SETTINGS -
 -----------------
