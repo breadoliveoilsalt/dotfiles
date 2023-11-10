@@ -30,7 +30,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
 vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
-vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFocus<cr>")
+vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFindFile<cr>")
 
 -----------------
 -- MY SETTINGS -
