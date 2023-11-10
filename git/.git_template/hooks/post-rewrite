@@ -1,8 +1,8 @@
 #!/bin/sh
-echo "Running hooks from  ~/.git_template/hooks/"
+# echo "Running hooks from  ~/.git_template/hooks/"
 
-case "$1" in
-  rebase) exec .git/hooks/post-merge ;;
-esac
+# case "$1" in
+#   rebase) exec .git/hooks/post-merge ;;
+# esac
 
-.git/hooks/ideaFix >/dev/null 2>&1 &
+# .git/hooks/ideaFix >/dev/null 2>&1 &

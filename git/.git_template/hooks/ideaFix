@@ -1,4 +1,4 @@
 #!/bin/sh
-set -e
+# set -e
 
-git ls-files .idea | xargs git restore
+# git ls-files .idea | xargs git restore
