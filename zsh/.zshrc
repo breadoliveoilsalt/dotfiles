@@ -165,36 +165,28 @@ alias lz="cd ~/Documents/projects/legalZoom"
 alias iq="cd ~/Documents/projects/legalZoom/iq-flow"
 alias mylz="cd ~/Documents/projects/legalZoom/my-lz"
 
-# Think: Vim Last Session (vls)
-alias vls='vim -S'
-
 # Automatically open Chrome with devtools in tabs.  Make sure all other Chrome
 # windows are closed first
 alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-for-tabs'
 
 alias sqlpro="open -a 'SQLPro for MSSQL'"
 
-# function tmuxExampleStartSessionAndJumpToDirectory() {
-#   tmux new-session -d -s samaritan -n backend
-#   tmux send-keys -t samaritan:backend "cd ~/Documents/projects/samaritan/backend; clear" Enter
-#   tmux attach -t samaritan:backend
-# }
-#
-# function tmuxExampleStartSessionAndOpenVim() {
-#  tmux new-session -d -s dotfiles -n editPane
-#  tmux send-keys -t dotfiles:editPane "cd ~/Desktop/projects/dotfiles; clear; vim ." Enter
-#  tmux attach -t dotfiles:editPane
-#  }
+function tmuxWork {
+  tmux new-session -d -s work -n notes
+  tmux send-keys -t work:1 "cd ~/Documents/notes; nvim -S; clear" Enter
+  tmux new-window -d -t work:2 -n dotfiles
+  tmux send-keys -t work:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
+  tmux new-window -d -t work:3 -n iq-cra
+  tmux send-keys -t work:3 "iq; clear" Enter
+  tmux attach -t work:1
+}
 
 function dotfiles() {
   cd ~/Documents/dotfiles
-  # vim .
 }
 
 function notes() {
   cd ~/Documents/notes
-#  vim -S
-#  vim
 }
 
 function start() {
