@@ -34,9 +34,9 @@ vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFindFile<cr>")
 
 -- Show gitignored files, like `node_modules`
 require("nvim-tree").setup({
-  filters = {
-    git_ignored = false
-  }
+	filters = {
+		git_ignored = false,
+	},
 })
 
 -----------------
@@ -84,6 +84,13 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "<Leader>yp", '<cmd>let @+=expand("%")<cr>', { desc = "[y]ank [p]ath" })
+
+vim.keymap.set(
+	"n",
+	"<Leader>bd",
+	"<cmd>b#|bd#<cr>",
+	{ desc = { "[b]uffer [d]elete: Return to last file before deleting buffer, to prevent window closing" } }
+)
 
 -- Increase or decrease window
 -- Think: window-wider, window-narrower, window-taller, window-shorter
@@ -219,10 +226,13 @@ vim.cmd([[
 ]])
 
 -- Assumes slate colorscheme. Better color for comments
-vim.cmd([[
-  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
-]])
+-- vim.cmd([[
+--   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
+-- ]])
 
+vim.cmd([[
+  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md set tabstop=2 shiftwidth=2
+]])
 -------------------------
 -- PASTING SCREENSHOTS --
 -------------------------
@@ -540,7 +550,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end, opts)
 		vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts)
-		vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<Leader>cn", vim.lsp.buf.rename, opts)
 		vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
 		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 	end,
