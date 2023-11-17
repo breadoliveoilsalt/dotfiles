@@ -60,6 +60,6 @@ function deleteBranch {
   done
 }
 
-git branch | skipCurrentBranch | skipProtectedBranch | deleteBranch
+git branch --sort=committerdate | skipCurrentBranch | skipProtectedBranch | deleteBranch
 
 
