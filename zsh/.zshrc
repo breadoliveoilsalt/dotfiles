@@ -171,14 +171,22 @@ alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-fo
 
 alias sqlpro="open -a 'SQLPro for MSSQL'"
 
-function tmuxWork {
-  tmux new-session -d -s work -n notes
-  tmux send-keys -t work:1 "cd ~/Documents/notes; nvim -S; clear" Enter
-  tmux new-window -d -t work:2 -n dotfiles
-  tmux send-keys -t work:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
-  tmux new-window -d -t work:3 -n iq-cra
-  tmux send-keys -t work:3 "iq; clear" Enter
+function tmuxStartWork {
+  # tmux new-session -d -s work -n notes
+  # tmux send-keys -t work:1 "cd ~/Documents/notes; nvim -S; clear" Enter
+  # tmux new-window -d -t work:2 -n dotfiles
+  # tmux send-keys -t work:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
+  tmux new-session -d -s work -n iq-cra
+  tmux send-keys -t work:1 "iq; clear" Enter
   tmux attach -t work:1
+}
+
+function tmuxStartNotes {
+  tmux new-session -d -s notes -n notes
+  tmux send-keys -t notes:1 "cd ~/Documents/notes; nvim -S; clear" Enter
+  tmux new-window -d -t notes:2 -n dotfiles
+  tmux send-keys -t notes:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
+  tmux attach -t notes:1
 }
 
 function dotfiles() {
@@ -190,11 +198,13 @@ function notes() {
 }
 
 function start() {
-  open -a "Activity Monitor"
-  sleep 2
+  # open -a "Activity Monitor"
+  # sleep 2
   open -a "Slack"
   sleep 2
-  chromeWithDevTools "https://calendar.google.com"
+  open -a firefox "https://www.gmail.com" "https://calendar.google.com"
+  sleep 2
+  tmuxStartWork
 }
 
 # The following lines were added by compinstall
@@ -359,3 +369,7 @@ export FZF_DEFAULT_COMMAND="rg --files --hidden"
 # https://unix.stackexchange.com/questions/114300/whats-the-meaning-of-a-dot-before-a-command-in-shell
 # See also cat /usr/local/Cellar/asdf/0.11.1/libexec/asdf.sh
 . /usr/local/opt/asdf/libexec/asdf.sh
+
+function removeNodeModulesRecursively {
+  find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+}
