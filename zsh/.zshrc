@@ -98,7 +98,8 @@ PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi
 alias ga="git add"
 alias gaa="git add --all"
 alias ga.="git add ."
-alias gcm="git commit -m"
+alias gcm="git commit --no-verify -m"
+alias gp="git push origin head --no-verify"
 alias gc="git commit -v"
 alias gs="git status"
 alias gpo="git push origin"
@@ -186,7 +187,7 @@ function tmuxStartNotes {
   tmux send-keys -t notes:1 "cd ~/Documents/notes; nvim -S; clear" Enter
   tmux new-window -d -t notes:2 -n dotfiles
   tmux send-keys -t notes:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
-  tmux attach -t notes:1
+  # tmux attach -t notes:1
 }
 
 function dotfiles() {
@@ -373,3 +374,6 @@ export FZF_DEFAULT_COMMAND="rg --files --hidden"
 function removeNodeModulesRecursively {
   find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
 }
+
+# https://unix.stackexchange.com/questions/453338/how-to-get-execution-millisecond-time-of-a-command-in-zsh
+TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
