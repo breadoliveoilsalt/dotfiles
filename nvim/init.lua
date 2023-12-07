@@ -525,6 +525,20 @@ lspconfig.efm.setup({
 --   end
 -- })
 
+-- lspconfig.spectral.setup{}
+
+require("lspconfig").yamlls.setup({
+	settings = {
+		yaml = {
+			schemas = {
+				["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+				-- ["../path/relative/to/file.yml"] = "/.github/workflows/*",
+				-- ["/path/from/root/of/project"] = "/.github/workflows/*",
+			},
+		},
+	},
+})
+
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
