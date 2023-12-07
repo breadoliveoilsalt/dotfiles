@@ -113,13 +113,25 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
-alias gitRecentBranches="git branch --sort=-committerdate | head -10"
+# alias gitRecentBranches="git branch --sort=-committerdate | head -10"
 alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
 #   git remote -v | grep fetch | awk '{ print $2 }' | sed 's/\.git//' | xargs open
 # }
+#
+
+alias grb="gitRecentBranches"
+function gitRecentBranches {
+  if [ $# -eq 0 ]; then
+    git branch --sort=-committerdate | head -10 | awk '{print NR "." $0}'
+  else
+    # xargs trims whitespace
+    local BRANCH=$(git branch --sort=-committerdate | head -"$1" | tail -n 1 | xargs)
+    git checkout "$BRANCH"
+  fi
+}
 
 # Assumes you connect to GitHub via SSH not https
 function repo() {
