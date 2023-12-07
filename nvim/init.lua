@@ -88,7 +88,7 @@ vim.keymap.set("n", "<Leader>yp", '<cmd>let @+=expand("%")<cr>', { desc = "[y]an
 vim.keymap.set(
 	"n",
 	"<Leader>bd",
-	"<cmd>b#|bd#<cr>",
+	"<cmd>bp|bd#<cr>",
 	{ desc = { "[b]uffer [d]elete: Return to last file before deleting buffer, to prevent window closing" } }
 )
 
@@ -150,7 +150,7 @@ vim.api.nvim_exec(
   function AppendConsoleLog()
     let l:current_word = expand('<cword>')
     execute "normal! daw"
-    execute "normal! i// eslint-disable-next-line"
+    " execute "normal! i// eslint-disable-next-line"
     execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
   endfunction
 ]],
