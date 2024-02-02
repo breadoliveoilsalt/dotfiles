@@ -32,11 +32,30 @@ vim.opt.termguicolors = true
 vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
 vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFindFile<cr>")
 
+-- TODO: merge this with plugins.lu
 -- Show gitignored files, like `node_modules`
 require("nvim-tree").setup({
 	filters = {
 		git_ignored = false,
 	},
+  renderer = {
+    indent_markers = {
+      enable = true,
+    },
+    icons = {
+      show = {
+        folder_arrow = false,
+      }
+    },
+  }
+-- To avoid absolute paths in buffer list
+-- See: https://www.reddit.com/r/neovim/comments/yftm83/nvimtree_is_driving_me_nuts/
+-- Seems this changes the directory when you go up the tree in the tree itself! Not what I want
+	-- actions = {
+	-- 	change_dir = {
+	-- 		global = true,
+	-- 	},
+	-- },
 })
 
 -----------------
@@ -375,6 +394,24 @@ local find_file_command = {
 }
 
 telescope.setup({
+	defaults = {
+		vimgrep_arguments = {
+			-- set grepprg=rg\ --hidden\ --follow\ --vimgrep
+			-- nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -e '
+
+			"rg",
+			"--hidden",
+			"--color=never",
+			"--no-heading",
+			"--with-filename",
+			"--line-number",
+			"--column",
+			"--smart-case",
+			"--glob=!**/*/src/assets/",
+			"--glob=!.git/",
+			"--glob=!*.snap",
+		},
+	},
 	pickers = {
 		find_files = {
 			find_command = find_file_command,
@@ -555,6 +592,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local opts = { buffer = ev.buf }
 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)

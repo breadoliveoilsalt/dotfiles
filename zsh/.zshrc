@@ -20,7 +20,7 @@ bindkey -M vicmd ' ' edit-command-line
 
 # https://unix.stackexchange.com/questions/30168/how-to-enable-reverse-search-in-zsh
 # https://stackoverflow.com/questions/14040351/filtering-zsh-history-by-command
-bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^j' history-incremental-pattern-search-backward
 bindkey '^S' history-incremental-pattern-search-forward
 
 # Stop homebrew from auto updating
@@ -98,14 +98,14 @@ PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi
 alias ga="git add"
 alias gaa="git add --all"
 alias ga.="git add ."
-alias gcm="git commit --no-verify -m"
-alias gp="git push origin head --no-verify"
+alias gcm="git commit -m"
+# alias gcm="git commit --no-verify -m"
+# alias gp="git push origin head --no-verify"
 alias gc="git commit -v"
 alias gs="git status"
 alias gpo="git push origin"
 alias gc="git checkout"
 alias gcnb="git checkout -b"
-alias gb="git branch"
 alias glo="git log --oneline"
 alias gl="git log"
 alias lc="git log --oneline -1"
@@ -113,8 +113,11 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
+alias gbc="gb | pbcopy"
+alias push="git push origin head --no-verify"
 # alias gitRecentBranches="git branch --sort=-committerdate | head -10"
 alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
+alias diff="diff --color='always'"
 
 # Works assuming you clone with https
 # function openGitHubHttps() {
@@ -122,7 +125,6 @@ alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
 # }
 #
 
-alias grb="gitRecentBranches"
 function gitRecentBranches {
   if [ $# -eq 0 ]; then
     git branch --sort=-committerdate | head -10 | awk '{print NR "." $0}'
@@ -132,6 +134,8 @@ function gitRecentBranches {
     git checkout "$BRANCH"
   fi
 }
+
+alias grb="gitRecentBranches"
 
 # Assumes you connect to GitHub via SSH not https
 function repo() {
@@ -375,7 +379,7 @@ alias grn="gitRestoreNumber"
 # Load fzf shortcut keys:
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_COMMAND="rg --files --hidden" 
+export FZF_DEFAULT_COMMAND="rg --files --hidden"
 
 # allows asdf to work and read .tool-versions
 # Dot is equivalent to `source`.  See meaning of dot here:
