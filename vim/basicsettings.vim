@@ -98,9 +98,6 @@ set wildignore+=*.log
 set wildignore+=ngrok
 set wildignore+=*.svg
 
-" Store all swp/swap files in a different directory
-set directory^=$HOME/.vim/swap//
-
 " Search with case-insensitivity unless there's a capital letter
 set ignorecase smartcase
 
