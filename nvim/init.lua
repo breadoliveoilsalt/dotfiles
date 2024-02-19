@@ -68,7 +68,7 @@ require("nvim-tree").setup({
 vim.keymap.set(
 	"n",
 	"<Leader>cs",
-	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'dotfiles copied!'<cr>",
+	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
 	{ silent = true, desc = "[c]opy [s]ource" }
 )
 
@@ -164,24 +164,15 @@ vim.cmd([[
   augroup end
 ]])
 
-vim.api.nvim_exec(
-	[[
-  function AppendConsoleLog()
-    let l:current_word = expand('<cword>')
-    execute "normal! daw"
-    " execute "normal! i// eslint-disable-next-line"
-    execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
-    execute "normal! A"
-    " execute "normal! x"
-  endfunction
-]],
-	false
-)
-
--- `il` for insert logger. Changes word under cursor in to logging command
+-- Set Markdown tabstop & shiftwidth
+-- Does not work to place these or similar calls in after/ftplugin/markdown.lua
 vim.cmd([[
-  nnoremap <Leader>il :call AppendConsoleLog()<CR>
+  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md set tabstop=2 shiftwidth=2
 ]])
+-- Assumes slate colorscheme. Better color for comments
+-- vim.cmd([[
+--   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
+-- ]])
 
 -------------------------
 -- TRAILING WHITESPACE --
@@ -209,51 +200,6 @@ vim.cmd([[
   vnoremap <Leader>dw :call DeleteTrailingWhitespace()<CR>
 ]])
 
-----------------------
--- MARKDOWN HELPERS --
-----------------------
-
--- for use of `range` see:
--- https://vi.stackexchange.com/questions/17606/vmap-and-visual-block-how-do-i-write-a-function-to-operate-once-for-the-entire
-
-vim.api.nvim_exec(
-	[[
-  function InsertBackticks()
-    execute "normal! i```\n\n```"
-    execute "normal! k"
-  endfunction
-
-  function SurroundVisualLinesWithBackticks() range
-    '<
-    execute "normal! O```"
-    '>
-    execute "normal! o```"
-  endfunction
-
-  function InsertBreak()
-    set formatoptions-=cro
-    normal! i-----
-    normal! o
-    normal! o
-  endfunction
-]],
-	false
-)
-
-vim.cmd([[
-  nnoremap <Leader>it :call InsertBackticks()<CR>
-  vnoremap <Leader>it :call SurroundVisualLinesWithBackticks()<CR>
-  nnoremap <Leader>ib :call InsertBreak()<CR>
-]])
-
--- Assumes slate colorscheme. Better color for comments
--- vim.cmd([[
---   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
--- ]])
-
-vim.cmd([[
-  autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md set tabstop=2 shiftwidth=2
-]])
 -------------------------
 -- PASTING SCREENSHOTS --
 -------------------------
