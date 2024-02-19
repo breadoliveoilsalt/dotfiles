@@ -68,7 +68,7 @@ require("nvim-tree").setup({
 vim.keymap.set(
 	"n",
 	"<Leader>cs",
-	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'dotfiles copied!'<cr>",
+	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
 	{ silent = true, desc = "[c]opy [s]ource" }
 )
 
