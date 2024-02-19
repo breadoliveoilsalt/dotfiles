@@ -171,6 +171,8 @@ vim.api.nvim_exec(
     execute "normal! daw"
     " execute "normal! i// eslint-disable-next-line"
     execute "normal! i console.log('" . l:current_word . "', " . l:current_word . ")"
+    execute "normal! A"
+    " execute "normal! x"
   endfunction
 ]],
 	false
