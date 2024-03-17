@@ -15,7 +15,8 @@ make \
 npm \
 xclip # needed for neovim to copy to system clipboard
 
-sudo apt-get install ripgrep
+sudo apt-get install -y \
+ripgrep
 
 # make zsh the shell default
 # didn't quite work right away - have to log out and log back in
