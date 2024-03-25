@@ -1,5 +1,4 @@
--- below works to source js filetype when I load ts!
+-- Source js filetype when ts filetype loads
 vim.cmd([[
   runtime after/ftplugin/javascript.lua
 ]])
-print('now you are in typescript')

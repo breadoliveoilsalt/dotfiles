@@ -7,19 +7,19 @@
 
 vim.api.nvim_exec(
 	[[
-  function InsertBackticks()
+  function! InsertBackticks()
     execute "normal! i```\n\n```"
     execute "normal! k"
   endfunction
 
-  function SurroundVisualLinesWithBackticks() range
+  function! SurroundVisualLinesWithBackticks() range
     '<
     execute "normal! O```"
     '>
     execute "normal! o```"
   endfunction
 
-  function InsertBreak()
+  function! InsertBreak()
     set formatoptions-=cro
     normal! i-----
     normal! o

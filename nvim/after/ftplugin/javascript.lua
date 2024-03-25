@@ -1,6 +1,8 @@
+-- Re: need for `!`, see:
+-- https://vi.stackexchange.com/questions/21856/is-it-necessary-to-always-add-to-function-and-command
 vim.api.nvim_exec(
 	[[
-  function AppendConsoleLog()
+  function! AppendConsoleLog()
     let l:current_word = expand('<cword>')
     execute "normal! daw"
     " execute "normal! i// eslint-disable-next-line"
@@ -16,4 +18,3 @@ vim.api.nvim_exec(
 vim.cmd([[
   nnoremap <Leader>il :call AppendConsoleLog()<CR>
 ]])
-
