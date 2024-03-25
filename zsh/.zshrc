@@ -221,6 +221,7 @@ function start() {
   sleep 2
   open -a firefox "https://www.gmail.com" "https://calendar.google.com"
   sleep 2
+  tmuxStartNotes
   tmuxStartWork
 }
 
