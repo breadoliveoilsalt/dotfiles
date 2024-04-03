@@ -72,9 +72,12 @@ printDividingLineToEndOfWindow() {
 # Does stuff after command run
 # See: https://unix.stackexchange.com/questions/703918/print-exit-status-code-after-each-command-in-terminal
 precmd() {
- # printDividingLineToEndOfWindow
+ echo
+ echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
  echo "Exit Code: $?"
- echo "<< $(date +%m-%d/%H:%M:%S) >>"
+ # show time last command took. Depends on `setopt inc_append_history_time` below.
+ echo "Time: $(history -D | tail -1 | awk '{print $2 " <- " $3}')"
+ # echo "<< $(date +%m-%d/%H:%M:%S) >>"
  printDividingLineToEndOfWindow
 }
 
@@ -113,10 +116,10 @@ alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
-alias gbc="gb | pbcopy"
+alias gcb="gb | pbcopy"
 alias push="git push origin head --no-verify"
 # alias gitRecentBranches="git branch --sort=-committerdate | head -10"
-alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
+# alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
 alias diff="diff --color='always'"
 
 # Works assuming you clone with https
@@ -394,3 +397,6 @@ function removeNodeModulesRecursively {
 
 # https://unix.stackexchange.com/questions/453338/how-to-get-execution-millisecond-time-of-a-command-in-zsh
 TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
+
+# https://stackoverflow.com/a/35531083
+setopt inc_append_history_time
