@@ -20,9 +20,9 @@ vim.api.nvim_exec(
   endfunction
 
   function! InsertBreak()
+    normal! o
     set formatoptions-=cro
     normal! i-----
-    normal! o
     normal! o
   endfunction
 ]],

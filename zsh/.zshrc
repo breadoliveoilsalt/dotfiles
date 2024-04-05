@@ -69,14 +69,22 @@ printDividingLineToEndOfWindow() {
   for ((i=0; i<cols; i++));do printf "="; done; echo
 }
 
+# printSeparatingLine() {
+#   cols=80
+#   for ((i=0; i<cols; i++));do printf "$1" done; echo
+# }
+
 # Does stuff after command run
 # See: https://unix.stackexchange.com/questions/703918/print-exit-status-code-after-each-command-in-terminal
 precmd() {
  echo
+ # printSeparatingLine "^"
  echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
  echo "Exit Code: $?"
  # show time last command took. Depends on `setopt inc_append_history_time` below.
- echo "Time: $(history -D | tail -1 | awk '{print $2 " <- " $3}')"
+ # Awk fields below are hack until I can do this
+ # https://unix.stackexchange.com/a/561579
+ echo "Time: $(history -D | tail -1 | awk '{print $2 " <- " $3 " " $4 " " $5 " " $6 " " $7 " " $8}')"
  # echo "<< $(date +%m-%d/%H:%M:%S) >>"
  printDividingLineToEndOfWindow
 }
