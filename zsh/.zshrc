@@ -181,6 +181,14 @@ function myprs() {
     ' | xargs open
 }
 
+function setUpstream {
+  git branch -u origin/$(gb)
+}
+
+function mergeOrigin {
+  git fetch && git merge origin/$(gb)
+}
+
 alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
 alias docs="cd ~/Documents"
