@@ -393,3 +393,7 @@ function removeNodeModulesRecursively {
 
 # https://unix.stackexchange.com/questions/453338/how-to-get-execution-millisecond-time-of-a-command-in-zsh
 TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
+
+function sourceUbuntu {
+  source ~/Documents/dotfiles/ubuntu/.zshrc
+}
