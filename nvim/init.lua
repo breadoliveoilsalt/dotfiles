@@ -29,12 +29,13 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
-vim.keymap.set("n", "<Leader>tt", "<cmd>NvimTreeToggle<cr>")
-vim.keymap.set("n", "<Leader>ft", "<cmd>NvimTreeFindFile<cr>")
-
--- TODO: merge this with plugins.lu
+-- TODO: merge this with plugins.lua
 -- Show gitignored files, like `node_modules`
 require("nvim-tree").setup({
+  -- not help, it seems
+  -- respect_buf_cwd = true,
+  -- not help
+  -- hijack_unnamed_buffer_when_opening = true,
 	filters = {
 		git_ignored = false,
 	},
@@ -57,6 +58,19 @@ require("nvim-tree").setup({
 	-- 	},
 	-- },
 })
+
+-- Random example
+local say_hi = function()
+  print('hi')
+end
+
+vim.keymap.set("n", "<Leader>tz", say_hi)
+
+-- Cause nvim tree to take over buffer when it opens, rather than split
+-- Use ctrl+e to open file in that buffer
+vim.keymap.set("n", "<Leader>tt", "<Cmd>lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
+-- TODO: should I add option for `update_root` here?
+vim.keymap.set("n", "<Leader>ft", "<Cmd>lua require('nvim-tree.api').tree.find_file({ current_window = true, update_root = false, open = true, focus = true })<CR>")
 
 -----------------
 -- MY SETTINGS -
@@ -81,6 +95,7 @@ vim.opt.smartindent = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hls = false
+vim.opt.splitright = true
 
 vim.cmd([[colorscheme slate]])
 
@@ -343,6 +358,7 @@ local find_file_command = {
 
 telescope.setup({
 	defaults = {
+    layout_config = { height = 0.98, width = 0.98, preview_width = 0.6},
 		vimgrep_arguments = {
 			-- set grepprg=rg\ --hidden\ --follow\ --vimgrep
 			-- nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -e '
@@ -358,6 +374,8 @@ telescope.setup({
 			"--glob=!**/*/src/assets/",
 			"--glob=!.git/",
 			"--glob=!*.snap",
+      -- BEWARE
+			-- "--glob=!*.test.*",
 		},
 	},
 	pickers = {
