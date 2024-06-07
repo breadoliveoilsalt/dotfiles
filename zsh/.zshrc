@@ -110,6 +110,7 @@ alias ga="git add"
 alias gaa="git add --all"
 alias ga.="git add ."
 alias gcm="git commit -m"
+alias gcmnv="git commit --no-verify -m"
 # alias gcm="git commit --no-verify -m"
 # alias gp="git push origin head --no-verify"
 alias gc="git commit -v"
@@ -181,9 +182,10 @@ function myprs() {
     ' | xargs open
 }
 
-function setUpstream {
+function gitSetUpstream {
   git branch -u origin/$(gb)
 }
+alias gsu="gitSetUpstream"
 
 function mergeOrigin {
   git fetch && git merge origin/$(gb)
