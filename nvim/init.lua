@@ -32,26 +32,26 @@ vim.opt.termguicolors = true
 -- TODO: merge this with plugins.lua
 -- Show gitignored files, like `node_modules`
 require("nvim-tree").setup({
-  -- not help, it seems
-  -- respect_buf_cwd = true,
-  -- not help
-  -- hijack_unnamed_buffer_when_opening = true,
+	-- not help, it seems
+	-- respect_buf_cwd = true,
+	-- not help
+	-- hijack_unnamed_buffer_when_opening = true,
 	filters = {
 		git_ignored = false,
 	},
-  renderer = {
-    indent_markers = {
-      enable = true,
-    },
-    icons = {
-      show = {
-        folder_arrow = false,
-      }
-    },
-  }
--- To avoid absolute paths in buffer list
--- See: https://www.reddit.com/r/neovim/comments/yftm83/nvimtree_is_driving_me_nuts/
--- Seems this changes the directory when you go up the tree in the tree itself! Not what I want
+	renderer = {
+		indent_markers = {
+			enable = true,
+		},
+		icons = {
+			show = {
+				folder_arrow = false,
+			},
+		},
+	},
+	-- To avoid absolute paths in buffer list
+	-- See: https://www.reddit.com/r/neovim/comments/yftm83/nvimtree_is_driving_me_nuts/
+	-- Seems this changes the directory when you go up the tree in the tree itself! Not what I want
 	-- actions = {
 	-- 	change_dir = {
 	-- 		global = true,
@@ -61,7 +61,7 @@ require("nvim-tree").setup({
 
 -- Random example
 local say_hi = function()
-  print('hi')
+	print("hi")
 end
 
 vim.keymap.set("n", "<Leader>tz", say_hi)
@@ -70,7 +70,11 @@ vim.keymap.set("n", "<Leader>tz", say_hi)
 -- Use ctrl+e to open file in that buffer
 vim.keymap.set("n", "<Leader>tt", "<Cmd>lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
 -- TODO: should I add option for `update_root` here?
-vim.keymap.set("n", "<Leader>ft", "<Cmd>lua require('nvim-tree.api').tree.find_file({ current_window = true, update_root = false, open = true, focus = true })<CR>")
+vim.keymap.set(
+	"n",
+	"<Leader>ft",
+	"<Cmd>lua require('nvim-tree.api').tree.find_file({ current_window = true, update_root = false, open = true, focus = true })<CR>"
+)
 
 -----------------
 -- MY SETTINGS -
@@ -358,7 +362,7 @@ local find_file_command = {
 
 telescope.setup({
 	defaults = {
-    layout_config = { height = 0.98, width = 0.98, preview_width = 0.6},
+		layout_config = { height = 0.98, width = 0.98, preview_width = 0.6 },
 		vimgrep_arguments = {
 			-- set grepprg=rg\ --hidden\ --follow\ --vimgrep
 			-- nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -e '
@@ -374,8 +378,14 @@ telescope.setup({
 			"--glob=!**/*/src/assets/",
 			"--glob=!.git/",
 			"--glob=!*.snap",
-      -- BEWARE
+			-- BEWARE
 			-- "--glob=!*.test.*",
+		},
+		-- Preserve past searches
+		-- See: https://github.com/nvim-telescope/telescope.nvim/issues/2024
+		-- :help telescope.defaults.cache_picker
+		cache_picker = {
+			num_pickers = 5,
 		},
 	},
 	pickers = {
@@ -391,6 +401,12 @@ vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
 vim.keymap.set("n", "<Leader>fw", telescope_builtin.live_grep, {})
 vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, {})
 vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, {})
+vim.keymap.set("n", "<Leader>fl", telescope_builtin.resume, {
+	desc = "[f]ind [l]ast: bring up last search auto-[c]ommenting",
+})
+vim.keymap.set("n", "<Leader>fc", telescope_builtin.pickers, {
+	desc = "[f]ind [c]ached: bring up picker for last several searches",
+})
 
 -------------
 -- LSP'ing --
