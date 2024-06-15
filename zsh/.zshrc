@@ -399,7 +399,9 @@ alias gan="gitAddNumber"
 alias grn="gitRestoreNumber"
 
 # Load fzf shortcut keys:
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# 240615: for newer versions of fzf
+source <(fzf --zsh)
 
 export FZF_DEFAULT_COMMAND="rg --files --hidden"
 
