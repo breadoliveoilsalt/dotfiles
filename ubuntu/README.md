@@ -29,7 +29,7 @@ chsh -s $(which zsh)
 # Get dotfiles
 
 ```sh
-ssh-keygen -t ed25519
+ssh-keygen -t ed25519 -C "your_email@example.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 # Add public key to GitHub, followed by:
@@ -141,3 +141,60 @@ To examine checksum of downloaded tar file:
 ```sh
 sha256sum nvim-linux64.tar.gz
 ```
+
+-----
+
+# Ubunutu Server
+
+## Cheatsheet
+
+### Basics
+
+```sh
+# Restart
+sudo reboot
+
+```
+
+### Upgrade
+
+https://ubuntu.com/server/docs/how-to-upgrade-your-release
+
+```
+sudo apt update
+sudo apt upgrade
+# To upgrade they system
+sudo do-release-upgrade
+```
+
+
+### Setting up Git Server at Home Using ssh
+
+- For user on server, note that note that Pro Git book and docs recommend creating a single `git` user for
+  all users to clone/push to (this appears to be how github works).
+- Add public keys from users/computers to ~/.ssh/authorized_keys
+- Initialize bare repository for new projects. For example, to initialize for dotfiles:
+
+```
+# Server:
+
+# ssh into server first
+sudo mkdir -p /opt/git/dotfiles.git && cd /opt/git/dotfiles.git
+sudo git init --bare
+sudo git config --global init.defaultBranch main
+
+# Make sure user can own repository everything in intitialized repo recursively
+# https://stackoverflow.com/a/69016432
+cd ..
+sudo chown -R <user> dotfiles.git
+
+# Reconsider after steps above:
+# If warned about dubious ownership in repository
+# git config --global --add safe.directory /opt/git/dotfiles.git
+
+# Client with existing repository
+git remote add home <user>@<host>:/opt/git/dotfiles.git
+git push home <branch>
+
+```
+
