@@ -87,7 +87,7 @@ vim.keymap.set(
 	"n",
 	"<Leader>cs",
 	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
-	{ silent = true, desc = "[c]opy [s]ource" }
+	{ silent = true, desc = '[c]opy [s]ource' }
 )
 
 vim.opt.number = true
@@ -118,7 +118,7 @@ vim.keymap.set(
 	"n",
 	"<Leader>dc",
 	"<cmd>set formatoptions-=cro<cr>",
-	{ desc = "[d]isable/delete/destory auto-[c]ommenting" }
+	{ desc = '[d]isable/delete/destory auto-[c]ommenting' }
 )
 
 vim.keymap.set("n", "<Leader>yp", '<cmd>let @+=expand("%")<cr>', { desc = "[y]ank [p]ath" })
@@ -127,7 +127,7 @@ vim.keymap.set(
 	"n",
 	"<Leader>bd",
 	"<cmd>bp|bd#<cr>",
-	{ desc = { "[b]uffer [d]elete: Return to last file before deleting buffer, to prevent window closing" } }
+	{ desc = "[b]uffer [d]elete: Return to last file before deleting buffer, to prevent window closing" }
 )
 
 -- Increase or decrease window
