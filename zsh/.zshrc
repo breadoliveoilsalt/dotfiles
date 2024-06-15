@@ -420,3 +420,9 @@ TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 
 # https://stackoverflow.com/a/35531083
 setopt inc_append_history_time
+
+function sourceUbuntu {
+  source ~/Documents/dotfiles/ubuntu/.zshrc
+}
+
+[ -f ~/flags/isUbuntu ] && sourceUbuntu
