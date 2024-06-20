@@ -14,7 +14,8 @@ curl \
 fzf \
 make \
 npm \
-xclip # needed for neovim to copy to system clipboard
+xclip \ # needed for neovim to copy to system clipboard 
+net-tools # needed for ipconfig etc
 
 sudo apt-get install -y \
 ripgrep
@@ -32,6 +33,10 @@ chsh -s $(which zsh)
 ssh-keygen -t ed25519 -C "your_email@example.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
+# https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder
+# https://security.stackexchange.com/questions/256116/how-does-chmod-600-to-private-ssh-keys-make-them-secure-what-is-the-minimum-
+sudo chmod 600 <private key>
+
 # Add public key to GitHub, followed by:
 cd ~/Documents
 git clone git@github.com:breadoliveoilsalt/dotfiles.git
@@ -151,9 +156,21 @@ sha256sum nvim-linux64.tar.gz
 ### Basics
 
 ```sh
+# See ubuntu version
+lsb_release -a
+
 # Restart
 sudo reboot
 
+# See login attempts
+last
+lastlog
+
+# See which shell you're using
+echo $0
+
+# Link server to ubuntu pro
+pro attach
 ```
 
 ### Upgrade
@@ -163,9 +180,13 @@ https://ubuntu.com/server/docs/how-to-upgrade-your-release
 ```
 sudo apt update
 sudo apt upgrade
+# or
+sudo apt update && sudo apt upgrade && reboot
+
 # To upgrade they system
 sudo do-release-upgrade
 ```
+
 
 
 ### Setting up Git Server at Home Using ssh
@@ -192,7 +213,10 @@ sudo chown -R <user> dotfiles.git
 # If warned about dubious ownership in repository
 # git config --global --add safe.directory /opt/git/dotfiles.git
 
-# Client with existing repository
+# Client with existing repository, assuming mac client
+eval "$(ssh-agent -s)"
+ssh-add --apple-use-keychain ~/.ssh/<private_key>
+
 git remote add home <user>@<host>:/opt/git/dotfiles.git
 git push home <branch>
 
