@@ -429,4 +429,6 @@ function sourceUbuntu {
   source ~/Documents/dotfiles/ubuntu/.zshrc
 }
 
-[ -f ~/flags/isUbuntu ] && sourceUbuntu
+# Check for whether I've set a flag that I'm on ubuntu
+# BUT make sure to exit 0 so load of file doesn't fail
+[ -f ~/flags/isUbuntu ] && sourceUbuntu || true
