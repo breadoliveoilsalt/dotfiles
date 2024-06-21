@@ -34,3 +34,10 @@ vim.cmd([[
   vnoremap <Leader>it :call SurroundVisualLinesWithBackticks()<CR>
   nnoremap <Leader>ib :call InsertBreak()<CR>
 ]])
+
+vim.opt.textwidth = 80
+
+vim.cmd([[
+  setlocal spell spelllang=en_us
+]])
+

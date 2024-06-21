@@ -149,6 +149,10 @@ function gitRecentBranches {
 
 alias grb="gitRecentBranches"
 
+function gitFollow {
+  git log -p --follow $1
+}
+
 # Assumes you connect to GitHub via SSH not https
 function repo() {
   git remote -v | grep fetch | \
@@ -219,11 +223,11 @@ function tmuxStartWork {
   tmux attach -t work:1
 }
 
-function tmuxStartNotes {
-  tmux new-session -d -s notes -n notes
-  tmux send-keys -t notes:1 "cd ~/Documents/notes; nvim -S; clear" Enter
-  tmux new-window -d -t notes:2 -n dotfiles
-  tmux send-keys -t notes:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
+function tmuxStartWorkNotes {
+  tmux new-session -d -s workNotes -n workNotes
+  tmux send-keys -t workNotes:1 "cd ~/Documents/workNotes; nvim -S; clear" Enter
+  tmux new-window -d -t workNotes:2 -n dotfiles
+  tmux send-keys -t workNotes:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
   # tmux attach -t notes:1
 }
 
@@ -231,8 +235,8 @@ function dotfiles() {
   cd ~/Documents/dotfiles
 }
 
-function notes() {
-  cd ~/Documents/notes
+function workNotes() {
+  cd ~/Documents/workNotes
 }
 
 function start() {
@@ -242,7 +246,7 @@ function start() {
   sleep 2
   open -a firefox "https://www.gmail.com" "https://calendar.google.com"
   sleep 2
-  tmuxStartNotes
+  tmuxStartWorkNotes
   tmuxStartWork
 }
 

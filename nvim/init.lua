@@ -126,9 +126,11 @@ vim.keymap.set("n", "<Leader>yp", '<cmd>let @+=expand("%")<cr>', { desc = "[y]an
 vim.keymap.set(
   "n",
   "<Leader>bd",
-  "<cmd>bp|bd#<cr>",
-  { desc = "[b]uffer [d]elete: Return to last file before deleting buffer, to prevent window closing" }
+  "<cmd>bp|bd#<cr>"
 )
+--   "<cmd>bp|bd#<cr>",
+--   { desc = "[b]uffer [d]elete: Return to last file before deleting buffer, to prevent window closing" }
+-- )
 
 -- Increase or decrease window
 -- Think: window-wider, window-narrower, window-taller, window-shorter
