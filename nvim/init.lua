@@ -401,7 +401,12 @@ local telescope_builtin = require("telescope.builtin")
 
 vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
 vim.keymap.set("n", "<Leader>fw", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<Leader>fb", telescope_builtin.buffers, {})
+-- BIG LESSON / REMINDER HERE: the third argument has to be a function.
+-- If you are using options, make sure you wrap things in
+-- anonymous function.
+-- vim.keymap.set("n", "<C-p>", function() telescope_builtin.buffers({ sort_lastused = true, ignore_current_buffer = true }) end)
+vim.keymap.set("n", "<C-p>", function() telescope_builtin.buffers({ sort_lastused = true }) end)
+vim.keymap.set("n", "<Leader>fb", function() telescope_builtin.buffers({ sort_lastused = true, ignore_current_buffer = true }) end)
 vim.keymap.set("n", "<Leader>fh", telescope_builtin.help_tags, {})
 vim.keymap.set("n", "<Leader>fl", telescope_builtin.resume, {
   desc = "[f]ind [l]ast: bring up last search auto-[c]ommenting",
