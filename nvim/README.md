@@ -18,3 +18,12 @@ Make sure `make` is installed and run this:
 ```
 cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim && make && cd -
 ```
+
+Other
+
+```
+
+npm i -g neovim
+brew install luarocks
+
+```
