@@ -31,13 +31,15 @@ end
 
 vim.keymap.set("n", "<Leader>tz", say_hi)
 
----------------
--- NVIM TREE --
----------------
+-- vim.keymap.sef("n", "<Leader>tt", "<Cmd>vsp | lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
 
--- TODO
--- Show gitignored files, like `node_modules`
+-----------
+-- NETRW --
+-----------
 
+-- NB: Beware of any conflicts with nvim-treesitter
+
+-- Below turns off netrw
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
 -- vim.opt.termguicolors = true
@@ -48,33 +50,6 @@ vim.g.netrw_liststyle = 3 -- tree view
 vim.g.netrw_hide = 0 -- show all files, including hidden ones
 vim.g.netrw_preview = 1 -- set preview window to vertical
 vim.g.netrw_alto = 0 -- So preview window is opened to left
-
-local toggle_tree = function()
-	local tree_api = require("nvim-tree.api").tree
-	-- if require("nvim-tree.api").tree.is_visible() then
-	if tree_api.is_visible() then -- and tree_api.is_tree_buf() then
-		tree_api.toggle()
-		return
-	end
-
-	if not (tree_api.is_visible()) then
-		vim.cmd("vsp")
-		tree_api.toggle({ current_window = true })
-		return
-	end
-end
-
-
--- Cause nvim tree to take over buffer when it opens, rather than split
--- Use ctrl+e to open file in that buffer
--- vim.keymap.sef("n", "<Leader>tt", "<Cmd>vsp | lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
-vim.keymap.set("n", "<Leader>tt", toggle_tree)
--- TODO: should I add option for `update_root` here?
-vim.keymap.set(
-	"n",
-	"<Leader>ft",
-	"<Cmd>vsp | lua require('nvim-tree.api').tree.find_file({ current_window = true, update_root = false, open = true, focus = true })<CR>"
-)
 
 -----------------
 -- MY SETTINGS -

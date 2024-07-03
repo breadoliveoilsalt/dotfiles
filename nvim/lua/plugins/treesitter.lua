@@ -18,6 +18,33 @@ return {
 					extended_mode = true,
 				},
 			})
+
+			-- TODO
+			-- Show gitignored files, like `node_modules`
+
+			local toggle_tree = function()
+				local tree_api = require("nvim-tree.api").tree
+				-- if require("nvim-tree.api").tree.is_visible() then
+				if tree_api.is_visible() then -- and tree_api.is_tree_buf() then
+					tree_api.toggle()
+					return
+				end
+
+				if not (tree_api.is_visible()) then
+					vim.cmd("vsp")
+					tree_api.toggle({ current_window = true })
+					return
+				end
+			end
+
+			-- Cause nvim tree to take over buffer when it opens, rather than split
+			-- Use ctrl+e to open file in that buffer
+			vim.keymap.set("n", "<Leader>tt", toggle_tree)
+			vim.keymap.set(
+				"n",
+				"<Leader>ft",
+				"<Cmd>vsp | lua require('nvim-tree.api').tree.find_file({ current_window = true, update_root = false, open = true, focus = true })<CR>"
+			)
 		end,
 	},
 }
