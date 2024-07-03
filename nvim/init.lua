@@ -31,33 +31,22 @@ end
 
 vim.keymap.set("n", "<Leader>tz", say_hi)
 
+-- How to reuqire a module in a command
 -- vim.keymap.sef("n", "<Leader>tt", "<Cmd>vsp | lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
 
------------
--- NETRW --
------------
-
--- NB: Beware of any conflicts with nvim-treesitter
-
--- Below turns off netrw
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
--- vim.opt.termguicolors = true
-
-vim.g.netrw_banner = 0 -- to disable banner change to 0
-vim.g.netrw_altv = 1 -- open splits to the right
-vim.g.netrw_liststyle = 3 -- tree view
-vim.g.netrw_hide = 0 -- show all files, including hidden ones
-vim.g.netrw_preview = 1 -- set preview window to vertical
-vim.g.netrw_alto = 0 -- So preview window is opened to left
+-- How to change a colorscheme setting:
+  -- Run `:Inspect` to see current applied styles
+  -- Run `:hi` to see all potential styles
+  -- Below assumes slate colorscheme. Better color for comments
+-- vim.cmd([[
+--   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
+-- ]])
 
 -----------------
 -- MY SETTINGS -
 -----------------
 
 -- Note extra <CR> to force silence after the bang command is run
--- vim.keymap.set("n", "<Leader>cs", "<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr>",
---   { silent = true, desc = "[c]opy [s]ource" })
 vim.keymap.set(
 	"n",
 	"<Leader>cs",
@@ -161,10 +150,36 @@ vim.cmd([[
 vim.cmd([[
   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md set tabstop=2 shiftwidth=2
 ]])
--- Assumes slate colorscheme. Better color for comments
--- vim.cmd([[
---   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
--- ]])
+
+-- Highlight current line as default
+vim.opt.cursorline = true
+
+-- Set cursorline for only the current window
+vim.cmd([[
+  augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set cursorline
+    autocmd WinLeave * set nocursorline
+  augroup END
+]])
+
+-----------
+-- NETRW --
+-----------
+
+-- NB: Beware of any conflicts with nvim-treesitter
+
+-- Below turns off netrw
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+-- vim.opt.termguicolors = true
+
+vim.g.netrw_banner = 0 -- to disable banner change to 0
+vim.g.netrw_altv = 1 -- open splits to the right
+vim.g.netrw_liststyle = 3 -- tree view
+vim.g.netrw_hide = 0 -- show all files, including hidden ones
+vim.g.netrw_preview = 1 -- set preview window to vertical
+vim.g.netrw_alto = 0 -- So preview window is opened to left
 
 -------------------------
 -- TRAILING WHITESPACE --
@@ -238,18 +253,6 @@ vim.api.nvim_exec(
 vim.cmd([[
   nnoremap <Leader>ps :call PasteClipboardImageWithMarkdown()<CR>
   nnoremap <Leader>om :call OpenMarkdownViewer()<CR>
-]])
-
--- Highlight current line as default
-vim.opt.cursorline = true
-
--- Set cursorline for only the current window
-vim.cmd([[
-  augroup BgHighlight
-    autocmd!
-    autocmd WinEnter * set cursorline
-    autocmd WinLeave * set nocursorline
-  augroup END
 ]])
 
 ----------------
