@@ -43,7 +43,7 @@ vim.keymap.set("n", "<Leader>tz", say_hi)
 -- ]])
 
 -----------------
--- MY SETTINGS -
+-- MY SETTINGS --
 -----------------
 
 -- Note extra <CR> to force silence after the bang command is run
