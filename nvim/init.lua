@@ -21,21 +21,26 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
+---------------------
+-- RANDOM EXAMPLES --
+---------------------
+
+local say_hi = function()
+	print("hi")
+end
+
+vim.keymap.set("n", "<Leader>tz", say_hi)
+
 ---------------
 -- NVIM TREE --
 ---------------
 
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
--- vim.opt.termguicolors = true
-
 -- TODO
 -- Show gitignored files, like `node_modules`
 
--- Random example
-local say_hi = function()
-	print("hi")
-end
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+-- vim.opt.termguicolors = true
 
 vim.g.netrw_banner = 0 -- to disable banner change to 0
 vim.g.netrw_altv = 1 -- open splits to the right
@@ -59,7 +64,6 @@ local toggle_tree = function()
 	end
 end
 
-vim.keymap.set("n", "<Leader>tz", say_hi)
 
 -- Cause nvim tree to take over buffer when it opens, rather than split
 -- Use ctrl+e to open file in that buffer
@@ -97,7 +101,10 @@ vim.opt.smartcase = true
 vim.opt.hls = false
 vim.opt.splitright = true
 
-vim.cmd([[colorscheme slate]])
+vim.opt.relativenumber = true
+
+-- vim.cmd([[colorscheme slate]])
+vim.cmd([[colorscheme sorbet]])
 
 -- Go to alternate file quickly
 vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
@@ -163,9 +170,6 @@ vim.keymap.set(
 	"<cmd>mks!<cr> | <cmd>echo 'Session saved!'<cr>",
 	{ silent = true, desc = "[s]ave [s]ession" }
 )
--- vim.cmd([[
---   nnoremap <Leader>ss :mks!<CR> | echo 'Session saved!'
--- ]])
 
 -- Hide mode in status line, deferring to lualine
 -- With noshowmode in effect, hide last ex-command entered
