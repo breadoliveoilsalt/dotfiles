@@ -35,9 +35,9 @@ vim.keymap.set("n", "<Leader>tz", say_hi)
 -- vim.keymap.sef("n", "<Leader>tt", "<Cmd>vsp | lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
 
 -- How to change a colorscheme setting:
-  -- Run `:Inspect` to see current applied styles
-  -- Run `:hi` to see all potential styles
-  -- Below assumes slate colorscheme. Better color for comments
+-- Run `:Inspect` to see current applied styles
+-- Run `:hi` to see all potential styles
+-- Below assumes slate colorscheme. Better color for comments
 -- vim.cmd([[
 --   autocmd BufRead,BufNewFile,BufFilePre *.markdown,*.md hi Comment ctermfg=yellow guifg=yellow | set tabstop=2 shiftwidth=2
 -- ]])
@@ -47,11 +47,17 @@ vim.keymap.set("n", "<Leader>tz", say_hi)
 -----------------
 
 -- Note extra <CR> to force silence after the bang command is run
+-- `cp -a` and `cp -R` will NOT remove a file that has been copied to target
+-- but is no longer in source. Switching to `rsync` to accomplish this.
+-- Became problematic with plugin files not being removed.
 vim.keymap.set(
 	"n",
 	"<Leader>cs",
-	"<cmd>!cp -a ~/Documents/dotfiles/nvim/ ~/.config/nvim<cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
-	{ silent = true, desc = "[c]opy [s]ource" }
+	-- "<cmd>!cp -a ~/Documents/dotfiles/nvim ~/.config/nvim <cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
+	-- { silent = true, desc = "[c]opy [s]ource" }
+	-- "<CMD>!cp -Rv ~/Documents/dotfiles/nvim ~/.config<CR> | <CMD>echo 'neovim config file copied!'<CR>",
+	"<CMD>!rsync -a --delete ~/Documents/dotfiles/nvim ~/.config<CR><CR> | <CMD>echo 'neovim config file copied!'<CR>",
+	{ desc = "[c]opy [s]ource" }
 )
 
 vim.opt.number = true
