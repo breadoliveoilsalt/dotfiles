@@ -23,6 +23,9 @@ return {
 				-- auto_start = true, -- if you want to start COQ at startup
 				auto_start = false, -- if you want to start COQ at startup
 				-- Your COQ settings here
+				keymap = {
+					pre_select = true,
+				},
 			}
 		end,
 		config = function()
