@@ -74,7 +74,7 @@ ln -s ~/Documents/dotfiles/customCommands/pngpaste /usr/local/bin/pngpaste
 # https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519
 eval "$(ssh-agent -s)"
-ln -s ~/Documents/dotfiles/ssh/config ~/.ssh/config
+ln -s ~/Documents/dotfiles/nonpublic/ssh/config ~/.ssh/config
 ssh-add -K ~/.ssh/id_ed25519
 
 # Specify iTerm configuration

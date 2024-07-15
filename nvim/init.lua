@@ -74,7 +74,8 @@ vim.opt.splitright = true
 vim.opt.relativenumber = true
 
 -- vim.cmd([[colorscheme slate]])
-vim.cmd([[colorscheme sorbet]])
+-- vim.cmd([[colorscheme sorbet]])
+vim.cmd([[colorscheme everforest]])
 
 -- Go to alternate file quickly
 vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
