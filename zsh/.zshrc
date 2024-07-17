@@ -108,27 +108,20 @@ PROMPT='%F{green}>>>> %F{yellow}%1~ %F{green}($(get_git_branch)) %F{magenta}$(vi
 
 alias ga="git add"
 alias gaa="git add --all"
-alias ga.="git add ."
 alias gcm="git commit -m"
-alias gcmnv="git commit --no-verify -m"
-# alias gcm="git commit --no-verify -m"
-# alias gp="git push origin head --no-verify"
 alias gc="git commit -v"
 alias gs="git status"
-alias gpo="git push origin"
 alias gc="git checkout"
 alias gcnb="git checkout -b"
 alias glo="git log --oneline"
-alias gl="git log"
 alias lc="git log --oneline -1"
 alias pullff="pull --ff-only"
 alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
-alias gcb="gb | pbcopy"
-alias push="git push origin head --no-verify"
-# alias gitRecentBranches="git branch --sort=-committerdate | head -10"
+alias gcb="gb | pbcopy" # [g]it [c]opy [b]ranch
 # alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
+
 alias diff="diff --color='always'"
 
 # Works assuming you clone with https
@@ -154,7 +147,7 @@ function gitFollow {
 }
 
 # Assumes you connect to GitHub via SSH not https
-function repo() {
+function repo {
   git remote -v | grep fetch | \
   awk '{ print $2 }' | sed 's/git@//' | \
   sed 's/:/\//' | sed 's/.git//' | \
@@ -162,7 +155,7 @@ function repo() {
 }
 
 # Assumes you connect to GitHub via SSH not https
-function prs() {
+function prs {
   git remote -v | grep fetch | \
     awk '{ print $2 }' | \
     sed '
@@ -174,7 +167,7 @@ function prs() {
     ' | xargs open
 }
 
-function myprs() {
+function myprs {
   git remote -v | grep fetch | \
     awk '{ print $2 }' | \
     sed '
@@ -189,11 +182,8 @@ function myprs() {
 function gitSetUpstream {
   git branch -u origin/$(gb)
 }
-alias gsu="gitSetUpstream"
 
-function mergeOrigin {
-  git fetch && git merge origin/$(gb)
-}
+alias gsu="gitSetUpstream"
 
 alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
@@ -203,51 +193,28 @@ alias blog="cd ~/Documents/projects/breadoliveoilsalt.github.io"
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
-alias lz="cd ~/Documents/projects/legalZoom"
-alias iq="cd ~/Documents/projects/legalZoom/iq-flow"
-alias mylz="cd ~/Documents/projects/legalZoom/my-lz"
-
 # Automatically open Chrome with devtools in tabs.  Make sure all other Chrome
 # windows are closed first
 alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-for-tabs'
 
 alias sqlpro="open -a 'SQLPro for MSSQL'"
 
-function tmuxStartWork {
-  # tmux new-session -d -s work -n notes
-  # tmux send-keys -t work:1 "cd ~/Documents/notes; nvim -S; clear" Enter
-  # tmux new-window -d -t work:2 -n dotfiles
-  # tmux send-keys -t work:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
-  tmux new-session -d -s work -n iq-cra
-  tmux send-keys -t work:1 "iq; clear" Enter
-  tmux attach -t work:1
-}
-
-function tmuxStartWorkNotes {
-  tmux new-session -d -s workNotes -n workNotes
-  tmux send-keys -t workNotes:1 "cd ~/Documents/workNotes; nvim -S; clear" Enter
-  tmux new-window -d -t workNotes:2 -n dotfiles
-  tmux send-keys -t workNotes:2 "cd ~/Documents/dotfiles; nvim -S; clear" Enter
-  # tmux attach -t notes:1
-}
-
-function dotfiles() {
+function dotfiles {
   cd ~/Documents/dotfiles
 }
 
-function workNotes() {
+function workNotes {
   cd ~/Documents/workNotes
 }
 
-function start() {
+function start {
   # open -a "Activity Monitor"
   # sleep 2
   open -a "Slack"
   sleep 2
   open -a firefox "https://www.gmail.com" "https://calendar.google.com"
   sleep 2
-  tmuxStartWorkNotes
-  tmuxStartWork
+  tmuxStartNotes
 }
 
 # The following lines were added by compinstall
@@ -290,7 +257,7 @@ alias histgrep="history 1 | grep"
 # Better:
 # alias clc="history -1 | sed 's/^[[:blank:]]*[0-9]*[[:blank:]]*//' | sed 's/\\n/\n/g' | pbcopy"
 # Best.  Works best as a function:
-function clc() {
+function clc {
   history -1 | sed 's/^[[:blank:]]*[0-9]*[[:blank:]]*//' | sed 's/\\n/\n/g' | pbcopy
 }
 
@@ -299,30 +266,20 @@ function clc() {
 #     echo "You need to provide two branch names or two commits"
 #     return
 #   fi
-# 
+#
 #   THIS=$1
 #   echo "$1"
 #   NOT_THAT=$2
 #   echo "$2"
-# 
+#
 #   IGNORE_EVERYTHING_BEFORE_THIS_COMMIT=$(git merge-base $NOT_THAT $THIS)
-# 
+#
 #   echo "git log --oneline --no-merges $IGNORE_EVERYTHING_BEFORE_THIS_COMMIT $THAT"
 #   git log --oneline --no-merges $IGNORE_EVERYTHING_BEFORE_THIS_COMMIT..$THAT
 # }
 
-function resetNode() {
-  rm -rf node_modules
-  npm install 
-}
-
-function resetDockerLZ() {
-  docker stop nginx iq-flow && \
-  docker rm nginx iq-flow 
-}
-
 # Takes object copied from browser and turns it into play js object
-function transformJson() {
+function transformJson {
   pbpaste \
     | sed "
       s/\"//
@@ -331,12 +288,6 @@ function transformJson() {
       /__typename/d
     " \
     | pbcopy
-}
-
-function stopDockerLZ() {
-  cd apps/iq-flow
-  docker compose down
-  cd ../..
 }
 
 # Problem: this doesn't capture files that are new
@@ -429,7 +380,7 @@ function sourceUbuntu {
   source ~/Documents/dotfiles/ubuntu/.zshrc
 }
 
-# Check for whether I've set a flag that I'm on ubuntu
+# Check for flags to load additional files
 # BUT make sure to exit 0 so load of file doesn't fail
 [ -f ~/flags/isUbuntu ] && sourceUbuntu || true
 
