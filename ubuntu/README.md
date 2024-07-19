@@ -14,7 +14,7 @@ curl \
 fzf \
 make \
 npm \
-xclip \ # needed for neovim to copy to system clipboard 
+xclip \ # needed for neovim to copy to system clipboard
 net-tools # needed for ipconfig etc
 
 sudo apt-get install -y \
@@ -38,16 +38,16 @@ ssh-add ~/.ssh/id_ed25519
 sudo chmod 600 <private key>
 
 # Add public key to GitHub, followed by:
-cd ~/Documents
+cd ~/documents
 git clone git@github.com:breadoliveoilsalt/dotfiles.git
 
-ln -fs ~/Documents/dotfiles/vim/.vimrc ~/.vimrc
-ln -fs ~/Documents/dotfiles/zsh/.zshrc ~/.zshrc
-ln -fs ~/Documents/dotfiles/tmux/.tmux.conf ~/.tmux.conf
-ln -fs ~/Documents/dotfiles/git/.gitconfig ~/.gitconfig
-ln -fs ~/Documents/dotfiles/git/.gitignore_global ~/.gitignore_global
-ln -fs ~/Documents/dotfiles/git/.git_template ~/.git_template
-ln -fs ~/Documents/dotfiles/git/.git-prompt.sh ~/.git-prompt.sh
+ln -fs ~/documents/dotfiles/vim/.vimrc ~/.vimrc
+ln -fs ~/documents/dotfiles/zsh/.zshrc ~/.zshrc
+ln -fs ~/documents/dotfiles/tmux/.tmux.conf ~/.tmux.conf
+ln -fs ~/documents/dotfiles/git/.gitconfig ~/.gitconfig
+ln -fs ~/documents/dotfiles/git/.gitignore_global ~/.gitignore_global
+ln -fs ~/documents/dotfiles/git/.git_template ~/.git_template
+ln -fs ~/documents/dotfiles/git/.git-prompt.sh ~/.git-prompt.sh
 ```
 
 -----

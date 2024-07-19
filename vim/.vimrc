@@ -1,5 +1,5 @@
-" Below assumes this file is in ~/Documents
-let &runtimepath=&runtimepath . "," . "~/Documents/dotfiles/vim" 
+" Below assumes this file is in ~/documents
+let &runtimepath=&runtimepath . "," . "~/documents/dotfiles/vim" 
 runtime basicsettings.vim
 runtime testing.vim
 runtime netrw.vim
