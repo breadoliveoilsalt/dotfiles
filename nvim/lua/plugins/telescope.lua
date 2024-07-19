@@ -23,9 +23,6 @@ local setup = function()
 		defaults = {
 			layout_config = { height = 0.98, width = 0.98, preview_width = 0.6 },
 			vimgrep_arguments = {
-				-- set grepprg=rg\ --hidden\ --follow\ --vimgrep
-				-- nnoremap <Leader>fw :grep! -g "!**/*/PackageBuilder/resources.js" -g "!**/*/src/assets/" -g "!.git/" -g "!*.snap" -g "!build/" -e '
-
 				"rg",
 				"--hidden",
 				"--color=never",
