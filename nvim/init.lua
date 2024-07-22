@@ -50,6 +50,7 @@ vim.keymap.set("n", "<Leader>tz", say_hi)
 -- `cp -a` and `cp -R` will NOT remove a file that has been copied to target
 -- but is no longer in source. Switching to `rsync` to accomplish this.
 -- Became problematic with plugin files not being removed.
+-- TODO: add wa to this to save all before copying
 vim.keymap.set(
 	"n",
 	"<Leader>cs",
@@ -174,8 +175,6 @@ vim.cmd([[
 -- NETRW --
 -----------
 
--- NB: Beware of any conflicts with nvim-treesitter
-
 -- Below turns off netrw
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
@@ -187,6 +186,24 @@ vim.g.netrw_liststyle = 3 -- tree view
 vim.g.netrw_hide = 0 -- show all files, including hidden ones
 vim.g.netrw_preview = 1 -- set preview window to vertical
 vim.g.netrw_alto = 0 -- So preview window is opened to left
+
+-- Notes:
+-- Move to right most split, assuming no more than 10 open.
+-- Vertical split from there and open Ex in new vertical split
+function toggle_netrw()
+  local current_window_id = vim.api.nvim_get_current_win()
+	vim.cmd("10wincmd l")
+	if vim.bo.filetype == "netrw" then
+		vim.cmd("clo")
+		vim.cmd("call win_gotoid(" .. current_window_id .. ")")
+	else
+		vim.cmd("vsp | Ex")
+	end
+end
+
+vim.keymap.set("n", "<Leader>to", "<CMD>Ex<CR>")
+vim.keymap.set("n", "<Leader>tt", toggle_netrw)
+vim.keymap.set("n", "<Leader>ft", "<CMD>10wincmd l | vsp | Ex %:h<CR>")
 
 -------------------------
 -- TRAILING WHITESPACE --
