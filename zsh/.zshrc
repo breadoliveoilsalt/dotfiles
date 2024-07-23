@@ -213,8 +213,6 @@ function start {
   open -a "Slack"
   sleep 2
   open -a firefox "https://www.gmail.com" "https://calendar.google.com"
-  sleep 2
-  tmuxStartNotes
 }
 
 # The following lines were added by compinstall

@@ -25,11 +25,11 @@ require("lazy").setup("plugins")
 -- RANDOM EXAMPLES --
 ---------------------
 
-local say_hi = function()
-	print("hi")
-end
+-- local say_hi = function()
+-- 	print("hi")
+-- end
 
-vim.keymap.set("n", "<Leader>tz", say_hi)
+-- vim.keymap.set("n", "<Leader>tz", say_hi)
 
 -- How to reuqire a module in a command
 -- vim.keymap.sef("n", "<Leader>tt", "<Cmd>vsp | lua require('nvim-tree.api').tree.toggle({current_window = true})<CR>")
@@ -57,7 +57,7 @@ vim.keymap.set(
 	-- "<cmd>!cp -a ~/documents/dotfiles/nvim ~/.config/nvim <cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
 	-- { silent = true, desc = "[c]opy [s]ource" }
 	-- "<CMD>!cp -Rv ~/documents/dotfiles/nvim ~/.config<CR> | <CMD>echo 'neovim config file copied!'<CR>",
-	"<CMD>!rsync -a --delete ~/documents/dotfiles/nvim ~/.config<CR><CR> | <CMD>echo 'neovim config file copied!'<CR>",
+	"<CMD>wa | !rsync -a --delete ~/documents/dotfiles/nvim ~/.config<CR><CR> | <CMD>echo 'neovim config file copied!'<CR>",
 	{ desc = "[c]opy [s]ource" }
 )
 
@@ -190,20 +190,37 @@ vim.g.netrw_alto = 0 -- So preview window is opened to left
 -- Notes:
 -- Move to right most split, assuming no more than 10 open.
 -- Vertical split from there and open Ex in new vertical split
-function toggle_netrw()
-  local current_window_id = vim.api.nvim_get_current_win()
-	vim.cmd("10wincmd l")
+local toggle_netrw = function()
+	local original_window_id = vim.api.nvim_get_current_win()
+	vim.cmd("10wincmd l") -- move to the right-most vertical split
 	if vim.bo.filetype == "netrw" then
 		vim.cmd("clo")
-		vim.cmd("call win_gotoid(" .. current_window_id .. ")")
+		vim.cmd("call win_gotoid(" .. original_window_id .. ")")
 	else
 		vim.cmd("vsp | Ex")
 	end
 end
 
-vim.keymap.set("n", "<Leader>to", "<CMD>Ex<CR>")
-vim.keymap.set("n", "<Leader>tt", toggle_netrw)
-vim.keymap.set("n", "<Leader>ft", "<CMD>10wincmd l | vsp | Ex %:h<CR>")
+-- TODO: experimenting with nvim api
+-- function toggle_netrw()
+--   local api = vim.api
+--   local original_window_id = api.nvim_get_current_win()
+-- 	vim.cmd("10wincmd l") -- move to the right-most vertical split
+-- 	if vim.bo.filetype == "netrw" then
+--     -- local current_window_id = vim.api.nvim_get_current_win()
+--     -- vim.api.nvim_win_close(0)
+--     vim.api.nvim_win_close(0, false)
+-- 		-- vim.cmd("clo")
+--     -- vim.api.nvim_set_current_win(current_window_id)
+-- 		vim.cmd("call win_gotoid(" .. original_window_id .. ")")
+-- 	else
+-- 		vim.cmd("vsp | Ex")
+-- 	end
+-- end
+
+vim.keymap.set("n", "<Leader>ot", "<CMD>Ex<CR>", { desc = "[o]pen [t]ree in current buffer" })
+vim.keymap.set("n", "<Leader>tt", toggle_netrw, { desc = "[t]oggle [t]ree" })
+vim.keymap.set("n", "<Leader>ft", "<CMD>10wincmd l | vsp | Ex %:h<CR>", { desc = "[f]ind current directory in [t]ree" })
 
 -------------------------
 -- TRAILING WHITESPACE --
