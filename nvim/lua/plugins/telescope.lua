@@ -34,6 +34,8 @@ local setup = function()
 				"--glob=!**/*/src/assets/",
 				"--glob=!.git/",
 				"--glob=!*.snap",
+        "-g",
+        "!package-lock.json",
 				-- BEWARE
 				-- "--glob=!*.test.*",
 			},

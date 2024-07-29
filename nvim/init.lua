@@ -72,7 +72,7 @@ vim.opt.smartcase = true
 vim.opt.hls = false
 vim.opt.splitright = true
 
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 
 -- vim.cmd([[colorscheme slate]])
 -- vim.cmd([[colorscheme sorbet]])
@@ -219,7 +219,7 @@ end
 -- end
 
 vim.keymap.set("n", "<Leader>ot", "<CMD>Ex<CR>", { desc = "[o]pen [t]ree in current buffer" })
-vim.keymap.set("n", "<Leader>tt", toggle_netrw, { desc = "[t]oggle [t]ree" })
+vim.keymap.set("n", "<Leader>tt", toggle_netrw, { desc = "[t]oggle [t]ree in split to the right" })
 vim.keymap.set("n", "<Leader>ft", "<CMD>10wincmd l | vsp | Ex %:h<CR>", { desc = "[f]ind current directory in [t]ree" })
 
 -------------------------

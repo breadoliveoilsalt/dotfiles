@@ -23,9 +23,12 @@ return {
 				-- auto_start = true, -- if you want to start COQ at startup
 				auto_start = false, -- if you want to start COQ at startup
 				-- Your COQ settings here
-				keymap = {
-					pre_select = true,
-				},
+        -- Turning off pre_select for now. Messes things up 
+        -- by selecting an unwanted suggestion when all I want is
+        -- a new line, and so hit return.
+				-- keymap = {
+					-- pre_select = true,
+				-- },
 			}
 		end,
 		config = function()

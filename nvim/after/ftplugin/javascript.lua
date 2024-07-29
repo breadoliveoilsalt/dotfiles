@@ -18,3 +18,9 @@ vim.api.nvim_exec(
 vim.cmd([[
   nnoremap <Leader>il :call AppendConsoleLog()<CR>
 ]])
+
+vim.cmd([[
+  nnoremap <Leader>tf :wa \| vsp \| term npm run test %<CR>
+]])
+-- vim.keymap.set("n", "<Leader>tf", "<CMD>wa \\| vsp \\| term npm run test %<CR>", { desc = "[t]est [f]ile" })
+
