@@ -21,6 +21,8 @@ vim.cmd([[
 
 vim.cmd([[
   nnoremap <Leader>tf :wa \| vsp \| term npm run test %<CR>
+  nnoremap <Leader>cf :wa \| !npm run compile<CR>
+  nnoremap <Leader>qd :lua vim.diagnostic.setqflist()<CR>
 ]])
 -- vim.keymap.set("n", "<Leader>tf", "<CMD>wa \\| vsp \\| term npm run test %<CR>", { desc = "[t]est [f]ile" })
 

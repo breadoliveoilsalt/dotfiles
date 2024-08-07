@@ -175,7 +175,7 @@ function myprs {
       s/:/\//
       s/.git//
       s/^/https:\/\//
-      s/$/\/pulls\/tdistinti/
+      s/$/\/pulls\/breadoliveoilsalt/
     ' | xargs open
 }
 

@@ -493,6 +493,9 @@ require("lspconfig").yamlls.setup({
 	},
 })
 
+require("lspconfig").ruby_lsp.setup({})
+require("lspconfig").rubocop.setup({})
+
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
