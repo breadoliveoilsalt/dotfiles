@@ -187,8 +187,6 @@ sudo apt update && sudo apt upgrade && reboot
 sudo do-release-upgrade
 ```
 
-
-
 ### Setting up Git Server at Home Using ssh
 
 - For user on server, note that note that Pro Git book and docs recommend creating a single `git` user for
@@ -221,4 +219,38 @@ git remote add home <user>@<host>:/opt/git/dotfiles.git
 git push home <branch>
 
 ```
+
+### Mounting and external hard drive
+
+1) Plug in external hard drive.
+2) Find it using `sudo fdisk -l`
+3) Among the disks listed, make note of your /dev location, for example:
+
+```
+Disk /dev/sda
+# find in here the specific location with the largest `Size`, eg, /dev/sda1 or
+/dev/sda2
+
+```
+
+Also pay attention to the `Type`: HFS+ or ntfs. There are different options you
+may have to pass, eg, `-t ntfs`.
+
+See [here for example](https://askubuntu.com/a/177833)
+4) Mount the location to a directory:
+
+```
+mkdir ~/Mount
+# Read only:
+sudo mount /dev/sda2 ~/Mount
+# Read-write:
+sudo mount -o rw /dev/sda2 ~/Mount # aka: --options rw
+
+ls ~/Mount
+sudo umount ~/Mount
+# or
+sudo umount /dev/sda2
+```
+
+
 
