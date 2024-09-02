@@ -29,6 +29,8 @@ vim.api.nvim_exec(
 	false
 )
 
+vim.opt.relativenumber = true
+
 vim.cmd([[
   nnoremap <Leader>it :call InsertBackticks()<CR>
   vnoremap <Leader>it :call SurroundVisualLinesWithBackticks()<CR>

@@ -72,7 +72,7 @@ vim.opt.smartcase = true
 vim.opt.hls = false
 vim.opt.splitright = true
 
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- vim.cmd([[colorscheme slate]])
 -- vim.cmd([[colorscheme sorbet]])
