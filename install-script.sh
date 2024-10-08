@@ -47,6 +47,10 @@ ln -fs ~/documents/dotfiles/ctags/.ctags ~/.ctags
 ln -fs rider/.ideavimrc ~/.ideavimrc
 ln -fs ~/.vimrc ~/.ideavimrc
 ln -fs ~/documents/dotfiles/prettier/.prettierrc ~/.prettierrc
+
+ln -fs ~/documents/dotfiles/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
+ln -fs ~/documents/dotfiles/vscode/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+
 # mkdir -p ~/.config/nvim
 # ln -fs ~/documents/dotfiles/nvim/nvChad/init.lua ~/.config/nvim/init.lua
 

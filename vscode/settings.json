@@ -1,0 +1,52 @@
+{
+  "vim.overrideCopy": false,
+  "editor.lineNumbers": "relative",
+  "editor.wordWrap": "on",
+  "window.zoomLevel": 1,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.renderWhitespace": "all",
+  "files.trimTrailingWhitespace": true,
+  "trailing-spaces.trimOnSave": true,
+  "[html-eex]": {
+    "editor.trimAutoWhitespace": true
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.stickyTabStops": true,
+  "html.autoClosingTags": false,
+  "javascript.autoClosingTags": false,
+  "typescript.autoClosingTags": false,
+  "mssql.connections": [],
+
+  "editor.detectIndentation": false,
+  "typescript.validate.enable": true,
+  "javascript.validate.enable": true,
+  "prettier.configPath": "/Users/tonydistinti/Documents/projects/home-connect-monorepo/.prettierrc",
+  "prettier.useEditorConfig": false,
+  "git.openRepositoryInParentFolders": "never",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.experimental.tsserver.web.enableProjectWideIntellisense": true,
+  "explorer.confirmDragAndDrop": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "files.associations": {
+    "*.tsx": "typescriptreact"
+  },
+  "editor.minimap.enabled": false,
+  "playwright.reuseBrowser": true,
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnType": false, // optional
+  "editor.formatOnSave": true, // optiomal
+  "editor.formatOnSaveMode": "file", // required to format on save
+  "files.autoSave": "onFocusChange", // optional but recommended
+  "vs-code-prettier-eslint.prettierLast": false,
+  "editor.formatOnPaste": true,
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.codeActionsOnSave.rules": null, // set as "true" to run 'prettier' last not first
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "typescriptreact"
+  ]
+}
