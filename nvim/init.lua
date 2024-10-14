@@ -387,7 +387,7 @@ lspconfig.lua_ls.setup({
 -- this, b/c the LSP server will not tell you the error
 --  `cat nvimTest.js | PRETTIERD_DEFAULT_CONFIG=~/documents/dotfiles/prettier/.prettierrc prettierd nvimTest.js`
 -- 2) For an lsp set up with lspconfig, the order of
--- filttypes listed in the `filetypes` property must
+-- filetypes listed in the `filetypes` property must
 -- be repeated in the `languages` property. The order
 -- of the languages must match (be repeated) or
 -- things will not work!
@@ -411,6 +411,8 @@ lspconfig.lua_ls.setup({
 --   `formatCommand = 'PRETTIERD_DEFAULT_CONFIG=~/documents/dotfiles/prettier/.prettierrc prettierd "${INPUT}"',`
 local prettier_config_file = "~/documents/dotfiles/prettier/.prettierrc"
 
+-- TODO: add something to throw an error if prettierd does not exist.
+-- Need to do this for all dependencies
 local prettier_d_config = {
 	formatCommand = 'prettierd "${INPUT}"',
 	formatStdin = true,

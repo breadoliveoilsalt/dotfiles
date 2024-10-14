@@ -20,7 +20,7 @@ vim.cmd([[
 ]])
 
 vim.cmd([[
-  nnoremap <Leader>tf :wa \| vsp \| term npm run test.unit %<CR>
+  nnoremap <Leader>tf :wa \| vsp \| term npm run test %<CR>
   nnoremap <Leader>cf :wa \| !npm run compile<CR>
   nnoremap <Leader>ef :wa \| !npm run execute<CR>
   nnoremap <Leader>qd :lua vim.diagnostic.setqflist()<CR>

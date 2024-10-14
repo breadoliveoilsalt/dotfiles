@@ -17,6 +17,7 @@ brew install pstree
 brew install ctags
 # brew install rbenv
 brew install fzf
+brew install fsouza/prettierd/prettierd
 # brew install tmate
 brew install --cask iterm2
 # brew install --cask firefox
@@ -84,3 +85,5 @@ ssh-add -K ~/.ssh/id_ed25519
 # Specify iTerm configuration
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/documents/dotfiles/iterm2"
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
+# TODO: add clipboard app
