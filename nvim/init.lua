@@ -54,10 +54,10 @@ require("lazy").setup("plugins")
 vim.keymap.set(
 	"n",
 	"<Leader>cs",
-	-- "<cmd>!cp -a ~/documents/dotfiles/nvim ~/.config/nvim <cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
+	-- "<cmd>!cp -a ~/Documents/dotfiles/nvim ~/.config/nvim <cr><cr> | <cmd>echo 'neovim config file copied!'<cr>",
 	-- { silent = true, desc = "[c]opy [s]ource" }
-	-- "<CMD>!cp -Rv ~/documents/dotfiles/nvim ~/.config<CR> | <CMD>echo 'neovim config file copied!'<CR>",
-	"<CMD>wa | !rsync -a --delete ~/documents/dotfiles/nvim ~/.config<CR><CR> | <CMD>echo 'neovim config file copied!'<CR>",
+	-- "<CMD>!cp -Rv ~/Documents/dotfiles/nvim ~/.config<CR> | <CMD>echo 'neovim config file copied!'<CR>",
+	"<CMD>wa | !rsync -a --delete ~/Documents/dotfiles/nvim ~/.config<CR><CR> | <CMD>echo 'neovim config file copied!'<CR>",
 	{ desc = "[c]opy [s]ource" }
 )
 
@@ -385,7 +385,7 @@ lspconfig.lua_ls.setup({
 -- 1) You can double check whether your prettier config
 -- file is formatted correctly by running something like
 -- this, b/c the LSP server will not tell you the error
---  `cat nvimTest.js | PRETTIERD_DEFAULT_CONFIG=~/documents/dotfiles/prettier/.prettierrc prettierd nvimTest.js`
+--  `cat nvimTest.js | PRETTIERD_DEFAULT_CONFIG=~/Documents/dotfiles/prettier/.prettierrc prettierd nvimTest.js`
 -- 2) For an lsp set up with lspconfig, the order of
 -- filetypes listed in the `filetypes` property must
 -- be repeated in the `languages` property. The order
@@ -406,10 +406,10 @@ lspconfig.lua_ls.setup({
 -- Alternatives to prettierd config below:
 -- a) Call daemon and have it search up until it finds a
 -- config in your home directory:
---   `ln -fs ~/documents/dotfiles/prettier/.prettierrc ~/.prettierrc`
+--   `ln -fs ~/Documents/dotfiles/prettier/.prettierrc ~/.prettierrc`
 -- b) A different format command:
---   `formatCommand = 'PRETTIERD_DEFAULT_CONFIG=~/documents/dotfiles/prettier/.prettierrc prettierd "${INPUT}"',`
-local prettier_config_file = "~/documents/dotfiles/prettier/.prettierrc"
+--   `formatCommand = 'PRETTIERD_DEFAULT_CONFIG=~/Documents/dotfiles/prettier/.prettierrc prettierd "${INPUT}"',`
+local prettier_config_file = "~/Documents/dotfiles/prettier/.prettierrc"
 
 -- TODO: add something to throw an error if prettierd does not exist.
 -- Need to do this for all dependencies

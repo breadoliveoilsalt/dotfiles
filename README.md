@@ -1,10 +1,10 @@
 # README.md
 
 ## In General
-1) Make sure `dotfiles` are in `~/documents`
+1) Make sure `dotfiles` are in `~/Documents`
 2) Run install script
 3) Run through list of other things to manually install
-4) Verify you have all your documents
+4) Verify you have all your Documents
 
 ## Manual Installation Checklist 
 
@@ -28,7 +28,7 @@
     * Run this command on your old computer to update list of packages installed
       * `apm list --installed --bare > ~/Desktop/projects/dotfiles/atom/packageList.list`
     * On new computer, install these packages
-      * `apm install --packages-file ~/documents/dotfiles/atom/packageList.list`
+      * `apm install --packages-file ~/Documents/dotfiles/atom/packageList.list`
     * Install script has a command to link the atom config file here
   * Rider
     * As of 200701, there were problems with using the Rider tool to import

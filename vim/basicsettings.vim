@@ -251,8 +251,8 @@ set backupdir=~/.vim/backup_files//
 set directory=~/.vim/swap_files//
 set undodir=~/.vim/undo_files//
 
-command Iq :lcd ~/documents/projects/legalZoom/iq-flow/
-command Dotfiles :lcd ~/documents/dotfiles/
+command Iq :lcd ~/Documents/projects/legalZoom/iq-flow/
+command Dotfiles :lcd ~/Documents/dotfiles/
 
 " Run Prettier or eslint
 " Depends on running `npx install -g prettier eslint`

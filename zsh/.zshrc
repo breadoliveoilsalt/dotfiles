@@ -120,7 +120,7 @@ alias gd="git diff"
 alias gdc="git diff --cached"
 alias gb="git branch --show-current"
 alias gcb="gb | pbcopy" # [g]it [c]opy [b]ranch
-# alias nvim="nvim -u ~/documents/dotfiles/nvim/init.lua"
+# alias nvim="nvim -u ~/Documents/dotfiles/nvim/init.lua"
 alias timestamp="date \"+%Y%m%d-%H%M%S\""
 
 alias diff="diff --color='always'"
@@ -199,11 +199,11 @@ function gitSetUpstream {
 
 alias gsu="gitSetUpstream"
 
-alias proj="cd ~/documents/projects"
+alias proj="cd ~/Documents/projects"
 alias desktop="cd ~/Desktop"
-alias docs="cd ~/documents"
-alias aproj="cd ~/documents/projectsArchive/projectsApprenticeship"
-alias blog="cd ~/documents/projects/breadoliveoilsalt.github.io"
+alias docs="cd ~/Documents"
+alias aproj="cd ~/Documents/projectsArchive/projectsApprenticeship"
+alias blog="cd ~/Documents/projects/breadoliveoilsalt.github.io"
 alias ls="ls -lah"
 alias reload="source ~/.zshrc"
 
@@ -214,11 +214,11 @@ alias chromeWithDevTools='open -a "Google Chrome" --args --auto-open-devtools-fo
 alias sqlpro="open -a 'SQLPro for MSSQL'"
 
 function dotfiles {
-  cd ~/documents/dotfiles
+  cd ~/Documents/dotfiles
 }
 
 function workNotes {
-  cd ~/documents/workNotes
+  cd ~/Documents/workNotes
 }
 
 function start {
@@ -251,8 +251,8 @@ compinit
 # https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
 # https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
 # https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
-zstyle ':completion:*:*:git:*' script ~/documents/dotfiles/zsh/functions/git-completion.bash
-fpath=(~/documents/dotfiles/zsh/functions $fpath)
+zstyle ':completion:*:*:git:*' script ~/Documents/dotfiles/zsh/functions/git-completion.bash
+fpath=(~/Documents/dotfiles/zsh/functions $fpath)
 
 # Increase history size
 # See: https://medium.com/macoclock/forced-to-use-zsh-by-macos-catalina-lets-fix-our-history-command-first-9ce86dca540e
@@ -389,12 +389,12 @@ TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 setopt inc_append_history_time
 
 function sourceUbuntu {
-  source ~/documents/dotfiles/ubuntu/.zshrc
+  source ~/Documents/dotfiles/ubuntu/.zshrc
 }
 
 # Check for flags to load additional files
 # BUT make sure to exit 0 so load of file doesn't fail
 [ -f ~/flags/isUbuntu ] && sourceUbuntu || true
 
-[ -f ~/flags/sourceNonpublic ] && source ~/documents/dotfiles/nonpublic/.zshrc || true
+[ -f ~/flags/sourceNonpublic ] && source ~/Documents/dotfiles/nonpublic/.zshrc || true
 
