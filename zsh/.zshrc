@@ -121,6 +121,9 @@ alias gdc="git diff --cached"
 alias gb="git branch --show-current"
 alias gcb="gb | pbcopy" # [g]it [c]opy [b]ranch
 # alias nvim="nvim -u ~/documents/dotfiles/nvim/init.lua"
+alias timestamp="date \"+%Y%m%d-%H%M%S\""
+
+
 
 alias diff="diff --color='always'"
 alias o="open -a"
@@ -146,6 +149,18 @@ alias grb="gitRecentBranches"
 function gitFollow {
   git log -p --follow $1
 }
+
+function gitBackupBranch {
+  local CURRENT_BRANCH=$(gb)
+  local NEW_BRANCH="old/$(timestamp)/$CURRENT_BRANCH"
+  gcnb $NEW_BRANCH
+  echo
+  echo "----- NEW BRANCH CREATED: $NEW_BRANCH -----"
+  echo
+  gc $CURRENT_BRANCH
+}
+
+alias gbb="gitBackupBranch"
 
 # Assumes you connect to GitHub via SSH not https
 function repo {
