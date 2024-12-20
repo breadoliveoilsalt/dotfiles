@@ -43,16 +43,17 @@ function deleteBranch {
       echo
 
       if [ "$REMOVE_BRANCH" = "y" ] || [ "$REMOVE_BRANCH" = "Y" ]; then
+        local SHA=$(git rev-parse "$BRANCH")
         if $(git branch -d "$BRANCH" &> /dev/null); then
           echo
-          echo "$BRANCH deleted"
+          echo "$BRANCH deleted - $SHA"
         else
           echo
           read -n 1 -p "$BRANCH has not been pushed up to its remote branch. Proceed? [y/n] " FORCE_REMOVE_BRANCH <&3
           if [ "$FORCE_REMOVE_BRANCH" = "y" ] || [ "$FORCE_REMOVE_BRANCH" = "Y" ]; then
             git branch -D "$BRANCH"
             echo
-            echo "$BRANCH force deleted"
+            echo "$BRANCH force deleted - $SHA"
           fi
         fi
       fi

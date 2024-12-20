@@ -123,8 +123,6 @@ alias gcb="gb | pbcopy" # [g]it [c]opy [b]ranch
 # alias nvim="nvim -u ~/documents/dotfiles/nvim/init.lua"
 alias timestamp="date \"+%Y%m%d-%H%M%S\""
 
-
-
 alias diff="diff --color='always'"
 alias o="open -a"
 
