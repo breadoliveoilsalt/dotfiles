@@ -6,3 +6,5 @@ ssh/
 .vscode/
 
 nonpublic/
+dotfilesNonpublic/
+.DS_Store

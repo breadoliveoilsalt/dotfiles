@@ -31,6 +31,8 @@ chsh -s $(which zsh)
 
 ```sh
 ssh-keygen -t ed25519 -C "your_email@example.com"
+# when asked for the file, remember that ~/.ssh/<file> does not work; you need
+# path such as /home/tony/.ssh/<file>
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 # https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder
