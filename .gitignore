@@ -6,5 +6,7 @@ ssh/
 .vscode/
 
 nonpublic/
+nonpublic.git/
 dotfilesNonpublic/
+
 .DS_Store
